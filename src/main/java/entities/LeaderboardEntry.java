@@ -1,4 +1,4 @@
-package view_leaderboard;
+package entity;
 
 public class LeaderboardEntry {
     private String username;
