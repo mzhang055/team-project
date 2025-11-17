@@ -14,8 +14,6 @@ public class Main {
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // TODO: Fill w/ Info
-        JPanel dashboard = new JPanel();
-        mainFrame.add(dashboard, BorderLayout.CENTER);
 
         mainFrame.pack();
         mainFrame.setVisible(true);

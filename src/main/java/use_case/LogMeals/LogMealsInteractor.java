@@ -3,6 +3,9 @@ package use_case.LogMeals;
 import entities.Meal;
 import entities.NutritionalInfo;
 import entities.User;
+import interface_adapter.dashboard.DashboardViewModel;
+import use_case.dashboard.DashboardOutputBoundary;
+import use_case.dashboard.DashboardOutputData;
 import use_case.shared.UserDataAccessInterface;
 import java.util.Optional;
 
@@ -16,6 +19,7 @@ public class LogMealsInteractor implements LogMealsInputBoundary {
     private final NutritionApiInterface nutritionApi;
     private final UserDataAccessInterface userDataAccess;
     private final LogMealsOutputBoundary outputBoundary;
+    private final DashboardOutputBoundary dashboardOutputBoundary;
 
     /**
      * Constructs a LogMealsInteractor
@@ -28,11 +32,12 @@ public class LogMealsInteractor implements LogMealsInputBoundary {
     public LogMealsInteractor(MealDataAccessInterface mealDataAccess,
                               NutritionApiInterface nutritionApi,
                               UserDataAccessInterface userDataAccess,
-                              LogMealsOutputBoundary outputBoundary) {
+                              LogMealsOutputBoundary outputBoundary, DashboardOutputBoundary dashboardOutputBoundary) {
         this.mealDataAccess = mealDataAccess;
         this.nutritionApi = nutritionApi;
         this.userDataAccess = userDataAccess;
         this.outputBoundary = outputBoundary;
+        this.dashboardOutputBoundary = dashboardOutputBoundary;
     }
 
     @Override
@@ -78,5 +83,9 @@ public class LogMealsInteractor implements LogMealsInputBoundary {
         // Prepare success view
         LogMealsOutputData outputData = new LogMealsOutputData(meal, true);
         outputBoundary.prepareSuccessView(outputData);
+
+        // Update dashboard
+        DashboardOutputData dashboardOutputData = new DashboardOutputData(user, meal.getNutritionalInfo());
+        dashboardOutputBoundary.updateDashboard(dashboardOutputData);
     }
 }

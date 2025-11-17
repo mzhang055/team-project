@@ -41,7 +41,7 @@ public class LogMealsView extends JFrame implements PropertyChangeListener {
     private void initializeUI() {
         setTitle("Log Meals - Manual Entry");
         setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
         // Top panel with input fields
