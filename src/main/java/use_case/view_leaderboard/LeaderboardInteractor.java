@@ -15,10 +15,9 @@ public class LeaderboardInteractor implements LeaderboardInputBoundary {
             presenter.prepareFailView("Please enter a valid username!");
             return;
         }
-        List<String> users = Arrays.asList("Annie","Amanda","Mandy");
-        List<Integer> scores = Arrays.asList(100,99,98);
+        List<String> users = Arrays.asList("Nikki","Annie","Amanda","Mandy","Joyce","Sylus","Xavier","Calab");
+        List<Integer> scores = Arrays.asList(100,99,98,97,95,93,92,90);
         presenter.prepareSuccessView(new LeaderboardOutputData(users, scores));
-
 }
 
 }
