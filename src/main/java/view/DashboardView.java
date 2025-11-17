@@ -53,11 +53,8 @@ public class DashboardView extends JPanel {
 
     private void buildNavBar() {
         JPanel nav = new JPanel();
-        setTargetButton = new JButton("Set Target");
-        logMealButton = new JButton("Log Meal");
-        profileButton = new JButton("Profile");
-
         nav.add(setTargetButton);
+        nav.add(logMealButton);
         nav.add(logMealButton);
         nav.add(profileButton);
 
