@@ -1,6 +1,6 @@
 package use_case.create_account;
 
-import entity.User;
+import entities.User;
 import use_case.shared.UserDataAccessInterface;
 
 public class CreateAccountInteractor implements CreateAccountInputBoundary {

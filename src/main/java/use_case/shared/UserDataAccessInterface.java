@@ -1,6 +1,6 @@
 package use_case.shared;
 
-import entity.User;
+import entities.User;
 
 public interface UserDataAccessInterface {
     boolean existsByUsername(String username);

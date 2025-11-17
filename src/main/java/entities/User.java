@@ -1,4 +1,4 @@
-package entity;
+package entities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ public class User {
     private final String username;
     private String password;
     private final List<String> friendsUsernames = new ArrayList<>();
+    private final List<String> mealIds = new ArrayList<>();
 
     /**
      * Creates a new user with the given non-empty name and non-empty password.
@@ -42,5 +43,19 @@ public class User {
         if (!friendsUsernames.contains(friendUsername)) {
             friendsUsernames.add(friendUsername);
         }
+    }
+
+    public List<String> getMealIds() {
+        return mealIds;
+    }
+
+    public void addMeal(String mealId) {
+        if (!mealIds.contains(mealId)) {
+            mealIds.add(mealId);
+        }
+    }
+
+    public void removeMeal(String mealId) {
+        mealIds.remove(mealId);
     }
 }
