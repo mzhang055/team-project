@@ -1,6 +1,6 @@
 package data_access;
 
-import entity.User;
+import entities.User;
 import use_case.shared.UserDataAccessInterface;
 import java.util.HashMap;
 import java.util.Map;
