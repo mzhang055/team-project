@@ -24,7 +24,12 @@ public class CreateAccountInteractor implements CreateAccountInputBoundary {
             presenter.prepareFailView("Username already registered");
             return;
         }
-        User newUser = new User(username, password);
+        double height = inputData.getHeight();
+        double weight = inputData.getWeight();
+        String allergies = inputData.getAllergies();
+        boolean vegan = inputData.isVegan();
+
+        User newUser = new User(username, password, height, weight, allergies, vegan);
         userDataAccess.save(newUser);
         CreateAccountOutputData outputData = new CreateAccountOutputData(username, "User registered");
         presenter.prepareSuccessView(outputData);
