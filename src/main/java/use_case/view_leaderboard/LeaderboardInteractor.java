@@ -1,13 +1,23 @@
 package use_case.view_leaderboard;
+import java.util.Arrays;
+import java.util.List;
 
-//这里要改数据
+// using exmaple data, need to change
+
 public class LeaderboardInteractor implements LeaderboardInputBoundary {
     private LeaderboardOutputBoundary presenter;
     public LeaderboardInteractor(LeaderboardOutputBoundary presenter) {
         this.presenter = presenter;
     }
 @Override
-    public void getleaderboard() {
+    public void getLeaderboard(String username) {
+        if (username == null || username.isEmpty()) {
+            presenter.prepareFailView("Please enter a valid username!");
+            return;
+        }
+        List<String> users = Arrays.asList("Annie","Amanda","Mandy");
+        List<Integer> scores = Arrays.asList(100,99,98);
+        presenter.prepareSuccessView(new LeaderboardOutputData(users, scores));
 
 }
 
