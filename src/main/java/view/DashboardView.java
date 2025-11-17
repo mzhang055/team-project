@@ -1,7 +1,10 @@
 package view;
 
+import interface_adapter.LogMeals.LogMealsController;
+import interface_adapter.LogMeals.LogMealsViewModel;
 import interface_adapter.dashboard.DashboardState;
 import interface_adapter.dashboard.DashboardViewModel;
+import use_case.LogMeals.MealDataAccessInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +14,9 @@ import java.beans.PropertyChangeListener;
 /**
  * The View for when the user is logged into the program.
  */
-public class DashboardView extends JPanel implements PropertyChangeListener{
+// extend Jframe
+public class DashboardView extends JFrame implements PropertyChangeListener{
     private final DashboardViewModel dashboardViewModel;
-    private final String userId;
 
     // buttons that will click
     private final JButton setTargetButton;
@@ -23,11 +26,12 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private final JButton viewHistoryButton;
 
     // labels that will update
+    // might be final
     private JLabel calories = new JLabel("--");
     private JLabel remaining = new JLabel("--");
     private JLabel protein = new JLabel("--");
     private JLabel carbs = new JLabel("--");
-    private JLabel fats =new JLabel("--");
+    private JLabel fats = new JLabel("--");
     private JLabel fiber = new JLabel("--");
     private JLabel sugars = new JLabel("--");
 
@@ -35,21 +39,30 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private DefaultListModel<String> recipeModel;
     private DefaultListModel<String> friendModel;
 
-    public DashboardView(DashboardViewModel dashboardViewModel, String userId) {
+    public DashboardView(DashboardViewModel dashboardViewModel) {
         this.dashboardViewModel = dashboardViewModel;
-        this.userId = userId;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
+        setTitle("Dashboard");
         this.setSize(900, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout(10, 10));
 
         recipeModel = new DefaultListModel<>();
         JList<String> recipeList = new JList<>(recipeModel);
-        this.add(new JScrollPane(recipeList), BorderLayout.WEST);
+        recipeList.setVisibleRowCount(15);
+        JScrollPane recipeScroll = new JScrollPane(recipeList);
+        recipeScroll.setPreferredSize(new Dimension(200, 400)); // width x height
+        recipeScroll.setMinimumSize(new Dimension(200, 400));
+        this.add(recipeScroll, BorderLayout.WEST);
 
         friendModel = new DefaultListModel<>();
         JList<String> friendList = new JList<>(friendModel);
-        this.add(new JScrollPane(friendList), BorderLayout.EAST);
+        friendList.setVisibleRowCount(15);
+        JScrollPane friendScroll = new JScrollPane(friendList);
+        friendScroll.setPreferredSize(new Dimension(200, 400));
+        friendScroll.setMinimumSize(new Dimension(200, 400));
+        this.add(friendScroll, BorderLayout.EAST);
 
         JPanel nutrition = new JPanel();
         nutrition.setLayout(new BoxLayout(nutrition, BoxLayout.Y_AXIS));
@@ -89,6 +102,8 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         sugarRow.add(this.sugars);
         nutrition.add(sugarRow);
 
+        nutrition.setPreferredSize(new Dimension(400, 400));
+        nutrition.setMinimumSize(new Dimension(300, 300));
         this.add(nutrition, BorderLayout.CENTER);
 
         final JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -111,12 +126,17 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         buttons.add(viewHistoryButton);
         buttons.add(profileButton);
         // add to Dashboard
+        buttons.setPreferredSize(new Dimension(900, 50));
+        buttons.setMinimumSize(new Dimension(800, 50));
         this.add(buttons, BorderLayout.SOUTH);
     }
 
     // TODO: Change Views
     private void goToSetTarget(){}
-    private void goToLogMeals(){}
+    private void goToLogMeals(){
+        LogMealsView view = new LogMealsView();
+        view.setVisible(true);
+    }
     private void goToSaveRecipe(){}
     private void goToHistory(){}
     private void goToProfile(){}

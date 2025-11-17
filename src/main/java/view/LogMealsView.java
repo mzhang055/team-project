@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
  */
 public class LogMealsView extends JFrame implements PropertyChangeListener {
 
+    private final String viewName = "Log Meals";
     private final LogMealsViewModel viewModel;
     private final LogMealsController controller;
     private final MealDataAccessInterface mealDataAccess;
@@ -128,4 +129,6 @@ public class LogMealsView extends JFrame implements PropertyChangeListener {
             saveButton.setEnabled(false);
         }
     }
+
+    public String getViewName() {return viewName;}
 }

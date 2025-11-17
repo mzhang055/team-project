@@ -2,7 +2,12 @@ package app;
 
 import data_access.InMemoryUserDataAccessObject;
 import interface_adapter.LogMeals.*;
+import interface_adapter.dashboard.DashboardPresenter;
+import interface_adapter.dashboard.DashboardViewModel;
 import use_case.LogMeals.LogMealsInteractor;
+import use_case.LogMeals.LogMealsOutputBoundary;
+import use_case.dashboard.DashboardOutputBoundary;
+import view.DashboardView;
 import view.LogMealsView;
 
 import javax.swing.*;
@@ -31,16 +36,18 @@ public class LogMealsApp {
 
         // Create view model
         LogMealsViewModel viewModel = new LogMealsViewModel();
+        DashboardViewModel dashboardViewModel = new DashboardViewModel();
 
         // Create presenter
         LogMealsPresenter presenter = new LogMealsPresenter(viewModel);
+        DashboardPresenter dashboardPresenter = new DashboardPresenter(dashboardViewModel);
 
         // Create interactor
         LogMealsInteractor interactor = new LogMealsInteractor(
             mealDataAccess,
             nutritionApi,
             userDataAccess,
-            presenter
+            presenter, dashboardPresenter
         );
 
         // Create controller
@@ -48,8 +55,8 @@ public class LogMealsApp {
 
         // Create and show view
         SwingUtilities.invokeLater(() -> {
-            LogMealsView view = new LogMealsView(viewModel, controller, mealDataAccess, USER_ID);
-            view.setVisible(true);
+            DashboardView dash = new DashboardView();
+            dash.setVisible(true);
         });
     }
 

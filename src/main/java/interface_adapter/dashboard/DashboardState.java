@@ -17,6 +17,8 @@ public class DashboardState {
     private List<String> friendNames;
 
     public DashboardState() {
+        // TODO: Fix w/ actual calls
+        this.remaining = 0.0;
         this.recipeNames = new ArrayList<>();
         this.friendNames = new ArrayList<>();
     }

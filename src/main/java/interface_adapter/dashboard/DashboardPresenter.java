@@ -2,6 +2,7 @@ package interface_adapter.dashboard;
 
 import use_case.dashboard.DashboardOutputBoundary;
 import use_case.dashboard.DashboardOutputData;
+import view.DashboardView;
 
 public class DashboardPresenter implements DashboardOutputBoundary {
     private final DashboardViewModel dashboardViewModel;

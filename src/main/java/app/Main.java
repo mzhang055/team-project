@@ -13,9 +13,16 @@ public class Main {
         JFrame mainFrame = new JFrame("Dashboard");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // TODO: Fill w/ Info
+        AppBuilder appBuilder = new AppBuilder();
+        JFrame application = appBuilder
+                .setDashboardView()
+                .addDashboardUseCase()
+                .setLogMealsView()
+                .addLogMealsUseCase()
+                .build();
 
         mainFrame.pack();
+        mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
     }
 }
