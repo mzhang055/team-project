@@ -49,4 +49,12 @@ public interface MealDataAccessInterface {
      * @return true if user has logged meals, false otherwise
      */
     boolean hasLoggedMeals(String userId);
+
+    /**
+     * Updates an existing meal with new information.
+     *
+     * @param meal the updated meal (must have existing ID)
+     * @return true if update was successful, false otherwise
+     */
+    boolean update(Meal meal);
 }

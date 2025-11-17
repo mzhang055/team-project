@@ -69,4 +69,18 @@ public class InMemoryMealDataAccess implements MealDataAccessInterface {
         List<String> mealIds = userMeals.get(userId);
         return mealIds != null && !mealIds.isEmpty();
     }
+
+    @Override
+    public boolean update(Meal meal) {
+        if (meal == null || meal.getId() == null) {
+            return false;
+        }
+
+        if (!meals.containsKey(meal.getId())) {
+            return false;
+        }
+
+        meals.put(meal.getId(), meal);
+        return true;
+    }
 }
