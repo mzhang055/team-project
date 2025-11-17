@@ -22,7 +22,6 @@ public class FileRecipeLogDataAccessObject implements RecipeLogDataAccessInterfa
         }
     }
 
-    // 读出所有 Recipe，没有就返回空列表
     @SuppressWarnings("unchecked")
     private List<Recipe> readAll() throws IOException {
         if (storageFile.length() == 0L) {
