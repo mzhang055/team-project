@@ -1,4 +1,4 @@
-package ui;
+package view;
 
 import interface_adapter.create_account.CreateAccountController;
 import interface_adapter.create_account.CreateAccountViewModel;

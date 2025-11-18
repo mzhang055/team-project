@@ -47,7 +47,7 @@ public class LogMealsApp {
             mealDataAccess,
             nutritionApi,
             userDataAccess,
-            presenter, dashboardPresenter
+            presenter
         );
 
         // Create controller
