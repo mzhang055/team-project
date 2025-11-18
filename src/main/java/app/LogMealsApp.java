@@ -1,14 +1,12 @@
 package app;
 
+import data_access.InMemoryMealDataAccess;
 import data_access.InMemoryUserDataAccessObject;
 import interface_adapter.LogMeals.*;
 import interface_adapter.dashboard.DashboardPresenter;
 import interface_adapter.dashboard.DashboardViewModel;
 import use_case.LogMeals.LogMealsInteractor;
-import use_case.LogMeals.LogMealsOutputBoundary;
-import use_case.dashboard.DashboardOutputBoundary;
 import view.DashboardView;
-import view.LogMealsView;
 
 import javax.swing.*;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package interface_adapter.LogMeals;
+package data_access;
 
 import entities.Meal;
 import use_case.LogMeals.MealDataAccessInterface;

@@ -1,4 +1,4 @@
-package interface_adapter.update_file;
+package interface_adapter.update_profile;
 
 import use_case.update_profile.UpdateProfileInputData;
 import use_case.update_profile.UpdateProfileInputBoundary;

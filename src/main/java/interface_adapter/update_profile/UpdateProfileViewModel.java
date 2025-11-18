@@ -1,4 +1,4 @@
-package interface_adapter.update_file;
+package interface_adapter.update_profile;
 
 public class UpdateProfileViewModel {
     private String message;
