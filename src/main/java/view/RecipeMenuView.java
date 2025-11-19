@@ -18,11 +18,14 @@ public class RecipeMenuView extends JFrame {
     private final RecipeSavedController savedController;
     private final RecipeSavedViewModel savedViewModel;
 
+    private final String username;
+
     public RecipeMenuView(RecipeSearchController searchController,
                           SaveRecipeController saveController,
                           RecipeSearchViewModel searchViewModel,
                           RecipeSavedController savedController,
-                          RecipeSavedViewModel savedViewModel) {
+                          RecipeSavedViewModel savedViewModel,
+                          String username) {
         super("Recipe");
 
         this.searchController = searchController;
@@ -30,6 +33,7 @@ public class RecipeMenuView extends JFrame {
         this.searchViewModel = searchViewModel;
         this.savedController = savedController;
         this.savedViewModel = savedViewModel;
+        this.username = username;
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 200);
@@ -51,13 +55,24 @@ public class RecipeMenuView extends JFrame {
 
     private void openSearchWindow() {
         RecipeSearchView view = new RecipeSearchView(
-                searchController, saveController, searchViewModel);
+                searchController,
+                saveController,
+                searchViewModel,
+                username,
+                this
+        );
         view.setVisible(true);
+        this.setVisible(false);
     }
 
     private void openSavedWindow() {
         RecipeSavedView view = new RecipeSavedView(
-                savedController, savedViewModel);
+                savedController,
+                savedViewModel,
+                username,
+                this
+        );
         view.setVisible(true);
+        this.setVisible(false);
     }
 }

@@ -18,15 +18,26 @@ import java.util.List;
 
 public class TheMealDBRecipeDataAccessObject implements RecipeSearchDataAccessInterface {
 
-    private static final String API_URL_TEMPLATE =
+    private static final String SEARCH_URL_TEMPLATE =
             "https://www.themealdb.com/api/json/v1/1/search.php?s=%s";
+    private static final String LOOKUP_URL_TEMPLATE =
+            "https://www.themealdb.com/api/json/v1/1/lookup.php?i=%s";
 
     @Override
     public List<Recipe> searchRecipesByName(String name) throws IOException {
         String encoded = URLEncoder.encode(name, StandardCharsets.UTF_8.name());
-        String urlStr = String.format(API_URL_TEMPLATE, encoded);
+        String urlStr = String.format(SEARCH_URL_TEMPLATE, encoded);
         String body = httpGet(urlStr);
         return parseRecipes(body);
+    }
+
+    @Override
+    public Recipe getRecipeById(String id) throws IOException {
+        String encoded = URLEncoder.encode(id, StandardCharsets.UTF_8.name());
+        String urlStr = String.format(LOOKUP_URL_TEMPLATE, encoded);
+        String body = httpGet(urlStr);
+        List<Recipe> recipes = parseRecipes(body);
+        return recipes.isEmpty() ? null : recipes.get(0);
     }
 
     private String httpGet(String urlStr) throws IOException {

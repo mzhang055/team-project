@@ -9,6 +9,7 @@ public class RecipeSavedViewModel {
 
     private List<Recipe> recipes = new ArrayList<>();
     private String errorMessage = "";
+    private String lastDeleteMessage = "";
 
     public List<Recipe> getRecipes() {
         return new ArrayList<>(recipes);
@@ -23,10 +24,18 @@ public class RecipeSavedViewModel {
     }
 
     public String getErrorMessage() {
-        return errorMessage;
+        return errorMessage == null ? "" : errorMessage;
     }
 
     public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+        this.errorMessage = errorMessage == null ? "" : errorMessage;
+    }
+
+    public String getLastDeleteMessage() {
+        return lastDeleteMessage == null ? "" : lastDeleteMessage;
+    }
+
+    public void setLastDeleteMessage(String lastDeleteMessage) {
+        this.lastDeleteMessage = lastDeleteMessage == null ? "" : lastDeleteMessage;
     }
 }

@@ -16,6 +16,7 @@ public class User {
     private final List<String> incomingFriendRequests = new ArrayList<>();
     private final List<String> outgoingFriendRequests = new ArrayList<>();
     private final List<String> mealIds = new ArrayList<>();
+    private final List<String> recipeIds = new ArrayList<>();
 
     public User(String username, String password) {
         this(username, password, 0.0, 0.0, "", false);
@@ -91,5 +92,19 @@ public class User {
 
     public void removeMeal(String mealId) {
         mealIds.remove(mealId);
+    }
+
+    public List<String> getRecipeIds() {
+        return recipeIds;
+    }
+
+    public void addRecipe(String recipeId) {
+        if (!recipeIds.contains(recipeId)) {
+            recipeIds.add(recipeId);
+        }
+    }
+
+    public void removeRecipe(String recipeId) {
+        recipeIds.remove(recipeId);
     }
 }

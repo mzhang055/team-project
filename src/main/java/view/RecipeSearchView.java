@@ -14,6 +14,8 @@ public class RecipeSearchView extends JFrame {
     private final RecipeSearchController searchController;
     private final SaveRecipeController saveController;
     private final RecipeSearchViewModel viewModel;
+    private final String username;
+    private final RecipeMenuView menuView;
 
     private JTextField searchField;
     private JTextArea detailArea;
@@ -24,11 +26,15 @@ public class RecipeSearchView extends JFrame {
 
     public RecipeSearchView(RecipeSearchController searchController,
                             SaveRecipeController saveController,
-                            RecipeSearchViewModel viewModel) {
+                            RecipeSearchViewModel viewModel,
+                            String username,
+                            RecipeMenuView menuView) {
         super("Recipe Search");
         this.searchController = searchController;
         this.saveController = saveController;
         this.viewModel = viewModel;
+        this.username = username;
+        this.menuView = menuView;
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(800, 500);
@@ -64,8 +70,10 @@ public class RecipeSearchView extends JFrame {
         centerSplit.setDividerLocation(250);
 
         saveButton = new JButton("Save Recipe");
+        JButton backButton = new JButton("Back");
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        bottomPanel.add(backButton);
         bottomPanel.add(saveButton);
 
         Container content = getContentPane();
@@ -73,10 +81,13 @@ public class RecipeSearchView extends JFrame {
         content.add(topPanel, BorderLayout.NORTH);
         content.add(centerSplit, BorderLayout.CENTER);
         content.add(bottomPanel, BorderLayout.SOUTH);
-        ((JComponent) content).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        ((JComponent) content).setBorder(
+                BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         searchButton.addActionListener(e -> onSearch());
         saveButton.addActionListener(e -> onSave());
+        backButton.addActionListener(e -> onBack());
+
         resultList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 onSelectionChanged(resultList.getSelectedIndex());
@@ -99,11 +110,19 @@ public class RecipeSearchView extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        saveController.save(selected);
+        saveController.save(username, selected);
+
         JOptionPane.showMessageDialog(this,
                 viewModel.getLastSaveMessage(),
                 "Save Recipe",
                 JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void onBack() {
+        if (menuView != null) {
+            menuView.setVisible(true);
+        }
+        dispose();
     }
 
     private void onSelectionChanged(int index) {

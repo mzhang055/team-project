@@ -12,8 +12,8 @@ public class SaveRecipeController {
         this.saveUseCase = saveUseCase;
     }
 
-    public void save(Recipe recipe) {
-        SaveRecipeInputData inputData = new SaveRecipeInputData(recipe);
+    public void save(String username, Recipe recipe) {
+        SaveRecipeInputData inputData = new SaveRecipeInputData(username, recipe);
         saveUseCase.execute(inputData);
     }
 }

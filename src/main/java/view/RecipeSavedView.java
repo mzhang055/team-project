@@ -12,16 +12,22 @@ public class RecipeSavedView extends JFrame {
 
     private final RecipeSavedController controller;
     private final RecipeSavedViewModel viewModel;
+    private final String username;
+    private final RecipeMenuView menuView;
 
     private DefaultListModel<String> listModel;
     private JList<String> recipeList;
     private JTextArea detailArea;
 
     public RecipeSavedView(RecipeSavedController controller,
-                           RecipeSavedViewModel viewModel) {
+                           RecipeSavedViewModel viewModel,
+                           String username,
+                           RecipeMenuView menuView) {
         super("Recipe Saved");
         this.controller = controller;
         this.viewModel = viewModel;
+        this.username = username;
+        this.menuView = menuView;
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(600, 500);
@@ -49,26 +55,34 @@ public class RecipeSavedView extends JFrame {
         splitPane.setDividerLocation(200);
 
         JButton refreshButton = new JButton("Refresh");
-        refreshButton.addActionListener(e -> refreshFromUseCase());
+        JButton deleteButton = new JButton("Delete");
+        JButton backButton = new JButton("Back");
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        bottomPanel.add(backButton);
+        bottomPanel.add(deleteButton);
         bottomPanel.add(refreshButton);
 
         Container content = getContentPane();
         content.setLayout(new BorderLayout(10, 10));
         content.add(splitPane, BorderLayout.CENTER);
         content.add(bottomPanel, BorderLayout.SOUTH);
-        ((JComponent) content).setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        ((JComponent) content).setBorder(
+                BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         recipeList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 onSelected(recipeList.getSelectedIndex());
             }
         });
+
+        refreshButton.addActionListener(e -> refreshFromUseCase());
+        backButton.addActionListener(e -> onBack());
+        deleteButton.addActionListener(e -> onDelete());
     }
 
     private void refreshFromUseCase() {
-        controller.refresh();
+        controller.refresh(username);
 
         listModel.clear();
         List<Recipe> recipes = viewModel.getRecipes();
@@ -104,6 +118,35 @@ public class RecipeSavedView extends JFrame {
         }
         Recipe r = recipes.get(index);
         detailArea.setText(formatRecipe(r));
+    }
+
+    private void onBack() {
+        if (menuView != null) {
+            menuView.setVisible(true);
+        }
+        dispose();
+    }
+
+    private void onDelete() {
+        int index = recipeList.getSelectedIndex();
+        List<Recipe> recipes = viewModel.getRecipes();
+        if (index < 0 || index >= recipes.size()) {
+            return;
+        }
+
+        Recipe r = recipes.get(index);
+        controller.delete(username, r.getId());
+
+        String msg = viewModel.getLastDeleteMessage();
+        if (!msg.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    msg,
+                    "Delete",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        }
+        refreshFromUseCase();
     }
 
     private String formatRecipe(Recipe r) {
