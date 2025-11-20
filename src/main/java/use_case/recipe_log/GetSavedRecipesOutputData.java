@@ -2,6 +2,7 @@ package use_case.recipe_log;
 
 import entities.Recipe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GetSavedRecipesOutputData {
@@ -13,7 +14,11 @@ public class GetSavedRecipesOutputData {
     public GetSavedRecipesOutputData(boolean success, String message, List<Recipe> recipes) {
         this.success = success;
         this.message = message;
-        this.recipes = recipes;
+        if (recipes == null) {
+            this.recipes = new ArrayList<>();
+        } else {
+            this.recipes = new ArrayList<>(recipes);
+        }
     }
 
     public boolean isSuccess() {
@@ -25,6 +30,6 @@ public class GetSavedRecipesOutputData {
     }
 
     public List<Recipe> getRecipes() {
-        return recipes;
+        return new ArrayList<>(recipes);
     }
 }

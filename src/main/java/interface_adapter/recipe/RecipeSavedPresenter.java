@@ -1,9 +1,13 @@
 package interface_adapter.recipe;
 
+import use_case.recipe_log.DeleteSavedRecipeOutputBoundary;
+import use_case.recipe_log.DeleteSavedRecipeOutputData;
 import use_case.recipe_log.GetSavedRecipesOutputBoundary;
 import use_case.recipe_log.GetSavedRecipesOutputData;
 
-public class RecipeSavedPresenter implements GetSavedRecipesOutputBoundary {
+public class RecipeSavedPresenter implements
+        GetSavedRecipesOutputBoundary,
+        DeleteSavedRecipeOutputBoundary {
 
     private final RecipeSavedViewModel viewModel;
 
@@ -14,11 +18,16 @@ public class RecipeSavedPresenter implements GetSavedRecipesOutputBoundary {
     @Override
     public void present(GetSavedRecipesOutputData outputData) {
         if (outputData.isSuccess()) {
-            viewModel.setRecipes(outputData.getRecipes());
             viewModel.setErrorMessage("");
-        } else {
             viewModel.setRecipes(outputData.getRecipes());
+        } else {
             viewModel.setErrorMessage(outputData.getMessage());
+            viewModel.setRecipes(null);
         }
+    }
+
+    @Override
+    public void present(DeleteSavedRecipeOutputData outputData) {
+        viewModel.setLastDeleteMessage(outputData.getMessage());
     }
 }
