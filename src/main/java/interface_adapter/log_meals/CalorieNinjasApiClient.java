@@ -1,4 +1,4 @@
-package interface_adapter.LogMeals;
+package interface_adapter.log_meals;
 
 import entities.NutritionalInfo;
 import okhttp3.OkHttpClient;
@@ -6,7 +6,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import use_case.LogMeals.NutritionApiInterface;
+import use_case.log_meals.NutritionApiInterface;
 
 import java.io.IOException;
 import java.util.Optional;

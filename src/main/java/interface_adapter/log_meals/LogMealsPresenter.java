@@ -1,7 +1,7 @@
-package interface_adapter.LogMeals;
+package interface_adapter.log_meals;
 
-import use_case.LogMeals.LogMealsOutputBoundary;
-import use_case.LogMeals.LogMealsOutputData;
+import use_case.log_meals.LogMealsOutputBoundary;
+import use_case.log_meals.LogMealsOutputData;
 
 /**
  * Presenter for the Log Meals use case.

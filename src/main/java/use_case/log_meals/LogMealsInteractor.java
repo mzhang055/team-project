@@ -1,11 +1,8 @@
-package use_case.LogMeals;
+package use_case.log_meals;
 
 import entities.Meal;
 import entities.NutritionalInfo;
 import entities.User;
-import interface_adapter.dashboard.DashboardViewModel;
-import use_case.dashboard.DashboardOutputBoundary;
-import use_case.dashboard.DashboardOutputData;
 import use_case.shared.UserDataAccessInterface;
 import java.util.Optional;
 

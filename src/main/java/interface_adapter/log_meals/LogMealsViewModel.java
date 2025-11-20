@@ -1,4 +1,4 @@
-package interface_adapter.LogMeals;
+package interface_adapter.log_meals;
 
 import entities.Meal;
 import java.beans.PropertyChangeListener;

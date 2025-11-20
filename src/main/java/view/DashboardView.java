@@ -1,10 +1,7 @@
 package view;
 
-import interface_adapter.LogMeals.LogMealsController;
-import interface_adapter.LogMeals.LogMealsViewModel;
 import interface_adapter.dashboard.DashboardState;
 import interface_adapter.dashboard.DashboardViewModel;
-import use_case.LogMeals.MealDataAccessInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +12,7 @@ import java.beans.PropertyChangeListener;
  * The View for when the user is logged into the program.
  */
 // extend Jframe
-public class DashboardView extends JFrame implements PropertyChangeListener{
+public class DashboardView extends JPanel implements PropertyChangeListener{
     private final DashboardViewModel dashboardViewModel;
 
     // buttons that will click
@@ -43,9 +40,7 @@ public class DashboardView extends JFrame implements PropertyChangeListener{
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
 
-        setTitle("Dashboard");
         this.setSize(900, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout(10, 10));
 
         recipeModel = new DefaultListModel<>();
@@ -133,24 +128,14 @@ public class DashboardView extends JFrame implements PropertyChangeListener{
 
     // TODO
     private void goToSetTarget(){
-        SetTargetView view = new SetTargetView();
-        view.setVisible();
     }
     private void goToLogMeals(){
-        LogMealsView view = new LogMealsView();
-        view.setVisible(true);
     }
     private void goToSaveRecipe(){
-        SaveRecipeView view = new SaveRecipeView();
-        view.setVisible(true);
     }
     private void goToHistory(){
-        HistoryView view = new HistoryView();
-        view.setVisible(true);
     }
     private void goToProfile(){
-        ProfileView view = new ProfileView();
-        view.setVisible(true);
     }
 
     @Override

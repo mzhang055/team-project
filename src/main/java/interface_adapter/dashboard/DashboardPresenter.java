@@ -22,8 +22,8 @@ public class DashboardPresenter implements DashboardOutputBoundary {
         double fats = dashboardOutputData.getFats();
         double sugar = dashboardOutputData.getSugar();
         double fiber = dashboardOutputData.getFiber();
-        List<String> recipeNames = dashboardOutputData.getRecipeNames();
-        List<String> friendNames =  dashboardOutputData.getFriendNames();
+        // List<String> recipeNames = dashboardOutputData.getRecipeNames();
+        // List<String> friendNames =  dashboardOutputData.getFriendNames();
 
         DashboardState state = new DashboardState();
         state.setCalories(calories);
@@ -33,8 +33,8 @@ public class DashboardPresenter implements DashboardOutputBoundary {
         state.setFats(fats);
         state.setFibers(fiber);
         state.setSugars(sugar);
-        state.setRecipeNames(recipeNames);
-        state.setFriendNames(friendNames);
+        // state.setRecipeNames(recipeNames);
+        // state.setFriendNames(friendNames);
         dashboardViewModel.setState(state);
     }
 }

@@ -4,7 +4,38 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be8edcf1-ad85-4870-a280-e2287c87a2eb" name="Changes" comment="" />
+    <list default="true" id="be8edcf1-ad85-4870-a280-e2287c87a2eb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/entities/UserFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/ViewManagerModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/ViewModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/dashboard/DashboardController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/view/ViewManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/LogMealsApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/LogMealsApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/data_access/InMemoryMealDataAccess.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/data_access/InMemoryMealDataAccessObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/LogMeals/CalorieNinjasApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/log_meals/CalorieNinjasApiClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/LogMeals/LogMealsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/log_meals/LogMealsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/LogMeals/LogMealsPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/log_meals/LogMealsPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/LogMeals/LogMealsViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/log_meals/LogMealsViewModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/logout/LogoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/logout/LogoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/logout/LogoutPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/logout/LogoutPresenter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/LogMeals/LogMealsInputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/log_meals/LogMealsInputBoundary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/LogMeals/LogMealsInputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/log_meals/LogMealsInputData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/LogMeals/LogMealsInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/log_meals/LogMealsInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/LogMeals/LogMealsOutputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/log_meals/LogMealsOutputBoundary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/LogMeals/LogMealsOutputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/log_meals/LogMealsOutputData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/LogMeals/MealDataAccessInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/log_meals/MealDataAccessInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/LogMeals/NutritionApiInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/log_meals/NutritionApiInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/Logout/LogoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/logout/LogoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/Logout/LogoutInputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/logout/LogoutInputBoundary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/Logout/LogoutInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/logout/LogoutInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/Logout/LogoutOutputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/logout/LogoutOutputBoundary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/Logout/LogoutOutputData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/logout/LogoutOutputData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/DashboardView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/DashboardView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/LogMealsView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/LogMealsView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/ViewLoggedMealsView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/LoggedMealsView.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -119,6 +150,8 @@
       <workItem from="1763249624719" duration="1139000" />
       <workItem from="1763257735270" duration="8188000" />
       <workItem from="1763315390204" duration="409000" />
+      <workItem from="1763495461195" duration="1098000" />
+      <workItem from="1763599605443" duration="2061000" />
     </task>
     <servers />
   </component>

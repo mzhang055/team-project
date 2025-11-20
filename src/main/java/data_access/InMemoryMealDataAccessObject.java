@@ -1,7 +1,7 @@
 package data_access;
 
 import entities.Meal;
-import use_case.LogMeals.MealDataAccessInterface;
+import use_case.log_meals.MealDataAccessInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import java.util.Optional;
  * In-memory implementation of MealDataAccessInterface.
  * Stores meals in memory using a HashMap.
  */
-public class InMemoryMealDataAccess implements MealDataAccessInterface {
+public class InMemoryMealDataAccessObject implements MealDataAccessInterface {
 
     private final Map<String, Meal> meals = new HashMap<>();
     private final Map<String, List<String>> userMeals = new HashMap<>();

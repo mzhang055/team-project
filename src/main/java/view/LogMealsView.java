@@ -1,9 +1,9 @@
 package view;
 
 import entities.MealType;
-import interface_adapter.LogMeals.LogMealsController;
-import interface_adapter.LogMeals.LogMealsViewModel;
-import use_case.LogMeals.MealDataAccessInterface;
+import interface_adapter.log_meals.LogMealsController;
+import interface_adapter.log_meals.LogMealsViewModel;
+import use_case.log_meals.MealDataAccessInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -110,7 +110,7 @@ public class LogMealsView extends JFrame implements PropertyChangeListener {
     }
 
     private void openViewLoggedMealsWindow() {
-        ViewLoggedMealsView viewLoggedMealsView = new ViewLoggedMealsView(mealDataAccess, userId);
+        LoggedMealsView viewLoggedMealsView = new LoggedMealsView(mealDataAccess, userId);
         viewLoggedMealsView.setVisible(true);
     }
 

@@ -2,7 +2,7 @@ package view;
 
 import entities.Meal;
 import entities.MealType;
-import use_case.LogMeals.MealDataAccessInterface;
+import use_case.log_meals.MealDataAccessInterface;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * View for displaying all previously logged meals for a user.
  */
-public class ViewLoggedMealsView extends JFrame {
+public class LoggedMealsView extends JFrame {
 
     private final MealDataAccessInterface mealDataAccess;
     private final String userId;
@@ -20,7 +20,7 @@ public class ViewLoggedMealsView extends JFrame {
     private DefaultTableModel tableModel;
     private java.util.List<Meal> mealsCache;
 
-    public ViewLoggedMealsView(MealDataAccessInterface mealDataAccess, String userId) {
+    public LoggedMealsView(MealDataAccessInterface mealDataAccess, String userId) {
         this.mealDataAccess = mealDataAccess;
         this.userId = userId;
 

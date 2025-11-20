@@ -1,4 +1,4 @@
-package use_case.LogMeals;
+package use_case.log_meals;
 
 /**
  * Input boundary interface for the Log Meals use case.

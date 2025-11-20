@@ -1,8 +1,8 @@
-package interface_adapter.LogMeals;
+package interface_adapter.log_meals;
 
 import entities.MealType;
-import use_case.LogMeals.LogMealsInputBoundary;
-import use_case.LogMeals.LogMealsInputData;
+import use_case.log_meals.LogMealsInputBoundary;
+import use_case.log_meals.LogMealsInputData;
 
 /**
  * Controller for the Log Meals use case.

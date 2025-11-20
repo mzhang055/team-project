@@ -1,11 +1,11 @@
 package app;
 
-import data_access.InMemoryMealDataAccess;
+import data_access.InMemoryMealDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
-import interface_adapter.LogMeals.*;
+import interface_adapter.log_meals.*;
 import interface_adapter.dashboard.DashboardPresenter;
 import interface_adapter.dashboard.DashboardViewModel;
-import use_case.LogMeals.LogMealsInteractor;
+import use_case.log_meals.LogMealsInteractor;
 import view.DashboardView;
 
 import javax.swing.*;
@@ -28,7 +28,7 @@ public class LogMealsApp {
             return;
         }
         // Create data access implementations
-        InMemoryMealDataAccess mealDataAccess = new InMemoryMealDataAccess();
+        InMemoryMealDataAccessObject mealDataAccess = new InMemoryMealDataAccessObject();
         CalorieNinjasApiClient nutritionApi = new CalorieNinjasApiClient(apiKey);
         InMemoryUserDataAccessObject userDataAccess = new InMemoryUserDataAccessObject();
 
@@ -53,8 +53,7 @@ public class LogMealsApp {
 
         // Create and show view
         SwingUtilities.invokeLater(() -> {
-            DashboardView dash = new DashboardView();
-            dash.setVisible(true);
+
         });
     }
 

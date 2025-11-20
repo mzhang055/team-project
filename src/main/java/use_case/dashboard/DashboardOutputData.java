@@ -8,26 +8,31 @@ import java.util.List;
 
 public class DashboardOutputData {
     private final double calories;
-    private final double remaining = 0.0;
+    private final double remaining;
     private final double protein;
     private final double carbohydrates;
     private final double fat;
     private final double fiber;
     private final double sugar;
-    private List<String> recipeNames;
-    private List<String> friendNames;
+    // private List<String> recipeNames;
+    // private List<String> friendNames;
 
-    // TODO: Initalize remaining & recipelist
-    public DashboardOutputData(User user) {
-
-        calories = nutritionalInfo.getCalories();
-        protein = nutritionalInfo.getProtein();
-        carbohydrates = nutritionalInfo.getCarbohydrates();
-        fat = nutritionalInfo.getFat();
-        fiber = nutritionalInfo.getFiber();
-        sugar = nutritionalInfo.getSugar();
-
-        friendNames = user.getFriendsUsernames();
+    public DashboardOutputData(double calories,
+                               double remaining,
+                               double protein,
+                               double carbohydrates,
+                               double fat,
+                               double fiber,
+                               double sugar) {
+        this.calories = calories;
+        this.remaining = remaining;
+        this.protein = protein;
+        this.carbohydrates = carbohydrates;
+        this.fat = fat;
+        this.fiber = fiber;
+        this.sugar = sugar;
+        // this.recipeNames = recipeNames;
+        // this.friendNames = friendNames;
     }
 
     public double getCalories() {return calories;}
@@ -52,7 +57,7 @@ public class DashboardOutputData {
         return sugar;
     }
 
-    public List<String> getRecipeNames() {return recipeNames; }
+    // public List<String> getRecipeNames() {return recipeNames; }
 
-    public List<String> getFriendNames() { return friendNames; }
+    // public List<String> getFriendNames() { return friendNames; }
 }
