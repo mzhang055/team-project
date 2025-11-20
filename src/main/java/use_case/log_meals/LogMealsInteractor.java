@@ -1,9 +1,10 @@
 package use_case.log_meals;
 
+import data_access.MealDataAccessInterface;
 import entities.Meal;
 import entities.NutritionalInfo;
 import entities.User;
-import use_case.shared.UserDataAccessInterface;
+import data_access.UserDataAccessInterface;
 import java.util.Optional;
 
 /**

@@ -1,4 +1,4 @@
-package use_case.log_meals;
+package data_access;
 
 import entities.Meal;
 import java.util.List;

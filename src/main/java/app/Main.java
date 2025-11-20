@@ -11,7 +11,7 @@ import view.CreateAccountView;
 import view.LoginView;
 import use_case.create_account.CreateAccountInteractor;
 import use_case.login.LoginInteractor;
-import use_case.shared.UserDataAccessInterface;
+import data_access.UserDataAccessInterface;
 
 import javax.swing.*;
 

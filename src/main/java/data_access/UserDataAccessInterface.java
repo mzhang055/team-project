@@ -1,4 +1,4 @@
-package use_case.shared;
+package data_access;
 
 import entities.User;
 

@@ -3,7 +3,7 @@ package view;
 import entities.MealType;
 import interface_adapter.log_meals.LogMealsController;
 import interface_adapter.log_meals.LogMealsViewModel;
-import use_case.log_meals.MealDataAccessInterface;
+import data_access.MealDataAccessInterface;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,7 +1,6 @@
 package data_access;
 
 import entities.Meal;
-import use_case.log_meals.MealDataAccessInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;

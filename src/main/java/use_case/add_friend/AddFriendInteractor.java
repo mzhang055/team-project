@@ -1,7 +1,7 @@
 package use_case.add_friend;
 
 import entities.User;
-import use_case.shared.UserDataAccessInterface;
+import data_access.UserDataAccessInterface;
 
 public class AddFriendInteractor {
     private final UserDataAccessInterface userDataAccess;

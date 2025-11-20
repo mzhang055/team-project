@@ -2,7 +2,7 @@ package view;
 
 import entities.Meal;
 import entities.MealType;
-import use_case.log_meals.MealDataAccessInterface;
+import data_access.MealDataAccessInterface;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

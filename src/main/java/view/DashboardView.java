@@ -1,5 +1,7 @@
 package view;
 
+import interface_adapter.Navigation;
+import interface_adapter.dashboard.DashboardController;
 import interface_adapter.dashboard.DashboardState;
 import interface_adapter.dashboard.DashboardViewModel;
 
@@ -11,9 +13,11 @@ import java.beans.PropertyChangeListener;
 /**
  * The View for when the user is logged into the program.
  */
-// extend Jframe
 public class DashboardView extends JPanel implements PropertyChangeListener{
+    private final String viewName =  "Dashboard";
     private final DashboardViewModel dashboardViewModel;
+    private final Navigation navigation;
+    private DashboardController dashboardController = null;
 
     // buttons that will click
     private final JButton setTargetButton;
@@ -36,9 +40,10 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private DefaultListModel<String> recipeModel;
     private DefaultListModel<String> friendModel;
 
-    public DashboardView(DashboardViewModel dashboardViewModel) {
+    public DashboardView(DashboardViewModel dashboardViewModel, Navigation navigation) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
+        this.navigation = navigation;
 
         this.setSize(900, 600);
         this.setLayout(new BorderLayout(10, 10));
@@ -47,7 +52,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         JList<String> recipeList = new JList<>(recipeModel);
         recipeList.setVisibleRowCount(15);
         JScrollPane recipeScroll = new JScrollPane(recipeList);
-        recipeScroll.setPreferredSize(new Dimension(200, 400)); // width x height
+        recipeScroll.setPreferredSize(new Dimension(200, 400));
         recipeScroll.setMinimumSize(new Dimension(200, 400));
         this.add(recipeScroll, BorderLayout.WEST);
 
@@ -109,9 +114,13 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         profileButton = new JButton("Profile");
         viewHistoryButton = new JButton("View History");
         // link buttons to the view
+        setTargetButton.setEnabled(false);
         setTargetButton.addActionListener(e -> goToSetTarget());
+        logMealsButton.setEnabled(false);
         logMealsButton.addActionListener(e -> goToLogMeals() );
+        saveRecipeButton.setEnabled(false);
         saveRecipeButton.addActionListener(e -> goToSaveRecipe());
+        viewHistoryButton.setEnabled(false);
         viewHistoryButton.addActionListener(e -> goToHistory());
         profileButton.addActionListener(e -> goToProfile());
         // add the buttons
@@ -136,6 +145,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private void goToHistory(){
     }
     private void goToProfile(){
+        navigation.goTo("Profile");
     }
 
     @Override
@@ -156,5 +166,13 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
             friendModel.clear();
             friendModel.addAll(state.getFriendNames());
         }
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setDashboardController(DashboardController dashboardController) {
+        this.dashboardController = dashboardController;
     }
 }

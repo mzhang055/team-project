@@ -1,5 +1,7 @@
 package interface_adapter.dashboard;
 
+import interface_adapter.ViewManagerModel;
+import interface_adapter.login.LoginController;
 import use_case.dashboard.DashboardOutputBoundary;
 import use_case.dashboard.DashboardOutputData;
 import view.DashboardView;
@@ -8,9 +10,11 @@ import java.util.List;
 
 public class DashboardPresenter implements DashboardOutputBoundary {
     private final DashboardViewModel dashboardViewModel;
+    private final ViewManagerModel viewManagerModel;
 
-    public DashboardPresenter(DashboardViewModel dashboardViewModel) {
+    public DashboardPresenter(DashboardViewModel dashboardViewModel, ViewManagerModel viewManagerModel) {
         this.dashboardViewModel = dashboardViewModel;
+        this.viewManagerModel = viewManagerModel;
     }
 
     @Override
@@ -36,5 +40,6 @@ public class DashboardPresenter implements DashboardOutputBoundary {
         // state.setRecipeNames(recipeNames);
         // state.setFriendNames(friendNames);
         dashboardViewModel.setState(state);
+        dashboardViewModel.firePropertyChange("Dashboard");
     }
 }
