@@ -1,8 +1,8 @@
 package use_case.recipe_log;
 
+import data_access.UserDataAccessInterface;
 import entities.Recipe;
 import entities.User;
-import use_case.shared.UserDataAccessInterface;
 
 public class SaveRecipeInteractor implements SaveRecipeInputBoundary {
 

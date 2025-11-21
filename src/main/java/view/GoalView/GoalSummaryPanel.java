@@ -1,4 +1,4 @@
-package ui.GoalView;
+package view.GoalView;
 
 import entities.Goal;
 import use_case.goals.GoalService;

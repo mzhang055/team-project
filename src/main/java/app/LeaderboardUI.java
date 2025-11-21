@@ -1,5 +1,7 @@
-package interface_adapter.view_leaderboard;
+package app;
 
+import interface_adapter.view_leaderboard.LeaderboardPresenter;
+import interface_adapter.view_leaderboard.LeaderboardViewmodel;
 import use_case.view_leaderboard.LeaderboardInteractor;
 import java.awt.*;
 import javax.swing.*;
