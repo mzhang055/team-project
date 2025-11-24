@@ -1,7 +1,7 @@
 package use_case.create_account;
 
 import entities.User;
-import use_case.shared.UserDataAccessInterface;
+import data_access.UserDataAccessInterface;
 
 public class CreateAccountInteractor implements CreateAccountInputBoundary {
     private final UserDataAccessInterface userDataAccess;
@@ -33,6 +33,5 @@ public class CreateAccountInteractor implements CreateAccountInputBoundary {
         userDataAccess.save(newUser);
         CreateAccountOutputData outputData = new CreateAccountOutputData(username, "User registered");
         presenter.prepareSuccessView(outputData);
-
     }
 }

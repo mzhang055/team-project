@@ -1,7 +1,7 @@
 package use_case.accept_friend;
 
 import entities.User;
-import use_case.shared.UserDataAccessInterface;
+import data_access.UserDataAccessInterface;
 
 public class AcceptFriendRequestInteractor implements AcceptFriendRequestInputBoundary {
     private final UserDataAccessInterface userDataAccess;
@@ -13,7 +13,7 @@ public class AcceptFriendRequestInteractor implements AcceptFriendRequestInputBo
         this.presenter = presenter;
     }
     public void execute(AcceptFriendRequestInputData inputData){
-        String receiverUsername = inputData.getReceiverUsesrname();
+        String receiverUsername = inputData.getReceiverUsername();
         String requesterUsername = inputData.getRequesterUsername();
 
         if (!userDataAccess.existsByUsername(receiverUsername) ||

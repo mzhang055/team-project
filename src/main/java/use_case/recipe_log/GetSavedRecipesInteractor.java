@@ -1,9 +1,9 @@
 package use_case.recipe_log;
 
+import data_access.UserDataAccessInterface;
 import entities.Recipe;
 import entities.User;
 import use_case.recipe_search.RecipeSearchDataAccessInterface;
-import use_case.shared.UserDataAccessInterface;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -3,8 +3,8 @@ package app;
 import entities.Goal;
 import use_case.goals.GoalService;
 import use_case.goals.GoalStore;
-import ui.GoalView.GoalSummaryPanel;
-import ui.GoalView.SetGoalPanel;
+import view.GoalView.GoalSummaryPanel;
+import view.GoalView.SetGoalPanel;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,9 +1,9 @@
 package view;
 
 import entities.MealType;
-import interface_adapter.LogMeals.LogMealsController;
-import interface_adapter.LogMeals.LogMealsViewModel;
-import use_case.LogMeals.MealDataAccessInterface;
+import interface_adapter.log_meals.LogMealsController;
+import interface_adapter.log_meals.LogMealsViewModel;
+import data_access.MealDataAccessInterface;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +15,7 @@ import java.beans.PropertyChangeListener;
  */
 public class LogMealsView extends JFrame implements PropertyChangeListener {
 
+    private final String viewName = "Log Meals";
     private final LogMealsViewModel viewModel;
     private final LogMealsController controller;
     private final MealDataAccessInterface mealDataAccess;
@@ -41,7 +42,7 @@ public class LogMealsView extends JFrame implements PropertyChangeListener {
     private void initializeUI() {
         setTitle("Log Meals - Manual Entry");
         setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
         // Top panel with input fields
@@ -109,7 +110,7 @@ public class LogMealsView extends JFrame implements PropertyChangeListener {
     }
 
     private void openViewLoggedMealsWindow() {
-        ViewLoggedMealsView viewLoggedMealsView = new ViewLoggedMealsView(mealDataAccess, userId);
+        LoggedMealsView viewLoggedMealsView = new LoggedMealsView(mealDataAccess, userId);
         viewLoggedMealsView.setVisible(true);
     }
 
@@ -128,4 +129,6 @@ public class LogMealsView extends JFrame implements PropertyChangeListener {
             saveButton.setEnabled(false);
         }
     }
+
+    public String getViewName() {return viewName;}
 }

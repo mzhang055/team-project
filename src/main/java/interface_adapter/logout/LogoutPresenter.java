@@ -1,8 +1,7 @@
 package interface_adapter.logout;
-import use_case.Logout.LogoutOutputBoundary;
-import use_case.Logout.LogoutOutputData;
+import use_case.logout.LogoutOutputData;
 
-public class LogoutPresenter implements use_case.Logout.LogoutOutputBoundary {
+public class LogoutPresenter implements use_case.logout.LogoutOutputBoundary {
     private final LogoutViewModel viewModel;
     public LogoutPresenter(LogoutViewModel viewModel) {
         this.viewModel = viewModel;
