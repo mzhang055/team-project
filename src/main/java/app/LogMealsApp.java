@@ -3,10 +3,7 @@ package app;
 import data_access.InMemoryMealDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import interface_adapter.log_meals.*;
-import interface_adapter.dashboard.DashboardPresenter;
-import interface_adapter.dashboard.DashboardViewModel;
 import use_case.log_meals.LogMealsInteractor;
-import view.DashboardView;
 import view.LogMealsView;
 
 import javax.swing.*;

@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="be8edcf1-ad85-4870-a280-e2287c87a2eb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/recipe_log/DeleteSavedRecipeInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/recipe_log/DeleteSavedRecipeInteractor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/app/LogMealsApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/LogMealsApp.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +74,7 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.GoalsGuiMain">
+  <component name="RunManager" selected="Application.LogMealsApp">
     <configuration name="GoalsGuiMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="app.GoalsGuiMain" />
       <module name="TeamProject" />
@@ -127,9 +127,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.LogMealsApp" />
         <item itemvalue="Application.GoalsGuiMain" />
         <item itemvalue="Application.StartFromDash" />
-        <item itemvalue="Application.LogMealsApp" />
         <item itemvalue="Application.GoalsGuiMain" />
         <item itemvalue="Application.StartFromDash" />
       </list>
