@@ -40,12 +40,12 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
         JPanel usernameRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
         usernameRow.add(new JLabel("Username:"));
-        username.add(this.username);
+        usernameRow.add(this.username);
         labelsPanel.add(usernameRow);
 
         JPanel passwordRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
         passwordRow.add(new JLabel("Password:"));
-        password.add(this.password);
+        passwordRow.add(this.password);
         labelsPanel.add(passwordRow);
 
         JPanel heightRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -60,12 +60,12 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
         JPanel allergiesRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
         allergiesRow.add(new JLabel("Allergies:"));
-        allergies.add(this.allergies);
+        allergiesRow.add(this.allergies);
         labelsPanel.add(allergiesRow);
 
         JPanel veganRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
         veganRow.add(new JLabel("Vegan:"));
-        vegan.add(this.vegan);
+        veganRow.add(this.vegan);
         labelsPanel.add(veganRow);
 
         add(labelsPanel, BorderLayout.CENTER);
