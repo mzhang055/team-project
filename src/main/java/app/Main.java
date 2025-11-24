@@ -19,6 +19,7 @@ import use_case.add_friend.AddFriendInteractor;
 import use_case.shared.UserDataAccessInterface;
 
 import view.*;
+import view.MainBoard;
 
 import javax.swing.*;
 
@@ -46,20 +47,22 @@ public class Main {
         AddFriendController addFriendController = new AddFriendController(addFriendInteractor);
 
         MainBoard mainBoard = new MainBoard();
-        JPanel contentPanel = mainBoard.getContentPanel;
 
-        ViewManager viewManager = new ViewManager(mainboard, contentPanel);
+        JPanel contentPanel = mainBoard.getContentPanel();
+
+        ViewManager viewManager = new ViewManager(mainBoard, contentPanel);
 
         LoginView loginView = new LoginView(loginController, loginViewModel, viewManager);
-        CreateAccountView createAccountView = new CreateAccountView(createAccountController,
-                createAccountViewModel, viewManager);
-        AddFriendView addFriendView = new AddFriendView(addFriendController, addFriendViewModel, viewManager);
+        CreateAccountView createAccountView =
+                new CreateAccountView(createAccountController, createAccountViewModel, viewManager);
+        AddFriendView addFriendView =
+                new AddFriendView(addFriendController, addFriendViewModel, viewManager);
 
         viewManager.addView("login", loginView);
         viewManager.addView("create_account", createAccountView);
         viewManager.addView("add_friend", addFriendView);
 
         viewManager.showLoginView();
-
+        mainBoard.setVisible(true);
         }
     }
