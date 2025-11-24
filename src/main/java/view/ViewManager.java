@@ -1,61 +1,35 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
+
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class ViewManager {
-    private final JFrame mainFrame;
-    private final JPanel contentPanel;
-    private final Map<String, JPanel> views = new HashMap<>();
+/**
+ * The View Manager for the program. It listens for property change events
+ * in the ViewManagerModel and updates which View should be visible.
+ */
+public class ViewManager implements PropertyChangeListener {
 
-    private String currentUsername;
+    private final CardLayout cardLayout;
+    private final JPanel views;
+    private final ViewManagerModel viewManagerModel;
 
-    public ViewManager(JFrame mainFrame, JPanel contentPanel){
-        this.mainFrame = mainFrame;
-        this.contentPanel = contentPanel;
+    public ViewManager(JPanel views, CardLayout cardLayout, ViewManagerModel viewManagerModel) {
+        this.views = views;
+        this.cardLayout = cardLayout;
+        this.viewManagerModel = viewManagerModel;
+        this.viewManagerModel.addPropertyChangeListener(this);
     }
 
-    public void addView(String name, JPanel view){
-        views.put(name, view);
-    }
-
-    public void showView(String name){
-        JPanel view = views.get(name);
-        if (view == null){
-            System.out.println("View not found:" + name);
-            return;
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("state")) {
+            final String viewModelName = (String) evt.getNewValue();
+            cardLayout.show(views, viewModelName);
         }
-
-        contentPanel.removeAll();
-        contentPanel.setLayout(new BorderLayout());
-        contentPanel.add(view, BorderLayout.CENTER);
-        contentPanel.revalidate();
-        contentPanel.repaint();
-    }
-
-    public void showLoginView(){
-        showView("login");
-    }
-
-    public void showCreateAccountView(){
-        showView("create_account");
-    }
-
-    public void showMainBoardView(){
-        showView("main_board");
-    }
-
-    public void showAddFriendView(){
-        showView("add_friend");
-    }
-
-    public void setCurrentUsername(String username){
-        this.currentUsername = username;
-    }
-
-    public String getCurrentUsername(){
-        return currentUsername;
     }
 }

@@ -9,7 +9,7 @@ import use_case.recipe_search.RecipeSearchDataAccessInterface;
 import use_case.recipe_search.SearchRecipeInputBoundary;
 import use_case.recipe_search.SearchRecipeInteractor;
 import use_case.recipe_search.SearchRecipeOutputBoundary;
-import use_case.shared.UserDataAccessInterface;
+import data_access.UserDataAccessInterface;
 import view.RecipeMenuView;
 
 import javax.swing.*;

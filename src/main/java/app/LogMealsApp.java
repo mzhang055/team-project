@@ -1,8 +1,9 @@
 package app;
 
+import data_access.InMemoryMealDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
-import interface_adapter.LogMeals.*;
-import use_case.LogMeals.LogMealsInteractor;
+import interface_adapter.log_meals.*;
+import use_case.log_meals.LogMealsInteractor;
 import view.LogMealsView;
 
 import javax.swing.*;
@@ -25,7 +26,7 @@ public class LogMealsApp {
             return;
         }
         // Create data access implementations
-        InMemoryMealDataAccess mealDataAccess = new InMemoryMealDataAccess();
+        InMemoryMealDataAccessObject mealDataAccess = new InMemoryMealDataAccessObject();
         CalorieNinjasApiClient nutritionApi = new CalorieNinjasApiClient(apiKey);
         InMemoryUserDataAccessObject userDataAccess = new InMemoryUserDataAccessObject();
 
@@ -37,10 +38,10 @@ public class LogMealsApp {
 
         // Create interactor
         LogMealsInteractor interactor = new LogMealsInteractor(
-            mealDataAccess,
-            nutritionApi,
-            userDataAccess,
-            presenter
+                mealDataAccess,
+                nutritionApi,
+                userDataAccess,
+                presenter
         );
 
         // Create controller

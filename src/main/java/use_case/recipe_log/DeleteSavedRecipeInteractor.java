@@ -1,7 +1,7 @@
 package use_case.recipe_log;
 
 import entities.User;
-import use_case.shared.UserDataAccessInterface;
+import data_access.UserDataAccessInterface;
 
 public class DeleteSavedRecipeInteractor implements DeleteSavedRecipeInputBoundary {
 

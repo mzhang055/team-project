@@ -1,7 +1,7 @@
 package use_case.reject_friend;
 
 import entities.User;
-import use_case.shared.UserDataAccessInterface;
+import data_access.UserDataAccessInterface;
 public class RejectFriendRequestInteractor implements RejectFriendRequestInputBoundary {
     private final UserDataAccessInterface userDataAccess;
     private final RejectFriendRequestOutputBoundary presenter;
