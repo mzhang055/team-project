@@ -54,6 +54,7 @@ public class AddFriendView extends JPanel {
 
         sendButton.addActionListener(e -> onSend());
         backButton.addActionListener(e -> viewManager.showMainBoardView());
+        //TODO
     }
 
     private void onSend(){
