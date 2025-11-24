@@ -2,7 +2,10 @@ package data_access;
 
 import entities.User;
 import use_case.shared.UserDataAccessInterface;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InMemoryUserDataAccessObject implements UserDataAccessInterface {
@@ -15,5 +18,7 @@ public class InMemoryUserDataAccessObject implements UserDataAccessInterface {
     }
     public void save(User user){
         users.put(user.getUsername(), user);
+    }
+    public List<User> getAllUsers() { return new ArrayList<>(users.values());
     }
 }

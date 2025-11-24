@@ -1,11 +1,12 @@
 package use_case.remove_friend;
 
 import entities.User;
+import use_case.shared.UserDataAccessInterface;
 
 public class RemoveFriendInteractor implements RemoveFriendInputBoundary{
-    private final RemoveFriendUserDataAccessInterface userDataAccess;
+    private final UserDataAccessInterface userDataAccess;
     private final RemoveFriendOutputBoundary removeFriendPresenter;
-    public RemoveFriendInteractor(RemoveFriendUserDataAccessInterface userDataAccess,
+    public RemoveFriendInteractor(UserDataAccessInterface userDataAccess,
                                   RemoveFriendOutputBoundary removeFriendPresenter) {
         this.userDataAccess = userDataAccess;
         this.removeFriendPresenter = removeFriendPresenter;
@@ -17,7 +18,7 @@ public class RemoveFriendInteractor implements RemoveFriendInputBoundary{
         String currentUsername = inputData.getCurrentUsername();
         String friendUsername = inputData.getFriendUsername();
         try{
-            boolean userExists = userDataAccess.existsByName(friendUsername);
+            boolean userExists = userDataAccess.existsByUsername(friendUsername);
             if (userExists == false){
                 removeFriendPresenter.prepareFailView("User" + friendUsername + " does not exist");
                 return;
@@ -33,8 +34,8 @@ public class RemoveFriendInteractor implements RemoveFriendInputBoundary{
             currentUser.removeFriend(friendUsername);
             friendUser.removeFriend(currentUsername);
 
-            userDataAccess.saveUser(currentUser);
-            userDataAccess.saveUser(friendUser);
+            userDataAccess.save(currentUser);
+            userDataAccess.save(friendUser);
 
             RemoveFriendOutputData outputData = new RemoveFriendOutputData(
                     friendUsername,

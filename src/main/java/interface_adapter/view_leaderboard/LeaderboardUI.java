@@ -49,7 +49,7 @@ public class LeaderboardUI extends JFrame {
     }
 
     private void showRemoveFriendDialog(String friendUsername){
-    int result = JOptionPane.showConfirmDialog(this, "Remove" + friendUsername+ "from friend?"
+    int result = JOptionPane.showConfirmDialog(this, "Remove " + friendUsername+ " from friend?"
             , "Confirm Remove", JOptionPane.YES_NO_OPTION);
     }
     private void refreshLeaderboard() {
