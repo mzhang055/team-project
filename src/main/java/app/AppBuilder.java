@@ -52,14 +52,14 @@ public class AppBuilder {
     public AppBuilder addDashboardView() {
         this.dashboardViewModel = new DashboardViewModel();
         this.dashboardView = new DashboardView(dashboardViewModel, navigation);
-        cardPanel.add(dashboardView, dashboardView.getName());
+        cardPanel.add(dashboardView, dashboardView.getViewName());
         return this;
     }
 
     public AppBuilder addProfileView() {
         this.profileViewModel = new ProfileViewModel();
         this.profileView =new ProfileView(profileViewModel, navigation);
-        cardPanel.add(profileView, profileView.getName());
+        cardPanel.add(profileView, profileView.getViewName());
         return this;
     }
 
