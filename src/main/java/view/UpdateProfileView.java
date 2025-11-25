@@ -11,7 +11,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class UpdateProfileView extends JPanel implements PropertyChangeListener{
-    private final String viewName =  "Update Profile";
+    private final String viewName = "Update Profile";
     private final UpdateProfileViewModel updateProfileViewModel;
     private final Navigation navigation;
     private UpdateProfileController updateProfileController = null;
