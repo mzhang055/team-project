@@ -60,6 +60,7 @@ public class AddFriendView extends JPanel {
     private void onSend(){
         String targetUsername = friendUsernameField.getText().trim();
         String requester = viewManager.getCurrentUsername();
+        //TODO
 
         if (requester == null || requester.isEmpty()){
             messageLabel.setText("You are not logged in");
