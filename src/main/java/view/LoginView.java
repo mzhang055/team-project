@@ -60,6 +60,7 @@ public class LoginView extends JPanel {
 
         loginButton.addActionListener(e -> onLogin());
         createAccountButton.addActionListener(e -> viewManager.showCreateAccountView());
+        //TODO
     }
 
     private void onLogin(){
@@ -72,6 +73,7 @@ public class LoginView extends JPanel {
         if (viewModel.isSuccess()){
             viewManager.setCurrentUsername(username);
             viewManager.showMainBoardView();
+            //TODO
         }
     }
 }
