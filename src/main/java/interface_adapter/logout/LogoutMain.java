@@ -1,5 +1,5 @@
 package interface_adapter.logout;
-import use_case.Logout.LogoutInteractor;
+import use_case.logout.LogoutInteractor;
 public class LogoutMain {public static void main(String[] args) {
     LogoutViewModel viewModel = new LogoutViewModel();
     LogoutPresenter presenter = new LogoutPresenter(viewModel);

@@ -22,6 +22,7 @@ import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
 import view.DashboardView;
 import view.ProfileView;
+import view.RecipeMenuView;
 import view.ViewManager;
 import javax.swing.*;
 import java.awt.*;
@@ -43,16 +44,20 @@ public class AppBuilder {
     private DashboardViewModel dashboardViewModel;
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
+    private RecipeMenuView recipeMenuView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
         userDataAccess.save(user);
+
+        RecipeModuleBuilder recipeBuilder = new RecipeModuleBuilder(userDataAccess);
+        this.recipeMenuView = recipeBuilder.buildRecipeMenuView(user.getUsername());
     }
 
     public AppBuilder addDashboardView() {
         this.dashboardViewModel = new DashboardViewModel();
-        this.dashboardView = new DashboardView(dashboardViewModel, navigation);
-        cardPanel.add(dashboardView, dashboardView.getName());
+        this.dashboardView = new DashboardView(dashboardViewModel, navigation, recipeMenuView);
+        cardPanel.add(dashboardView, dashboardView.getViewName());
         return this;
     }
 
