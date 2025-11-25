@@ -40,6 +40,6 @@ public class DashboardPresenter implements DashboardOutputBoundary {
         // state.setRecipeNames(recipeNames);
         // state.setFriendNames(friendNames);
         dashboardViewModel.setState(state);
-        dashboardViewModel.firePropertyChange("Dashboard");
+        dashboardViewModel.firePropertyChange("state");
     }
 }

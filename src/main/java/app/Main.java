@@ -19,7 +19,6 @@ import use_case.login.LoginInteractor;
 import use_case.add_friend.AddFriendInteractor;
 
 import view.*;
-import view.MainBoard;
 
 import javax.swing.*;
 
