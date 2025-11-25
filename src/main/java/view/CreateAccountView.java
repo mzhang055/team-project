@@ -96,6 +96,7 @@ public class CreateAccountView extends JPanel {
 
         createButton.addActionListener(e -> onCreate());
         backButton.addActionListener(e -> viewManager.showLoginView());
+        //TODO
     }
 
     private void onCreate(){
@@ -125,6 +126,7 @@ public class CreateAccountView extends JPanel {
 
         if (viewModel.isSuccess()){
             viewManager.showLoginView();
+            //TODO
         }
     }
 }
