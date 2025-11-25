@@ -1,6 +1,7 @@
 package app;
 
 import data_access.InMemoryUserDataAccessObject;
+import data_access.UserDataAccessInterface;
 import interface_adapter.create_account.CreateAccountController;
 import interface_adapter.create_account.CreateAccountPresenter;
 import interface_adapter.create_account.CreateAccountViewModel;
@@ -16,7 +17,6 @@ import interface_adapter.add_friend.AddFriendViewModel;
 import use_case.create_account.CreateAccountInteractor;
 import use_case.login.LoginInteractor;
 import use_case.add_friend.AddFriendInteractor;
-import use_case.shared.UserDataAccessInterface;
 
 import view.*;
 import view.MainBoard;

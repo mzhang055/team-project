@@ -17,7 +17,6 @@ public class AddFriendView extends JPanel {
         this.controller = controller;
         this.viewModel = viewModel;
         this.viewManager = viewManager;
-
         initUI();
     }
 
