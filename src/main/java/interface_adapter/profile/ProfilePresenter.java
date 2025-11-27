@@ -32,7 +32,7 @@ public class ProfilePresenter implements ProfileOutputBoundary {
         state.setVegan(vegan);
 
         profileViewModel.setState(state);
-        profileViewModel.firePropertyChange("Profile");
+        profileViewModel.firePropertyChange("state");
     }
 
 }

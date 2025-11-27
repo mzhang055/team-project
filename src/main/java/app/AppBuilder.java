@@ -64,7 +64,7 @@ public class AppBuilder {
     public AppBuilder addProfileView() {
         this.profileViewModel = new ProfileViewModel();
         this.profileView =new ProfileView(profileViewModel, navigation);
-        cardPanel.add(profileView, profileView.getName());
+        cardPanel.add(profileView, profileView.getViewName());
         return this;
     }
 
