@@ -40,7 +40,7 @@ public class RecipeMenuView extends JFrame {
         setLocationRelativeTo(null);
 
         JButton searchButton = new JButton("Recipe Search");
-        JButton savedButton = new JButton("Recipe Saved");
+        JButton savedButton = new JButton("Saved Recipe");
 
         searchButton.addActionListener(e -> openSearchWindow());
         savedButton.addActionListener(e -> openSavedWindow());

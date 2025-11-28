@@ -8,6 +8,7 @@ public class UpdateProfileOutputData {
         this.username = username;
         this.message = message;
     }
+
     public String getUsername(){return username; }
     public String getMessage(){return message; }
 }

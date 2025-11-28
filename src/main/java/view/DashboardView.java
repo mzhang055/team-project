@@ -18,6 +18,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private final DashboardViewModel dashboardViewModel;
     private final Navigation navigation;
     private DashboardController dashboardController = null;
+    private final RecipeMenuView recipeMenuView;
 
     // buttons that will click
     private final JButton setTargetButton;
@@ -40,10 +41,11 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private DefaultListModel<String> recipeModel;
     private DefaultListModel<String> friendModel;
 
-    public DashboardView(DashboardViewModel dashboardViewModel, Navigation navigation) {
+    public DashboardView(DashboardViewModel dashboardViewModel, Navigation navigation, RecipeMenuView recipeMenuView) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
         this.navigation = navigation;
+        this.recipeMenuView = recipeMenuView;
 
         this.setSize(900, 600);
         this.setLayout(new BorderLayout(10, 10));
@@ -110,7 +112,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         // initalize the buttons
         setTargetButton = new JButton("Set Target");
         logMealsButton = new JButton("Log Meals");
-        saveRecipeButton= new JButton("Save Recipe");
+        saveRecipeButton= new JButton("Recipe");
         profileButton = new JButton("Profile");
         viewHistoryButton = new JButton("View History");
         // link buttons to the view
@@ -118,7 +120,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         setTargetButton.addActionListener(e -> goToSetTarget());
         logMealsButton.setEnabled(false);
         logMealsButton.addActionListener(e -> goToLogMeals() );
-        saveRecipeButton.setEnabled(false);
+        saveRecipeButton.setEnabled(true);
         saveRecipeButton.addActionListener(e -> goToSaveRecipe());
         viewHistoryButton.setEnabled(false);
         viewHistoryButton.addActionListener(e -> goToHistory());
@@ -141,6 +143,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private void goToLogMeals(){
     }
     private void goToSaveRecipe(){
+        recipeMenuView.setVisible(true);
     }
     private void goToHistory(){
     }
