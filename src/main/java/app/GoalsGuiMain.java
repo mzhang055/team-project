@@ -1,5 +1,7 @@
 package app;
 
+import use_case.goals.GoalCompletionHistory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.text.DecimalFormat;
@@ -91,7 +93,7 @@ public class GoalsGuiMain {
     }
 
     private static void createAndShow() {
-        JFrame frame = new JFrame("Nutrition Goals");
+        JFrame frame = new JFrame("Nutrition Goal Helper");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JPanel root = new JPanel(new BorderLayout());
@@ -441,6 +443,8 @@ public class GoalsGuiMain {
             }
 
             activeGoalDone = !activeGoalDone;
+            GoalCompletionHistory.markToday(activeGoalDone);
+
             if (activeGoalDone) {
                 activeStatusLabel.setText("Status: DONE");
                 toggleDoneBtn.setText("Mark Goal as Not Done");
