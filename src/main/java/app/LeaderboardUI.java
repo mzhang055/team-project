@@ -3,6 +3,8 @@ package app;
 import interface_adapter.view_leaderboard.LeaderboardPresenter;
 import interface_adapter.view_leaderboard.LeaderboardViewmodel;
 import use_case.view_leaderboard.LeaderboardInteractor;
+import use_case.view_leaderboard.LeaderboardDataAccess;
+import use_case.goals.UserManager;
 import java.awt.*;
 import javax.swing.*;
 import java.util.List;
@@ -11,13 +13,18 @@ public class LeaderboardUI extends JFrame {
     private final JList<String> leaderboardList;
     private final JButton refreshButton;
     private final LeaderboardInteractor interactor;
+
     public LeaderboardUI() {
+        UserManager.initializeTestData();
+
         this.viewModel = new LeaderboardViewmodel();
+
+        LeaderboardDataAccess dataAccess = new LeaderboardDataAccess();
         LeaderboardPresenter presenter = new LeaderboardPresenter(viewModel);
-        this.interactor = new LeaderboardInteractor(presenter);
+        this.interactor = new LeaderboardInteractor(presenter,dataAccess);
 
         setTitle("    Leaderboard    ");
-        setSize(300,400);
+        setSize(400,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
