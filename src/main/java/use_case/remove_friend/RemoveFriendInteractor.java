@@ -1,7 +1,7 @@
 package use_case.remove_friend;
 
 import entities.User;
-import use_case.shared.UserDataAccessInterface;
+import data_access.UserDataAccessInterface;
 
 public class RemoveFriendInteractor implements RemoveFriendInputBoundary{
     private final UserDataAccessInterface userDataAccess;

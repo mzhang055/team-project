@@ -21,7 +21,7 @@ public class RemoveFriendDialog {
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        messageLabel = new JLabel("Remove" + friendUsername + "from your friend?");
+        messageLabel = new JLabel("Remove " + friendUsername + " from your friend?");
         messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         mainPanel.add(messageLabel, BorderLayout.CENTER);
 

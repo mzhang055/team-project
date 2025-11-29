@@ -1,8 +1,12 @@
-package interface_adapter.view_leaderboard;
+package app;
 
+import interface_adapter.remove_friend.RemoveFriendDialog;
 import use_case.view_leaderboard.LeaderboardInteractor;
 import interface_adapter.remove_friend.RemoveFriendController;
-import interface_adapter.remove_friend.RemoveFriendDialog;
+import interface_adapter.view_leaderboard.LeaderboardPresenter;
+import interface_adapter.view_leaderboard.LeaderboardViewmodel;
+import use_case.view_leaderboard.LeaderboardDataAccess;
+import use_case.goals.UserManager;
 import java.awt.*;
 import javax.swing.*;
 import java.util.List;
@@ -22,9 +26,13 @@ public class LeaderboardUI extends JFrame {
         this.removeFriendController = removeFriendController;
         this.currentUsername = currentUsername;
 
+        use_case.goals.UserManager.initializeTestData();
+
         this.viewModel = new LeaderboardViewmodel();
         LeaderboardPresenter presenter = new LeaderboardPresenter(viewModel);
-        this.interactor = new LeaderboardInteractor(presenter);
+        LeaderboardDataAccess dataAccess = new LeaderboardDataAccess();
+
+        this.interactor = new LeaderboardInteractor(presenter, dataAccess);
 
         setTitle("    Leaderboard    ");
         setSize(350, 450);
@@ -48,10 +56,6 @@ public class LeaderboardUI extends JFrame {
         add(refreshButton, BorderLayout.SOUTH);
     }
 
-    private void showRemoveFriendDialog(String friendUsername){
-    int result = JOptionPane.showConfirmDialog(this, "Remove " + friendUsername+ " from friend?"
-            , "Confirm Remove", JOptionPane.YES_NO_OPTION);
-    }
     private void refreshLeaderboard() {
         interactor.getLeaderboard("currentUser");
         List<String> users = viewModel.getUsernames();
@@ -125,5 +129,16 @@ public class LeaderboardUI extends JFrame {
     }
     private static RemoveFriendController createTestController(){
         return null;
+    }
+
+    private void showRemoveFriendDialog(String friendUsername){
+        RemoveFriendDialog dialog = new RemoveFriendDialog();
+        boolean userConfirmed = dialog.showDialog(friendUsername);
+
+        if (userConfirmed){
+            removeFriendController.execute(currentUsername, friendUsername);
+
+            refreshLeaderboard();
+        }
     }
 }
