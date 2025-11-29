@@ -108,4 +108,17 @@ public class User {
     public void removeRecipe(String recipeId) {
         recipeIds.remove(recipeId);
     }
+
+    public void removeFriend(String friendUsername){
+        friendsUsernames.remove(friendUsername);
+    }
+
+    public boolean isFriendWith(String username){
+        return friendsUsernames.contains(username);
+    }
+
+    public List<String> getFriendsUsername() {
+        return new ArrayList<>(friendsUsernames);
+    }
 }
+
