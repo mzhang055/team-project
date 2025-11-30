@@ -1,22 +1,25 @@
 package view;
 
+import interface_adapter.Navigation;
 import interface_adapter.add_friend.AddFriendController;
 import interface_adapter.add_friend.AddFriendViewModel;
+import interface_adapter.dashboard.DashboardController;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class AddFriendView extends JPanel {
-    private final AddFriendController controller;
+    private final String viewName = "Add Friend";
     private final AddFriendViewModel viewModel;
-    private final ViewManager viewManager;
+    private final Navigation navigation;
+    private AddFriendController controller = null;
 
     private final JTextField friendUsernameField = new JTextField(15);
     private final JLabel messageLabel = new JLabel("");
 
-    public AddFriendView(AddFriendController controller, AddFriendViewModel viewModel, ViewManager viewManager){
-        this.controller = controller;
+    public AddFriendView(AddFriendViewModel viewModel, Navigation navigation) {
         this.viewModel = viewModel;
-        this.viewManager = viewManager;
+        this.navigation = navigation;
         initUI();
     }
 
@@ -52,14 +55,12 @@ public class AddFriendView extends JPanel {
         add(messageLabel, c);
 
         sendButton.addActionListener(e -> onSend());
-        backButton.addActionListener(e -> viewManager.showMainBoardView());
-        //TODO
+        backButton.addActionListener(e -> navigation.goTo("Dashboard"));
     }
 
     private void onSend(){
         String targetUsername = friendUsernameField.getText().trim();
-        String requester = viewManager.getCurrentUsername();
-        //TODO
+        String requester = navigation.getCurrentUsername();
 
         if (requester == null || requester.isEmpty()){
             messageLabel.setText("You are not logged in");
@@ -71,5 +72,13 @@ public class AddFriendView extends JPanel {
         }
         controller.addFriend(requester, targetUsername);
         messageLabel.setText(viewModel.getMessage());
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setAddFriendController(AddFriendController controller) {
+        this.controller = controller ;
     }
 }

@@ -6,10 +6,16 @@ public class StartFromDash {
     public static void main(String[] args) {
         AppBuilder appBuilder = new AppBuilder();
         JFrame application = appBuilder
+                .addLoginView()
+                .addCreateAccountView()
                 .addDashboardView()
                 .addProfileView()
+                .addAddFriendView()
+                .addLoginUseCase()
+                .addCreateAccountUseCase()
                 .addDashboardUseCase()
                 .addProfileUseCase()
+                .addAddFriendUseCase()
                 .build();
         application.pack();
         application.setLocationRelativeTo(null);

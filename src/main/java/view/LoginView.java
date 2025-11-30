@@ -1,23 +1,25 @@
 package view;
 
+import interface_adapter.Navigation;
+import interface_adapter.dashboard.DashboardController;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginViewModel;
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginView extends JPanel {
-    private final LoginController controller;
+    private final String viewName = "Login";
     private final LoginViewModel viewModel;
-    private final ViewManager viewManager;
+    private final Navigation navigation;
+    private LoginController controller = null;
 
     private final JTextField usernameField = new JTextField(15);
     private final JPasswordField passwordField = new JPasswordField(15);
     private final JLabel messageLabel = new JLabel(" ");
 
-    public LoginView(LoginController controller, LoginViewModel viewModel, ViewManager viewManager) {
-        this.controller = controller;
+    public LoginView(LoginViewModel viewModel, Navigation navigation) {
         this.viewModel = viewModel;
-        this.viewManager = viewManager;
+        this.navigation = navigation;
 
         initUI();
     }
@@ -59,8 +61,7 @@ public class LoginView extends JPanel {
         add(messageLabel, c);
 
         loginButton.addActionListener(e -> onLogin());
-        createAccountButton.addActionListener(e -> viewManager.showCreateAccountView());
-        //TODO
+        createAccountButton.addActionListener(e -> navigation.goTo("Create Account"));
     }
 
     private void onLogin(){
@@ -71,9 +72,16 @@ public class LoginView extends JPanel {
         messageLabel.setText(viewModel.getMessage());
 
         if (viewModel.isSuccess()){
-            viewManager.setCurrentUsername(username);
-            viewManager.showMainBoardView();
-            //TODO
+            navigation.setCurrentUsername(username);
+            navigation.goTo("Dashboard");
         }
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setLoginController(LoginController loginController) {
+        this.controller = loginController;
     }
 }

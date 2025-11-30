@@ -26,6 +26,7 @@ public class Main {
     public static void main(String[] args){
         SwingUtilities.invokeLater(Main::startApp);
     }
+
     private static void startApp() {
         UserDataAccessInterface userDataAccess = new InMemoryUserDataAccessObject();
 
@@ -45,23 +46,6 @@ public class Main {
         AddFriendInteractor addFriendInteractor = new AddFriendInteractor(userDataAccess, addFriendPresenter);
         AddFriendController addFriendController = new AddFriendController(addFriendInteractor);
 
-        MainBoard mainBoard = new MainBoard();
-
-        JPanel contentPanel = mainBoard.getContentPanel();
-
-        ViewManager viewManager = new ViewManager(mainBoard, contentPanel);
-
-        LoginView loginView = new LoginView(loginController, loginViewModel, viewManager);
-        CreateAccountView createAccountView =
-                new CreateAccountView(createAccountController, createAccountViewModel, viewManager);
-        AddFriendView addFriendView =
-                new AddFriendView(addFriendController, addFriendViewModel, viewManager);
-
-        viewManager.addView("login", loginView);
-        viewManager.addView("create_account", createAccountView);
-        viewManager.addView("add_friend", addFriendView);
-
-        viewManager.showLoginView();
-        mainBoard.setVisible(true);
+        // viewManager.showLoginView();
         }
     }

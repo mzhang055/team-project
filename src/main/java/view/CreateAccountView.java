@@ -1,14 +1,18 @@
 package view;
 
+import interface_adapter.Navigation;
 import interface_adapter.create_account.CreateAccountController;
 import interface_adapter.create_account.CreateAccountViewModel;
+import interface_adapter.dashboard.DashboardController;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class CreateAccountView extends JPanel {
-    private final CreateAccountController controller;
+    private final String viewName =  "Create Account";
     private final CreateAccountViewModel viewModel;
-    private final ViewManager viewManager;
+    private final Navigation navigation;
+    private CreateAccountController controller = null;
 
     private final JTextField usernameField = new JTextField(15);
     private final JPasswordField passwordField = new JPasswordField(15);
@@ -19,11 +23,9 @@ public class CreateAccountView extends JPanel {
 
     private final JLabel messageLabel = new JLabel(" ");
 
-    public CreateAccountView(CreateAccountController controller,
-                             CreateAccountViewModel viewModel, ViewManager viewManager) {
-        this.controller = controller;
+    public CreateAccountView(CreateAccountViewModel viewModel, Navigation navigation) {
         this.viewModel = viewModel;
-        this.viewManager = viewManager;
+        this.navigation = navigation;
 
         initUI();
     }
@@ -95,8 +97,7 @@ public class CreateAccountView extends JPanel {
         add(messageLabel, c);
 
         createButton.addActionListener(e -> onCreate());
-        backButton.addActionListener(e -> viewManager.showLoginView());
-        //TODO
+        backButton.addActionListener(e -> navigation.goTo("Login"));
     }
 
     private void onCreate(){
@@ -125,8 +126,15 @@ public class CreateAccountView extends JPanel {
         messageLabel.setText(viewModel.getMessage());
 
         if (viewModel.isSuccess()){
-            viewManager.showLoginView();
-            //TODO
+            navigation.goTo("Login");
         }
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setCreateAccountController(CreateAccountController controller) {
+        this.controller = controller;
     }
 }
