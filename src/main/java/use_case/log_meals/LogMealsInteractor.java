@@ -37,7 +37,7 @@ public class LogMealsInteractor implements LogMealsInputBoundary {
     }
 
     @Override
-    public void logMeal(LogMealsInputData inputData) {
+    public void fetchNutrition(LogMealsInputData inputData) {
         // Validate food name
         if (inputData.getFoodName() == null || inputData.getFoodName().trim().isEmpty()) {
             outputBoundary.prepareFailView("Food name cannot be empty");
@@ -54,13 +54,20 @@ public class LogMealsInteractor implements LogMealsInputBoundary {
 
         NutritionalInfo nutritionInfo = nutritionInfoOptional.get();
 
-        // Create meal entity
+        // Create meal entity (not saved yet)
         Meal meal = Meal.builder(inputData.getFoodName())
                 .mealType(inputData.getMealType())
                 .userId(inputData.getUserId())
                 .nutritionalInfo(nutritionInfo)
                 .build();
 
+        // Prepare success view with meal data (but not saved)
+        LogMealsOutputData outputData = new LogMealsOutputData(meal, false);
+        outputBoundary.prepareSuccessView(outputData);
+    }
+
+    @Override
+    public void saveMeal(Meal meal, String userId) {
         // Save meal to data store
         boolean saved = mealDataAccess.save(meal);
 
@@ -70,7 +77,7 @@ public class LogMealsInteractor implements LogMealsInputBoundary {
         }
 
         // Update user's meal list
-        User user = userDataAccess.getUser(inputData.getUserId());
+        User user = userDataAccess.getUser(userId);
         if (user != null) {
             user.addMeal(meal.getId());
             userDataAccess.save(user);
@@ -78,6 +85,6 @@ public class LogMealsInteractor implements LogMealsInputBoundary {
 
         // Prepare success view
         LogMealsOutputData outputData = new LogMealsOutputData(meal, true);
-        outputBoundary.prepareSuccessView(outputData);
+        outputBoundary.prepareSaveSuccessView(outputData);
     }
 }

@@ -1,13 +1,18 @@
 package view;
 
+import interface_adapter.Navigation;
 import interface_adapter.create_account.CreateAccountController;
 import interface_adapter.create_account.CreateAccountViewModel;
+import interface_adapter.dashboard.DashboardController;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class CreateAccountView extends JFrame {
-    private final CreateAccountController createAccountController;
-    private final CreateAccountViewModel createAccountViewModel;
+public class CreateAccountView extends JPanel {
+    private final String viewName =  "Create Account";
+    private final CreateAccountViewModel viewModel;
+    private final Navigation navigation;
+    private CreateAccountController controller = null;
 
     private final JTextField usernameField = new JTextField(15);
     private final JPasswordField passwordField = new JPasswordField(15);
@@ -17,64 +22,61 @@ public class CreateAccountView extends JFrame {
     private final JCheckBox veganCheckBox = new JCheckBox("Vegan");
 
     private final JLabel messageLabel = new JLabel(" ");
-    public CreateAccountView(CreateAccountController createAccountController,
-                             CreateAccountViewModel createAccountViewModel,
-                             Runnable onCreateSuccess, Runnable onBackToLogin){
-        super("Create Account");
-        this.createAccountController = createAccountController;
-        this.createAccountViewModel = createAccountViewModel;
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(450, 350);
-        setLocationRelativeTo(null);
+    public CreateAccountView(CreateAccountViewModel viewModel, Navigation navigation) {
+        this.viewModel = viewModel;
+        this.navigation = navigation;
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridBagLayout());
+        initUI();
+    }
+
+    private void initUI(){
+        setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(5, 5, 5, 5);
+        c.insets = new Insets(6, 6, 6, 6);
         c.fill = GridBagConstraints.HORIZONTAL;
 
         int row = 0;
 
         c.gridx = 0;
         c.gridy = row;
-        panel.add(new JLabel("Username:"), c);
+        add(new JLabel("Username:"), c);
         c.gridx = 1;
-        panel.add(usernameField, c);
+        add(usernameField, c);
         row ++;
 
         c.gridx = 0;
         c.gridy = row;
-        panel.add(new JLabel("Password:"), c);
+        add(new JLabel("Password:"), c);
         c.gridx = 1;
-        panel.add(passwordField, c);
+        add(passwordField, c);
         row ++;
 
         c.gridx = 0;
         c.gridy = row;
-        panel.add(new JLabel("Height(cm):"), c);
+        add(new JLabel("Height(cm):"), c);
         c.gridx = 1;
-        panel.add(heightField, c);
+        add(heightField, c);
         row ++;
 
         c.gridx = 0;
         c.gridy = row;
-        panel.add(new JLabel("Weight(kg):"), c);
+        add(new JLabel("Weight(kg):"), c);
         c.gridx = 1;
-        panel.add(weightField, c);
+        add(weightField, c);
         row ++;
 
         c.gridx = 0;
         c.gridy = row;
-        panel.add(new JLabel("Allergies:"), c);
+        add(new JLabel("Allergies:"), c);
         c.gridx = 1;
-        panel.add(allergiesField, c);
+        add(allergiesField, c);
         row ++;
 
         c.gridx = 0;
         c.gridy = row;
         c.gridwidth = 2;
-        panel.add(veganCheckBox, c);
+        add(veganCheckBox, c);
         row ++;
 
         JButton createButton = new JButton("Create");
@@ -83,53 +85,56 @@ public class CreateAccountView extends JFrame {
         c.gridx = 0;
         c.gridy = row;
         c.gridwidth = 1;
-        panel.add(createButton, c);
+        add(createButton, c);
         c.gridx = 1;
-        panel.add(backButton, c);
+        add(backButton, c);
         row ++;
 
         c.gridx = 0;
         c.gridy = row;
         c.gridwidth = 2;
         messageLabel.setForeground(Color.RED);
-        panel.add(messageLabel, c);
+        add(messageLabel, c);
 
-        add(panel);
+        createButton.addActionListener(e -> onCreate());
+        backButton.addActionListener(e -> navigation.goTo("Login"));
+    }
 
-        createButton.addActionListener(e -> {
-            String username = usernameField.getText().trim();
-            String password = new String(passwordField.getPassword());
-            String allergies = allergiesField.getText().trim();
-            boolean vegan = veganCheckBox.isSelected();
+    private void onCreate(){
+        String username = usernameField.getText().trim();
+        String password = new String(passwordField.getPassword());
+        String allergies = allergiesField.getText().trim();
+        boolean vegan = veganCheckBox.isSelected();
 
-            double height = 0.0;
-            double weight = 0.0;
-            try {
-                if (!heightField.getText().trim().isEmpty()){
-                    height = Double.parseDouble(heightField.getText().trim());
-                }
-                if (!weightField.getText().trim().isEmpty()){
-                    weight = Double.parseDouble(weightField.getText().trim());
-                }
+        double height = 0.0;
+        double weight = 0.0;
+
+        try {
+            if (!heightField.getText().trim().isEmpty()){
+                height = Double.parseDouble(heightField.getText().trim());
             }
-            catch (NumberFormatException ex){
-                messageLabel.setText("Height and weight must be numbers");
-                return;
+            if (!weightField.getText().trim().isEmpty()){
+                weight = Double.parseDouble(weightField.getText().trim());
             }
+        } catch (NumberFormatException ex){
+            messageLabel.setText("Height and weight must be numeric");
+            return;
+        }
 
-            createAccountController.create(username, password, height, weight, allergies, vegan);
-            messageLabel.setText(createAccountViewModel.getMessage());
+        controller.create(username, password, height, weight, allergies, vegan);
 
-            if (createAccountViewModel.isSuccess()){
-                if (onCreateSuccess != null){
-                    onCreateSuccess.run();
-                }
-            }
-        });
-        backButton.addActionListener(e -> {
-            if (onBackToLogin != null){
-                onBackToLogin.run();
-            }
-        });
+        messageLabel.setText(viewModel.getMessage());
+
+        if (viewModel.isSuccess()){
+            navigation.goTo("Login");
+        }
+    }
+
+    public String getViewName() {
+        return viewName;
+    }
+
+    public void setCreateAccountController(CreateAccountController controller) {
+        this.controller = controller;
     }
 }

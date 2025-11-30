@@ -1,5 +1,6 @@
 package interface_adapter.log_meals;
 
+import entities.Meal;
 import entities.MealType;
 import use_case.log_meals.LogMealsInputBoundary;
 import use_case.log_meals.LogMealsInputData;
@@ -22,14 +23,24 @@ public class LogMealsController {
     }
 
     /**
-     * Handles the user's request to log a meal manually
+     * Fetches nutritional information for a food without saving it.
      *
      * @param foodName the name of the food entered by the user
      * @param mealType the type of meal (breakfast, lunch, dinner, snack)
-     * @param userId the ID of the user logging the meal
+     * @param userId the ID of the user
      */
-    public void logMeal(String foodName, MealType mealType, String userId) {
+    public void fetchNutrition(String foodName, MealType mealType, String userId) {
         LogMealsInputData inputData = new LogMealsInputData(foodName, mealType, userId);
-        interactor.logMeal(inputData);
+        interactor.fetchNutrition(inputData);
+    }
+
+    /**
+     * Saves a meal to the database.
+     *
+     * @param meal the meal to save
+     * @param userId the ID of the user
+     */
+    public void saveMeal(Meal meal, String userId) {
+        interactor.saveMeal(meal, userId);
     }
 }

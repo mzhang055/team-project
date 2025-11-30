@@ -7,11 +7,18 @@ package use_case.log_meals;
 public interface LogMealsOutputBoundary {
 
     /**
-     * Prepares the view for a successful meal logging operation.
+     * Prepares the view after fetching nutrition data (not saved yet).
      *
-     * @param outputData the output data containing the logged meal
+     * @param outputData the output data containing the meal with nutrition info
      */
     void prepareSuccessView(LogMealsOutputData outputData);
+
+    /**
+     * Prepares the view after successfully saving a meal.
+     *
+     * @param outputData the output data containing the saved meal
+     */
+    void prepareSaveSuccessView(LogMealsOutputData outputData);
 
     /**
      * Prepares the view for a failed meal logging operation.

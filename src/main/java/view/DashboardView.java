@@ -26,7 +26,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private final JButton logMealsButton;
     private final JButton saveRecipeButton;
     private final JButton profileButton;
-    private final JButton viewHistoryButton;
+    private final JButton addFriendsButton;
 
     // labels that will update
     // might be final
@@ -114,23 +114,21 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         setTargetButton = new JButton("Set Target");
         logMealsButton = new JButton("Log Meals");
         saveRecipeButton= new JButton("Recipe");
+        addFriendsButton = new JButton("Add Friends");
         profileButton = new JButton("Profile");
-        viewHistoryButton = new JButton("View History");
         // link buttons to the view
         setTargetButton.setEnabled(false);
         setTargetButton.addActionListener(e -> goToSetTarget());
         logMealsButton.setEnabled(true);
         logMealsButton.addActionListener(e -> goToLogMeals() );
-        saveRecipeButton.setEnabled(true);
         saveRecipeButton.addActionListener(e -> goToSaveRecipe());
-        viewHistoryButton.setEnabled(false);
-        viewHistoryButton.addActionListener(e -> goToHistory());
+        addFriendsButton.addActionListener(e -> goToAddFriends());
         profileButton.addActionListener(e -> goToProfile());
         // add the buttons
         buttons.add(setTargetButton);
         buttons.add(logMealsButton);
         buttons.add(saveRecipeButton);
-        buttons.add(viewHistoryButton);
+        buttons.add(addFriendsButton);
         buttons.add(profileButton);
         // add to Dashboard
         buttons.setPreferredSize(new Dimension(900, 50));
@@ -149,8 +147,9 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private void goToSaveRecipe(){
         recipeMenuView.setVisible(true);
     }
-    private void goToHistory(){
-    }
+
+    private void goToAddFriends(){navigation.goTo("Add Friend");}
+
     private void goToProfile(){
         navigation.goTo("Profile");
     }

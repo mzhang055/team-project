@@ -1,6 +1,8 @@
 package view;
 
 import entities.MealType;
+import interface_adapter.SessionManager;
+import interface_adapter.dashboard.DashboardController;
 import interface_adapter.log_meals.LogMealsController;
 import interface_adapter.log_meals.LogMealsViewModel;
 import data_access.MealDataAccessInterface;
@@ -17,9 +19,10 @@ public class LogMealsView extends JFrame implements PropertyChangeListener {
 
     private final String viewName = "Log Meals";
     private final LogMealsViewModel viewModel;
-    private final LogMealsController controller;
+    private final LogMealsController logMealsController;
     private final MealDataAccessInterface mealDataAccess;
-    private final String userId;
+    private final SessionManager sessionManager;
+    private DashboardController dashboardController;
 
     private JTextArea resultArea;
     private JTextField foodNameField;
@@ -27,16 +30,25 @@ public class LogMealsView extends JFrame implements PropertyChangeListener {
     private JButton saveButton;
     private JPanel buttonPanel;
 
-    public LogMealsView(LogMealsViewModel viewModel, LogMealsController controller,
-                        MealDataAccessInterface mealDataAccess, String userId) {
+    public LogMealsView(LogMealsViewModel viewModel, LogMealsController logMealsController,
+                        MealDataAccessInterface mealDataAccess, SessionManager sessionManager) {
         this.viewModel = viewModel;
-        this.controller = controller;
+        this.logMealsController = logMealsController;
         this.mealDataAccess = mealDataAccess;
-        this.userId = userId;
+        this.sessionManager = sessionManager;
 
         viewModel.addPropertyChangeListener(this);
 
         initializeUI();
+    }
+
+    /**
+     * Set the dashboard controller to pass to LoggedMealsView
+     *
+     * @param dashboardController the dashboard controller
+     */
+    public void setDashboardController(DashboardController dashboardController) {
+        this.dashboardController = dashboardController;
     }
 
     private void initializeUI() {
@@ -99,18 +111,51 @@ public class LogMealsView extends JFrame implements PropertyChangeListener {
             return;
         }
 
+        // Get the current logged-in user from the session
+        String currentUser = sessionManager.getCurrentUsername();
+        if (currentUser == null || currentUser.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "You must be logged in to log meals", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         resultArea.append("Fetching nutrition data for: " + foodName + "...\n");
-        controller.logMeal(foodName, mealType, userId);
+
+        // Fetch nutrition without saving (will be stored in session by the presenter)
+        logMealsController.fetchNutrition(foodName, mealType, currentUser);
     }
 
     private void saveMeal() {
-        // Meal is already saved during fetch, this just confirms to user
-        JOptionPane.showMessageDialog(this, "Meal has been saved successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        // Get the pending meal from the session (which was set by the presenter after fetch)
+        if (!sessionManager.hasPendingMeal()) {
+            JOptionPane.showMessageDialog(this, "Please fetch nutrition data first", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Get the current logged-in user from the session
+        String currentUser = sessionManager.getCurrentUsername();
+        if (currentUser == null || currentUser.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "You must be logged in to save meals", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Save the meal
+        logMealsController.saveMeal(sessionManager.getPendingMeal(), currentUser);
         saveButton.setEnabled(false); // Disable after saving
     }
 
     private void openViewLoggedMealsWindow() {
-        LoggedMealsView viewLoggedMealsView = new LoggedMealsView(mealDataAccess, userId);
+        // Get the current logged-in user from the session
+        String currentUser = sessionManager.getCurrentUsername();
+        if (currentUser == null || currentUser.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "You must be logged in to view meals", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        LoggedMealsView viewLoggedMealsView = new LoggedMealsView(mealDataAccess, currentUser);
+        // Pass the dashboard controller so edits can trigger dashboard refresh
+        if (dashboardController != null) {
+            viewLoggedMealsView.setDashboardController(dashboardController);
+        }
         viewLoggedMealsView.setVisible(true);
     }
 
