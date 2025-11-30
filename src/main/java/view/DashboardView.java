@@ -27,6 +27,8 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private final JButton saveRecipeButton;
     private final JButton profileButton;
     private final JButton addFriendsButton;
+    private final JButton leaderboardButton;
+    private final JButton logoutButton;
 
     // labels that will update
     // might be final
@@ -116,14 +118,19 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         saveRecipeButton= new JButton("Recipe");
         addFriendsButton = new JButton("Add Friends");
         profileButton = new JButton("Profile");
+        leaderboardButton = new JButton("Leaderboard");
+        logoutButton = new JButton("Logout");
         // link buttons to the view
         setTargetButton.setEnabled(false);
         setTargetButton.addActionListener(e -> goToSetTarget());
-        logMealsButton.setEnabled(true);
         logMealsButton.addActionListener(e -> goToLogMeals() );
         saveRecipeButton.addActionListener(e -> goToSaveRecipe());
         addFriendsButton.addActionListener(e -> goToAddFriends());
+        leaderboardButton.setEnabled(false);
+        leaderboardButton.addActionListener(e -> goToLeaderboard());
         profileButton.addActionListener(e -> goToProfile());
+        logoutButton.setEnabled(false);
+        logoutButton.addActionListener(e -> goToLogout());
         // add the buttons
         buttons.add(setTargetButton);
         buttons.add(logMealsButton);
@@ -153,6 +160,11 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private void goToProfile(){
         navigation.goTo("Profile");
     }
+
+    // TODO: refer to navigation & how login & addFriends are added
+    private void goToLeaderboard(){}
+
+    private void goToLogout(){}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

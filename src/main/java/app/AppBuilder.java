@@ -2,8 +2,6 @@ package app;
 
 import data_access.InMemoryMealDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
-import data_access.MealDataAccessInterface;
-import data_access.UserDataAccessInterface;
 import entities.User;
 import entities.UserFactory;
 import interface_adapter.LegacyViewManagerModel;
@@ -246,7 +244,7 @@ public class AppBuilder {
     }
 
     public JFrame build() {
-        final JFrame application = new JFrame("Dashboard");
+        final JFrame application = new JFrame("App");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
