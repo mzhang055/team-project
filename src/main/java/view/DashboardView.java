@@ -126,10 +126,10 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         logMealsButton.addActionListener(e -> goToLogMeals() );
         saveRecipeButton.addActionListener(e -> goToSaveRecipe());
         addFriendsButton.addActionListener(e -> goToAddFriends());
-        leaderboardButton.setEnabled(false);
+        leaderboardButton.setEnabled(true);
         leaderboardButton.addActionListener(e -> goToLeaderboard());
         profileButton.addActionListener(e -> goToProfile());
-        logoutButton.setEnabled(false);
+        logoutButton.setEnabled(true);
         logoutButton.addActionListener(e -> goToLogout());
         // add the buttons
         buttons.add(setTargetButton);
@@ -164,9 +164,20 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     }
 
     // TODO: refer to navigation & how login & addFriends are added
-    private void goToLeaderboard(){}
 
-    private void goToLogout(){}
+    private void goToLeaderboard(){
+        navigation.goTo("Leaderboard");
+    }
+
+    private void goToLogout(){
+        int result = JOptionPane.showConfirmDialog(
+                this,"Are you sure to logout?",
+                "Confirm Logout", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
+        );
+        if (result == JOptionPane.YES_OPTION) {
+            navigation.goTo("Login");
+        }
+    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

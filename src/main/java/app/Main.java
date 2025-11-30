@@ -14,9 +14,23 @@ import interface_adapter.logout.LogoutUI;
 import interface_adapter.logout.LogoutViewModel;
 import interface_adapter.logout.LogoutController;
 import use_case.logout.LogoutInteractor;
-import use_case.logout.LogoutService;
+
+import interface_adapter.view_leaderboard.LeaderboardController;
+import interface_adapter.view_leaderboard.LeaderboardPresenter;
+import interface_adapter.view_leaderboard.LeaderboardViewmodel;
+import use_case.view_leaderboard.LeaderboardDataAccess;
+import use_case.view_leaderboard.LeaderboardDataAccessInterface;
+import use_case.view_leaderboard.LeaderboardInteractor;
+
+import interface_adapter.remove_friend.RemoveFriendController;
+import interface_adapter.remove_friend.RemoveFriendPresenter;
+import interface_adapter.remove_friend.RemoveFriendViewModel;
+import use_case.remove_friend.RemoveFriendInteractor;
+
 import view.CreateAccountView;
+import view.LeaderboardView;
 import view.LoginView;
+import view.DashboardView;
 
 import interface_adapter.add_friend.AddFriendController;
 import interface_adapter.add_friend.AddFriendPresenter;
@@ -53,14 +67,26 @@ public class Main {
         AddFriendController addFriendController = new AddFriendController(addFriendInteractor);
 
         // viewManager.showLoginView();
-        }
-    }
+        LeaderboardViewmodel leaderboardViewModel = new LeaderboardViewmodel();
+        LeaderboardPresenter leaderboardPresenter = new LeaderboardPresenter(leaderboardViewModel);
 
-    private static LogoutUI setupLogoutForDashboard(LogoutViewModel logoutViewModel) {
+        LeaderboardDataAccessInterface leaderboardDataAccess = new LeaderboardDataAccess();
+        LeaderboardInteractor leaderboardInteractor = new LeaderboardInteractor(leaderboardPresenter, leaderboardDataAccess);
+        LeaderboardController leaderboardController = new LeaderboardController(leaderboardInteractor);
+
+        LogoutViewModel logoutViewModel = new LogoutViewModel();
         LogoutPresenter logoutPresenter = new LogoutPresenter(logoutViewModel);
         LogoutInteractor logoutInteractor = new LogoutInteractor(logoutPresenter);
         LogoutController logoutController = new LogoutController(logoutInteractor, logoutViewModel);
-        LogoutService logoutService = new LogoutService(logoutInteractor, logoutViewModel);
+
+
+        LeaderboardView leaderboardView = new LeaderboardView(null, "defaultUser");
+        LogoutUI logoutUI = setupLogoutForDashboard(logoutController);
+
+
+    }
+
+    private static LogoutUI setupLogoutForDashboard(LogoutController logoutController) {
 
         LogoutUI logoutUI = new LogoutUI(logoutController);
 
@@ -72,4 +98,5 @@ public class Main {
         return logoutUI;
 
     }
+
 }

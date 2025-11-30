@@ -143,4 +143,7 @@ public class LeaderboardView extends JPanel {
             refreshLeaderboard();
         }
     }
+    public String getViewname(){
+        return "Leaderboard";
+    }
 }
