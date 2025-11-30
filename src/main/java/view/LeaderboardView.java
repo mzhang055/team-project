@@ -1,4 +1,4 @@
-package app;
+package view;
 
 import interface_adapter.remove_friend.RemoveFriendDialog;
 import use_case.view_leaderboard.LeaderboardInteractor;
@@ -6,14 +6,14 @@ import interface_adapter.remove_friend.RemoveFriendController;
 import interface_adapter.view_leaderboard.LeaderboardPresenter;
 import interface_adapter.view_leaderboard.LeaderboardViewmodel;
 import use_case.view_leaderboard.LeaderboardDataAccess;
-import use_case.goals.UserManager;
+
 import java.awt.*;
 import javax.swing.*;
 import java.util.List;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class LeaderboardUI extends JFrame {
+public class LeaderboardView extends JPanel {
     private final LeaderboardViewmodel viewModel;
     private final JPanel leaderboardPanel;
     private final JButton refreshButton;
@@ -22,7 +22,7 @@ public class LeaderboardUI extends JFrame {
     private RemoveFriendController removeFriendController;
     private String currentUsername;
 
-    public LeaderboardUI(RemoveFriendController removeFriendController, String currentUsername) {
+    public LeaderboardView(RemoveFriendController removeFriendController, String currentUsername) {
         this.removeFriendController = removeFriendController;
         this.currentUsername = currentUsername;
 
@@ -34,10 +34,6 @@ public class LeaderboardUI extends JFrame {
 
         this.interactor = new LeaderboardInteractor(presenter, dataAccess);
 
-        setTitle("    Leaderboard    ");
-        setSize(350, 450);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout());
 
         JLabel instructionLabel = new JLabel("Click on any username to remove as friend");
         instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -54,6 +50,8 @@ public class LeaderboardUI extends JFrame {
         refreshButton.addActionListener(e -> refreshLeaderboard());
 
         add(refreshButton, BorderLayout.SOUTH);
+
+        refreshLeaderboard();
     }
 
     private void refreshLeaderboard() {
@@ -85,7 +83,7 @@ public class LeaderboardUI extends JFrame {
                         if (!username.equals(currentUsername)) {
                             showRemoveFriendDialog(username);
                         } else {
-                            JOptionPane.showMessageDialog(LeaderboardUI.this,
+                            JOptionPane.showMessageDialog(LeaderboardView.this,
                                     "You cannot remove yourself as friend",
                                     "Info",
                                     JOptionPane.INFORMATION_MESSAGE);
@@ -121,9 +119,13 @@ public class LeaderboardUI extends JFrame {
             RemoveFriendController testController = createTestController();
             String testUsername = "currentUser";
 
-            LeaderboardUI ui = new LeaderboardUI(testController, testUsername);
-            ui.setVisible(true);
-            ui.refreshLeaderboard();
+            JFrame testFrame = new JFrame("Leaderboard Test");
+            testFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            testFrame.setSize(350, 450);
+
+            LeaderboardView leaderboardPanel = new LeaderboardView(testController, testUsername);
+            testFrame.add(leaderboardPanel);
+            testFrame.setVisible(true);
 
         });
     }
