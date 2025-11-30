@@ -1,3 +1,5 @@
+package use_case.AcceptFriendRequest;
+
 import data_access.InMemoryUserDataAccessObject;
 import data_access.UserDataAccessInterface;
 import entities.User;
@@ -7,14 +9,11 @@ import use_case.accept_friend.AcceptFriendRequestInputData;
 import use_case.accept_friend.AcceptFriendRequestInteractor;
 import use_case.accept_friend.AcceptFriendRequestOutputBoundary;
 import use_case.accept_friend.AcceptFriendRequestOutputData;
-import use_case.add_friend.AddFriendInputData;
-import use_case.add_friend.AddFriendOutputBoundary;
-import use_case.add_friend.AddFriendOutputData;
 
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
-class AcceptFriendInteractorTest {
+class AcceptFriendRequestInteractorTest {
     private UserDataAccessInterface userDataAccess;
     private TestAcceptPresenter presenter;
     private AcceptFriendRequestInteractor interactor;

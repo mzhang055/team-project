@@ -1,5 +1,6 @@
 package app;
 
+import data_access.*;
 import data_access.InMemoryMealDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import entities.User;
@@ -66,7 +67,12 @@ public class AppBuilder {
     final LegacyViewManagerModel legacyVMM = new LegacyViewManagerModel(legacy);
     ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel,legacyVMM);
 
-    InMemoryUserDataAccessObject userDataAccess = new InMemoryUserDataAccessObject();
+    private final UserDataAccessInterface localUserDataAccess =
+            new FileUserDataAccessObject("users.json");
+    private final RemoteAuthGateway remoteAuthGateway = new RemoteAuthGateway();
+
+    UserDataAccessInterface userDataAccess = new PersistentUserDataAccessObject(
+            localUserDataAccess, remoteAuthGateway);
     InMemoryMealDataAccessObject mealDataAccess = new InMemoryMealDataAccessObject();
 
     SessionManager sessionManager = new SessionManager();

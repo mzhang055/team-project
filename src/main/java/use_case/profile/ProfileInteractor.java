@@ -1,21 +1,21 @@
 package use_case.profile;
 
-import data_access.InMemoryUserDataAccessObject;
+import data_access.UserDataAccessInterface;
 import entities.User;
 
 public class ProfileInteractor implements ProfileInputBoundary {
-    private final InMemoryUserDataAccessObject inMemoryUserDataAccessObject;
+    private final UserDataAccessInterface userDataAccess;
     private final ProfileOutputBoundary presenter;
 
-    public ProfileInteractor(InMemoryUserDataAccessObject inMemoryUserDataAccessObject, ProfileOutputBoundary presenter) {
-        this.inMemoryUserDataAccessObject = inMemoryUserDataAccessObject;
+    public ProfileInteractor(UserDataAccessInterface userDataAccess, ProfileOutputBoundary presenter) {
+        this.userDataAccess = userDataAccess;
         this.presenter = presenter;
     }
 
     @Override
     public void loadProfile(ProfileInputData input) {
         String userId = input.getUserId();
-        User user = inMemoryUserDataAccessObject.getUser(userId);
+        User user = userDataAccess.getUser(userId);
         String password = user.getPassword();
         double height = user.getHeight();
         double weight = user.getWeight();

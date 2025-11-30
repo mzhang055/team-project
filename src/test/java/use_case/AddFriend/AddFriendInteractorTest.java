@@ -1,3 +1,5 @@
+package use_case.AddFriend;
+
 import data_access.InMemoryUserDataAccessObject;
 import data_access.UserDataAccessInterface;
 import entities.User;

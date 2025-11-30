@@ -1,7 +1,7 @@
 package use_case.dashboard;
 
-import data_access.InMemoryMealDataAccessObject;
-import data_access.InMemoryUserDataAccessObject;
+import data_access.MealDataAccessInterface;
+import data_access.UserDataAccessInterface;
 import entities.Meal;
 import entities.NutritionalInfo;
 import entities.User;
@@ -9,22 +9,22 @@ import entities.User;
 import java.util.List;
 
 public class DashboardInteractor implements DashboardInputBoundary{
-    private final InMemoryUserDataAccessObject inMemoryUserDataAccessObject;
-    private final InMemoryMealDataAccessObject inMemoryMealDataAccessObject;
+    private final UserDataAccessInterface userDataAccess;
+    private final MealDataAccessInterface mealDataAccess;
 
     private final DashboardOutputBoundary presenter;
 
-    public DashboardInteractor(InMemoryUserDataAccessObject inMemoryUserDataAccessObject, InMemoryMealDataAccessObject inMemoryMealDataAccessObject, DashboardOutputBoundary presenter) {
-        this.inMemoryUserDataAccessObject = inMemoryUserDataAccessObject;
-        this.inMemoryMealDataAccessObject = inMemoryMealDataAccessObject;
+    public DashboardInteractor(UserDataAccessInterface userDataAccess, MealDataAccessInterface mealDataAccess, DashboardOutputBoundary presenter) {
+        this.userDataAccess = userDataAccess;
+        this.mealDataAccess = mealDataAccess;
         this.presenter = presenter;
     }
 
     @Override
     public void loadDashboard(DashboardInputData input){
         String userId = input.getUserId();
-        User user = inMemoryUserDataAccessObject.getUser(userId);
-        List<Meal> meals = inMemoryMealDataAccessObject.getMealsByUserId(userId);
+        User user = userDataAccess.getUser(userId);
+        List<Meal> meals = mealDataAccess.getMealsByUserId(userId);
         DashboardOutputData output = getTotal(meals);
         presenter.updateDashboard(output);
     }

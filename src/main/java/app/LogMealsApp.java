@@ -1,8 +1,6 @@
 package app;
 
-import data_access.InMemoryMealDataAccessObject;
-import data_access.InMemoryUserDataAccessObject;
-import interface_adapter.SessionManager;
+import data_access.*;
 import interface_adapter.log_meals.*;
 import use_case.log_meals.LogMealsInteractor;
 import view.LogMealsView;
@@ -29,17 +27,16 @@ public class LogMealsApp {
         // Create data access implementations
         InMemoryMealDataAccessObject mealDataAccess = new InMemoryMealDataAccessObject();
         CalorieNinjasApiClient nutritionApi = new CalorieNinjasApiClient(apiKey);
-        InMemoryUserDataAccessObject userDataAccess = new InMemoryUserDataAccessObject();
-
-        // Create session manager and set the test user
-        SessionManager sessionManager = new SessionManager();
-        sessionManager.setCurrentUsername(USER_ID);
+        UserDataAccessInterface localUserDataAccess = new FileUserDataAccessObject("users.json");
+        RemoteAuthGateway remoteAuthGateway = new RemoteAuthGateway();
+        UserDataAccessInterface userDataAccess =
+                new PersistentUserDataAccessObject(localUserDataAccess, remoteAuthGateway);
 
         // Create view model
         LogMealsViewModel viewModel = new LogMealsViewModel();
 
-        // Create presenter with session manager
-        LogMealsPresenter presenter = new LogMealsPresenter(viewModel, sessionManager);
+        // Create presenter
+        LogMealsPresenter presenter = new LogMealsPresenter(viewModel);
 
         // Create interactor
         LogMealsInteractor interactor = new LogMealsInteractor(
@@ -54,7 +51,7 @@ public class LogMealsApp {
 
         // Create and show view
         SwingUtilities.invokeLater(() -> {
-            LogMealsView view = new LogMealsView(viewModel, controller, mealDataAccess, sessionManager);
+            LogMealsView view = new LogMealsView(viewModel, controller, mealDataAccess, USER_ID);
             view.setVisible(true);
         });
     }

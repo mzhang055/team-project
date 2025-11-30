@@ -1,3 +1,5 @@
+package use_case.RejectFriendRequest;
+
 import data_access.InMemoryUserDataAccessObject;
 import data_access.UserDataAccessInterface;
 import entities.User;
@@ -12,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RejectFriendInteractorTest {
+class RejectFriendRequestInteractorTest {
     private UserDataAccessInterface userDataAccess;
     private TestRejectPresenter presenter;
     private RejectFriendRequestInteractor interactor;
