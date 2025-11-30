@@ -3,7 +3,7 @@ package use_case.add_friend;
 import entities.User;
 import data_access.UserDataAccessInterface;
 
-public class AddFriendInteractor implements AddFriendInputBoundary{
+public class AddFriendInteractor implements AddFriendInputBoundary {
     private final UserDataAccessInterface userDataAccess;
     private final AddFriendOutputBoundary presenter;
 

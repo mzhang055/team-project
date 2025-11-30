@@ -3,6 +3,7 @@ package view;
 import entities.Meal;
 import entities.MealType;
 import data_access.MealDataAccessInterface;
+import interface_adapter.dashboard.DashboardController;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,6 +20,7 @@ public class LoggedMealsView extends JFrame {
     private JTable mealsTable;
     private DefaultTableModel tableModel;
     private java.util.List<Meal> mealsCache;
+    private DashboardController dashboardController;
 
     public LoggedMealsView(MealDataAccessInterface mealDataAccess, String userId) {
         this.mealDataAccess = mealDataAccess;
@@ -26,6 +28,15 @@ public class LoggedMealsView extends JFrame {
 
         initializeUI();
         loadMeals();
+    }
+
+    /**
+     * Sets the dashboard controller to refresh the dashboard after editing meals.
+     *
+     * @param dashboardController the dashboard controller
+     */
+    public void setDashboardController(DashboardController dashboardController) {
+        this.dashboardController = dashboardController;
     }
 
     private void initializeUI() {
@@ -211,6 +222,11 @@ public class LoggedMealsView extends JFrame {
                     JOptionPane.showMessageDialog(editDialog, "Meal updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
                     editDialog.dispose();
                     loadMeals(); // Refresh the table
+
+                    // Refresh the dashboard to show updated nutrition totals
+                    if (dashboardController != null) {
+                        dashboardController.loadDashboard(userId);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(editDialog, "Failed to update meal", "Error", JOptionPane.ERROR_MESSAGE);
                 }

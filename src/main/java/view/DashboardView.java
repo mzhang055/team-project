@@ -19,13 +19,16 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private final Navigation navigation;
     private DashboardController dashboardController = null;
     private final RecipeMenuView recipeMenuView;
+    private LogMealsView logMealsView = null;
 
     // buttons that will click
     private final JButton setTargetButton;
     private final JButton logMealsButton;
     private final JButton saveRecipeButton;
     private final JButton profileButton;
-    private final JButton viewHistoryButton;
+    private final JButton addFriendsButton;
+    private final JButton leaderboardButton;
+    private final JButton logoutButton;
 
     // labels that will update
     // might be final
@@ -113,24 +116,29 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         setTargetButton = new JButton("Set Target");
         logMealsButton = new JButton("Log Meals");
         saveRecipeButton= new JButton("Recipe");
+        addFriendsButton = new JButton("Add Friends");
         profileButton = new JButton("Profile");
-        viewHistoryButton = new JButton("View History");
+        leaderboardButton = new JButton("Leaderboard");
+        logoutButton = new JButton("Logout");
         // link buttons to the view
         setTargetButton.setEnabled(false);
         setTargetButton.addActionListener(e -> goToSetTarget());
-        logMealsButton.setEnabled(false);
         logMealsButton.addActionListener(e -> goToLogMeals() );
-        saveRecipeButton.setEnabled(true);
         saveRecipeButton.addActionListener(e -> goToSaveRecipe());
-        viewHistoryButton.setEnabled(false);
-        viewHistoryButton.addActionListener(e -> goToHistory());
+        addFriendsButton.addActionListener(e -> goToAddFriends());
+        leaderboardButton.setEnabled(false);
+        leaderboardButton.addActionListener(e -> goToLeaderboard());
         profileButton.addActionListener(e -> goToProfile());
+        logoutButton.setEnabled(false);
+        logoutButton.addActionListener(e -> goToLogout());
         // add the buttons
         buttons.add(setTargetButton);
         buttons.add(logMealsButton);
         buttons.add(saveRecipeButton);
-        buttons.add(viewHistoryButton);
+        buttons.add(addFriendsButton);
+        buttons.add(leaderboardButton);
         buttons.add(profileButton);
+        buttons.add(logoutButton);
         // add to Dashboard
         buttons.setPreferredSize(new Dimension(900, 50));
         buttons.setMinimumSize(new Dimension(800, 50));
@@ -141,15 +149,24 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private void goToSetTarget(){
     }
     private void goToLogMeals(){
+        if (logMealsView != null) {
+            logMealsView.setVisible(true);
+        }
     }
     private void goToSaveRecipe(){
         recipeMenuView.setVisible(true);
     }
-    private void goToHistory(){
-    }
+
+    private void goToAddFriends(){navigation.goTo("Add Friend");}
+
     private void goToProfile(){
         navigation.goTo("Profile");
     }
+
+    // TODO: refer to navigation & how login & addFriends are added
+    private void goToLeaderboard(){}
+
+    private void goToLogout(){}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -177,5 +194,9 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
 
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
+    }
+
+    public void setLogMealsView(LogMealsView logMealsView) {
+        this.logMealsView = logMealsView;
     }
 }
