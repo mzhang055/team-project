@@ -1,39 +1,37 @@
 package interface_adapter.logout;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
+import java.awt.event.ActionListener;
 
-public class LogoutUI {
+public class LogoutUI extends JPanel {
     private LogoutController controller;
+    private JButton logoutButton;
 
     public LogoutUI(LogoutController controller) {
+
         this.controller = controller;
-        createAndShowGUI();
+        initializePanel();
     }
 
-    private void createAndShowGUI() {
-        JFrame frame = new JFrame("Logout");
-        JButton logoutButton = new JButton("Logout");
-        JTextField usernameField = new JTextField(15);
+    private void initializePanel() {
+    setLayout(new FlowLayout(FlowLayout.RIGHT));
+    logoutButton = new JButton("Logout");
+    logoutButton.addActionListener(e -> performLogout());
+    add(logoutButton);
+    }
 
-        JLabel messageLabel = new JLabel("");
-        logoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText();
-                controller.logout(username);
-                messageLabel.setText(controller.getViewModelMessage());
-            }
-        });
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("Username:"));
-        panel.add(usernameField);
-        panel.add(logoutButton);
-        panel.add(messageLabel);
+    private boolean performLogout() {
+        return controller.logoutCurrentUser();
+    }
 
-        frame.add(panel);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    public JButton getLogoutButton() {
+        return logoutButton;
+    }
+
+    public void addLogoutListener(ActionListener actionListener) {
+        logoutButton.addActionListener(actionListener);
     }
 }
+

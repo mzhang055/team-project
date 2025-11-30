@@ -9,6 +9,14 @@ import interface_adapter.create_account.CreateAccountViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.logout.LogoutUI;
+import interface_adapter.logout.LogoutViewModel;
+import interface_adapter.logout.LogoutController;
+import use_case.logout.LogoutInteractor;
+import use_case.logout.LogoutService;
+import view.CreateAccountView;
+import view.LoginView;
 
 import interface_adapter.add_friend.AddFriendController;
 import interface_adapter.add_friend.AddFriendPresenter;
@@ -47,3 +55,21 @@ public class Main {
         // viewManager.showLoginView();
         }
     }
+
+    private static LogoutUI setupLogoutForDashboard(LogoutViewModel logoutViewModel) {
+        LogoutPresenter logoutPresenter = new LogoutPresenter(logoutViewModel);
+        LogoutInteractor logoutInteractor = new LogoutInteractor(logoutPresenter);
+        LogoutController logoutController = new LogoutController(logoutInteractor, logoutViewModel);
+        LogoutService logoutService = new LogoutService(logoutInteractor, logoutViewModel);
+
+        LogoutUI logoutUI = new LogoutUI(logoutController);
+
+        logoutUI.addLogoutListener(e -> {
+            System.out.println("Logout successful!");
+
+        });
+
+        return logoutUI;
+
+    }
+}

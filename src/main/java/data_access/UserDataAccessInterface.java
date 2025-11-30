@@ -1,6 +1,7 @@
 package data_access;
 
 import entities.User;
+import java.util.List;
 
 public interface UserDataAccessInterface {
     boolean existsByUsername(String username);
@@ -8,4 +9,6 @@ public interface UserDataAccessInterface {
     User getUser(String username);
 
     void save(User user);
+
+    List<User> getAllUsers();
 }

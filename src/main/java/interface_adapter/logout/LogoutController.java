@@ -1,19 +1,37 @@
 package interface_adapter.logout;
 
 import use_case.logout.LogoutInputBoundary;
+
 public class LogoutController {
-    private LogoutInputBoundary LogoutUseCase;
+    private LogoutInputBoundary logoutUseCase;
     private LogoutViewModel viewModel;
 
     public LogoutController(LogoutInputBoundary logoutUseCase, LogoutViewModel viewModel) {
-        this.LogoutUseCase = logoutUseCase;
+        this.logoutUseCase = logoutUseCase;
         this.viewModel = viewModel;
+
     }
 
-    public void logout(String username) {
-        LogoutUseCase.logout(username);
+    public boolean logoutCurrentUser(){
+        try{
+            String currentUsername = viewModel.getCurrentUsername();
+            logoutUseCase.logout(currentUsername);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
-    public String getViewModelMessage() {
+
+    public boolean logoutUser(String username){
+        try{
+            logoutUseCase.logout(username);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    public String getLogoutMessage(){
         return viewModel.getMessage();
     }
 }
