@@ -18,8 +18,6 @@ import use_case.create_account.CreateAccountInteractor;
 import use_case.login.LoginInteractor;
 import use_case.add_friend.AddFriendInteractor;
 
-import view.*;
-
 import javax.swing.*;
 
 public class Main {
