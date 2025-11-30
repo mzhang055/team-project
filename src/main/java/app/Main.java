@@ -1,7 +1,6 @@
 package app;
 
-import data_access.InMemoryUserDataAccessObject;
-import data_access.UserDataAccessInterface;
+import data_access.*;
 import interface_adapter.create_account.CreateAccountController;
 import interface_adapter.create_account.CreateAccountPresenter;
 import interface_adapter.create_account.CreateAccountViewModel;
@@ -32,9 +31,11 @@ public class Main {
     public static void main(String[] args){
         SwingUtilities.invokeLater(Main::startApp);
     }
-
-    private static void startApp() {
-        UserDataAccessInterface userDataAccess = new InMemoryUserDataAccessObject();
+    private static void startApp(){
+        UserDataAccessInterface localUserDataAccess = new FileUserDataAccessObject("users.json");
+        RemoteAuthGateway remoteAuthGateway = new RemoteAuthGateway();
+        UserDataAccessInterface userDataAccess =
+                new PersistentUserDataAccessObject(localUserDataAccess, remoteAuthGateway);
 
         CreateAccountViewModel createAccountViewModel = new CreateAccountViewModel();
         CreateAccountPresenter createAccountPresenter = new CreateAccountPresenter(createAccountViewModel);
@@ -72,4 +73,4 @@ public class Main {
         return logoutUI;
 
     }
-}
+
