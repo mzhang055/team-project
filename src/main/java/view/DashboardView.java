@@ -136,7 +136,9 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         buttons.add(logMealsButton);
         buttons.add(saveRecipeButton);
         buttons.add(addFriendsButton);
+        buttons.add(leaderboardButton);
         buttons.add(profileButton);
+        buttons.add(logoutButton);
         // add to Dashboard
         buttons.setPreferredSize(new Dimension(900, 50));
         buttons.setMinimumSize(new Dimension(800, 50));
