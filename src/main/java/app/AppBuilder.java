@@ -149,12 +149,19 @@ public class AppBuilder {
         return this;
     }
 
+    private DashboardController dashboardController;
+
     public AppBuilder addDashboardUseCase() {
        final DashboardOutputBoundary dashboardPresenter = new DashboardPresenter(dashboardViewModel, viewManagerModel);
        final DashboardInputBoundary dashboardInteractor = new DashboardInteractor(userDataAccess,mealDataAccess, dashboardPresenter);
-       final DashboardController dashboardController = new DashboardController(dashboardInteractor);
+       this.dashboardController = new DashboardController(dashboardInteractor);
        dashboardView.setDashboardController(dashboardController);
-       navigation.registerRefresh("Dashboard", () -> dashboardController.loadDashboard("Cherry"));
+       navigation.registerRefresh("Dashboard", () -> {
+           String currentUser = sessionManager.getCurrentUsername();
+           if (currentUser != null) {
+               dashboardController.loadDashboard(currentUser);
+           }
+       });
        return this;
     }
 
@@ -163,7 +170,12 @@ public class AppBuilder {
         final ProfileInputBoundary profileInteractor = new ProfileInteractor(userDataAccess, profilePresenter);
         final ProfileController profileController = new ProfileController(profileInteractor);
         profileView.setProfileController(profileController);
-        navigation.registerRefresh("Profile", () -> profileController.loadProfile("Cherry"));
+        navigation.registerRefresh("Profile", () -> {
+            String currentUser = sessionManager.getCurrentUsername();
+            if (currentUser != null) {
+                profileController.loadProfile(currentUser);
+            }
+        });
         return this;
     }
 
@@ -184,7 +196,13 @@ public class AppBuilder {
 
         // Create components
         final LogMealsViewModel logMealsViewModel = new LogMealsViewModel();
-        final LogMealsOutputBoundary logMealsPresenter = new LogMealsPresenter(logMealsViewModel);
+        final LogMealsPresenter logMealsPresenter = new LogMealsPresenter(logMealsViewModel, sessionManager);
+
+        // Connect the dashboard controller to the presenter so it can refresh the dashboard
+        if (dashboardController != null) {
+            logMealsPresenter.setDashboardController(dashboardController);
+        }
+
         final CalorieNinjasApiClient nutritionApi = new CalorieNinjasApiClient(apiKey);
         final LogMealsInputBoundary logMealsInteractor = new LogMealsInteractor(
             mealDataAccess,
@@ -194,13 +212,18 @@ public class AppBuilder {
         );
         final LogMealsController logMealsController = new LogMealsController(logMealsInteractor);
 
-        // Create the view
+        // Create the view (pass sessionManager instead of hardcoded user)
         this.logMealsView = new LogMealsView(
             logMealsViewModel,
             logMealsController,
             mealDataAccess,
-            user.getUsername()
+            sessionManager
         );
+
+        // Pass dashboard controller to LogMealsView so it can pass it to LoggedMealsView
+        if (dashboardController != null) {
+            logMealsView.setDashboardController(dashboardController);
+        }
 
         // Connect to dashboard
         dashboardView.setLogMealsView(logMealsView);
@@ -227,6 +250,10 @@ public class AppBuilder {
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
+
+        // For development/testing: auto-login as Cherry
+        // Comment this out if you want to test the login flow
+        sessionManager.setCurrentUsername(user.getUsername());
 
         navigation.goTo("Login");
 

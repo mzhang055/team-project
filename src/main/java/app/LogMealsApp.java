@@ -2,6 +2,7 @@ package app;
 
 import data_access.InMemoryMealDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
+import interface_adapter.SessionManager;
 import interface_adapter.log_meals.*;
 import use_case.log_meals.LogMealsInteractor;
 import view.LogMealsView;
@@ -30,11 +31,15 @@ public class LogMealsApp {
         CalorieNinjasApiClient nutritionApi = new CalorieNinjasApiClient(apiKey);
         InMemoryUserDataAccessObject userDataAccess = new InMemoryUserDataAccessObject();
 
+        // Create session manager and set the test user
+        SessionManager sessionManager = new SessionManager();
+        sessionManager.setCurrentUsername(USER_ID);
+
         // Create view model
         LogMealsViewModel viewModel = new LogMealsViewModel();
 
-        // Create presenter
-        LogMealsPresenter presenter = new LogMealsPresenter(viewModel);
+        // Create presenter with session manager
+        LogMealsPresenter presenter = new LogMealsPresenter(viewModel, sessionManager);
 
         // Create interactor
         LogMealsInteractor interactor = new LogMealsInteractor(
@@ -49,7 +54,7 @@ public class LogMealsApp {
 
         // Create and show view
         SwingUtilities.invokeLater(() -> {
-            LogMealsView view = new LogMealsView(viewModel, controller, mealDataAccess, USER_ID);
+            LogMealsView view = new LogMealsView(viewModel, controller, mealDataAccess, sessionManager);
             view.setVisible(true);
         });
     }
