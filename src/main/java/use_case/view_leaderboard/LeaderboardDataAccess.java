@@ -5,7 +5,7 @@ import use_case.goals.GoalCompletionHistory;
 import use_case.goals.UserManager;
 import java.util.*;
 
-public class LeaderboardDataAccess {
+public class LeaderboardDataAccess implements LeaderboardDataAccessInterface {
 
     public Map<String,Integer> getLeaderboardData() {
         Map<String, Integer> leaderboard = new HashMap<>();

@@ -6,8 +6,8 @@ import java.util.Map;
 
 public class LeaderboardInteractor implements LeaderboardInputBoundary {
     private LeaderboardOutputBoundary presenter;
-    private LeaderboardDataAccess dataAccess;
-    public LeaderboardInteractor(LeaderboardOutputBoundary presenter, LeaderboardDataAccess dataAccess) {
+    private LeaderboardDataAccessInterface dataAccess;
+    public LeaderboardInteractor(LeaderboardOutputBoundary presenter, LeaderboardDataAccessInterface dataAccess) {
         this.presenter = presenter;
         this.dataAccess = dataAccess;
     }
