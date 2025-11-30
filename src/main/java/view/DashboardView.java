@@ -18,8 +18,8 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private final DashboardViewModel dashboardViewModel;
     private final Navigation navigation;
     private DashboardController dashboardController = null;
-    // TODO: NOT CA
     private final RecipeMenuView recipeMenuView;
+    private LogMealsView logMealsView = null;
 
     // buttons that will click
     private final JButton setTargetButton;
@@ -46,7 +46,6 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
         this.navigation = navigation;
-        // TODO: NOT CA
         this.recipeMenuView = recipeMenuView;
 
         this.setSize(900, 600);
@@ -120,7 +119,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         // link buttons to the view
         setTargetButton.setEnabled(false);
         setTargetButton.addActionListener(e -> goToSetTarget());
-        logMealsButton.setEnabled(false);
+        logMealsButton.setEnabled(true);
         logMealsButton.addActionListener(e -> goToLogMeals() );
         saveRecipeButton.addActionListener(e -> goToSaveRecipe());
         addFriendsButton.addActionListener(e -> goToAddFriends());
@@ -138,9 +137,13 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     }
 
     // TODO
-    private void goToSetTarget(){}
-    private void goToLogMeals(){}
-    //TODO NOT CA
+    private void goToSetTarget(){
+    }
+    private void goToLogMeals(){
+        if (logMealsView != null) {
+            logMealsView.setVisible(true);
+        }
+    }
     private void goToSaveRecipe(){
         recipeMenuView.setVisible(true);
     }
@@ -177,5 +180,9 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
 
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
+    }
+
+    public void setLogMealsView(LogMealsView logMealsView) {
+        this.logMealsView = logMealsView;
     }
 }

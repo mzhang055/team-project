@@ -16,6 +16,7 @@ public class StartFromDash {
                 .addDashboardUseCase()
                 .addProfileUseCase()
                 .addAddFriendUseCase()
+                .addLogMealsUseCase()
                 .build();
         application.pack();
         application.setLocationRelativeTo(null);

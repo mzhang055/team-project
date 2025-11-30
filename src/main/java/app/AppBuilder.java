@@ -22,6 +22,10 @@ import interface_adapter.dashboard.DashboardViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.log_meals.CalorieNinjasApiClient;
+import interface_adapter.log_meals.LogMealsController;
+import interface_adapter.log_meals.LogMealsPresenter;
+import interface_adapter.log_meals.LogMealsViewModel;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
@@ -37,13 +41,23 @@ import use_case.dashboard.DashboardOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
+import use_case.log_meals.LogMealsInputBoundary;
+import use_case.log_meals.LogMealsInteractor;
+import use_case.log_meals.LogMealsOutputBoundary;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
 import view.*;
-
+import view.DashboardView;
+import view.LogMealsView;
+import view.ProfileView;
+import view.RecipeMenuView;
+import view.ViewManager;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
@@ -73,6 +87,7 @@ public class AppBuilder {
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
     private RecipeMenuView recipeMenuView;
+    private LogMealsView logMealsView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -158,6 +173,53 @@ public class AppBuilder {
         final AddFriendController addFriendController = new AddFriendController(addFriendInteractor);
         addFriendView.setAddFriendController(addFriendController);
         return this;
+    }
+
+    public AppBuilder addLogMealsUseCase() {
+        // Load API key
+        String apiKey = loadApiKey();
+        if (apiKey == null) {
+            System.err.println("Warning: Failed to load API key for CalorieNinjas. Log Meals feature may not work properly.");
+        }
+
+        // Create components
+        final LogMealsViewModel logMealsViewModel = new LogMealsViewModel();
+        final LogMealsOutputBoundary logMealsPresenter = new LogMealsPresenter(logMealsViewModel);
+        final CalorieNinjasApiClient nutritionApi = new CalorieNinjasApiClient(apiKey);
+        final LogMealsInputBoundary logMealsInteractor = new LogMealsInteractor(
+            mealDataAccess,
+            nutritionApi,
+            userDataAccess,
+            logMealsPresenter
+        );
+        final LogMealsController logMealsController = new LogMealsController(logMealsInteractor);
+
+        // Create the view
+        this.logMealsView = new LogMealsView(
+            logMealsViewModel,
+            logMealsController,
+            mealDataAccess,
+            user.getUsername()
+        );
+
+        // Connect to dashboard
+        dashboardView.setLogMealsView(logMealsView);
+
+        return this;
+    }
+
+    private String loadApiKey() {
+        Properties properties = new Properties();
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("api.properties")) {
+            if (input == null) {
+                return null;
+            }
+            properties.load(input);
+            return properties.getProperty("calorie.ninjas.api.key");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public JFrame build() {
