@@ -23,7 +23,7 @@ public class RejectFriendRequestInteractor implements RejectFriendRequestInputBo
         User receiver = userDataAccess.getUser(receiverUsername);
         User requester = userDataAccess.getUser(requesterUsername);
 
-        if (!receiver.getIncomingFriendRequests().contains(receiverUsername)){
+        if (!receiver.getIncomingFriendRequests().contains(requesterUsername)){
             presenter.prepareFailView("No such friend request");
             return;
         }
