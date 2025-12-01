@@ -5,6 +5,7 @@ import data_access.InMemoryUserDataAccessObject;
 import entities.Meal;
 import entities.NutritionalInfo;
 import entities.User;
+import app.GoalsGuiMain;
 
 import java.util.List;
 
@@ -31,13 +32,13 @@ public class DashboardInteractor implements DashboardInputBoundary{
 
     private DashboardOutputData getTotal(List<Meal> meals){
         double calories = 0.0;
-        double remaining = 0.0;
         double proteins = 0.0;
         double fats = 0.0;
         double carbs = 0.0;
         double fibers = 0.0;
         double sugars = 0.0;
-        for(Meal meal : meals){
+
+        for (Meal meal : meals){
             NutritionalInfo x = meal.getNutritionalInfo();
             calories += x.getCalories();
             proteins += x.getProtein();
@@ -46,6 +47,15 @@ public class DashboardInteractor implements DashboardInputBoundary{
             fibers += x.getFiber();
             sugars += x.getSugar();
         }
+
+        double remaining = 0.0;
+        if (GoalsGuiMain.isActiveGoalSet()) {
+            remaining = GoalsGuiMain.getActiveTargetCalories() - calories;
+            if (remaining < 0) {
+                remaining = 0.0;
+            }
+        }
+
         return new DashboardOutputData(calories, remaining, proteins, carbs, fats, fibers, sugars);
     }
 }
