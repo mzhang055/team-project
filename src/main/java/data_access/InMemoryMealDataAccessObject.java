@@ -1,7 +1,6 @@
 package data_access;
 
 import entities.Meal;
-
 import java.util.*;
 import java.io.*;
 
