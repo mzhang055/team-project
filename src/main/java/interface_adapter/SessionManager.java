@@ -7,7 +7,7 @@ import entities.Meal;
  * This keeps track of who is logged in and any pending actions.
  */
 public class SessionManager {
-    private String currentUsername;
+    private String currentUsername = null;
     private Meal pendingMeal; // Temporarily stores a fetched meal before it's saved
 
     public void setCurrentUsername(String username) {

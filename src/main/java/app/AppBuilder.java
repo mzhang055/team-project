@@ -2,6 +2,11 @@ package app;
 
 import data_access.InMemoryMealDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
+import data_access.InMemoryRecipeDataAccessObject;
+import data_access.MealDataAccessInterface;
+import data_access.UserDataAccessInterface;
+import data_access.RecipeDataAccessInterface;
+import data_access.TheMealDBRecipeDataAccessObject;
 import entities.User;
 import entities.UserFactory;
 import interface_adapter.LegacyViewManagerModel;
@@ -28,6 +33,17 @@ import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
 import use_case.goals.SetTargetUseCase;
+import interface_adapter.recipe.RecipeSavedController;
+import interface_adapter.recipe.RecipeSavedPresenter;
+import interface_adapter.recipe.RecipeSavedViewModel;
+import interface_adapter.recipe.RecipeSearchController;
+import interface_adapter.recipe.RecipeSearchPresenter;
+import interface_adapter.recipe.RecipeSearchViewModel;
+import interface_adapter.recipe.SaveRecipeController;
+import interface_adapter.recipe.SaveRecipePresenter;
+import interface_adapter.update_profile.UpdateProfileController;
+import interface_adapter.update_profile.UpdateProfilePresenter;
+import interface_adapter.update_profile.UpdateProfileViewModel;
 import use_case.add_friend.AddFriendInputBoundary;
 import use_case.add_friend.AddFriendInteractor;
 import use_case.add_friend.AddFriendOutputBoundary;
@@ -42,10 +58,16 @@ import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.log_meals.LogMealsInputBoundary;
 import use_case.log_meals.LogMealsInteractor;
-import use_case.log_meals.LogMealsOutputBoundary;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
+import use_case.delete_recipe.*;
+import use_case.save_recipe.*;
+import use_case.recipe_search.*;
+import use_case.saved_recipe.*;
+import use_case.update_profile.UpdateProfileInputBoundary;
+import use_case.update_profile.UpdateProfileInteractor;
+import use_case.update_profile.UpdateProfileOutputBoundary;
 import view.*;
 import view.DashboardView;
 import view.LogMealsView;
@@ -85,6 +107,8 @@ public class AppBuilder {
     private DashboardViewModel dashboardViewModel;
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
+    private UpdateProfileView updateProfileView;
+    private UpdateProfileViewModel updateProfileViewModel;
     private RecipeMenuView recipeMenuView;
     private LogMealsView logMealsView;
 
@@ -92,9 +116,6 @@ public class AppBuilder {
         cardPanel.setLayout(cardLayout);
         cardPanel.add(legacy, "Legacy");
         userDataAccess.save(user);
-
-        RecipeModuleBuilder recipeBuilder = new RecipeModuleBuilder(userDataAccess);
-        this.recipeMenuView = recipeBuilder.buildRecipeMenuView(user.getUsername());
     }
 
     public AppBuilder addLoginView(){
@@ -141,6 +162,13 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addUpdateProfileView(){
+        this.updateProfileViewModel = new UpdateProfileViewModel();
+        this.updateProfileView = new UpdateProfileView(updateProfileViewModel, navigation);
+        cardPanel.add(updateProfileView, updateProfileView.getViewName());
+        return this;
+    }
+
     public AppBuilder addLoginUseCase() {
         final LoginOutputBoundary loginPresenter = new LoginPresenter(loginViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(userDataAccess, loginPresenter);
@@ -184,6 +212,14 @@ public class AppBuilder {
                 profileController.loadProfile(currentUser);
             }
         });
+        return this;
+    }
+
+    public AppBuilder addUpdateProfileUseCase(){
+        final UpdateProfileOutputBoundary updateProfilePresenter = new UpdateProfilePresenter(updateProfileViewModel);
+        final UpdateProfileInputBoundary updateProfileInteractor = new UpdateProfileInteractor(userDataAccess, updateProfilePresenter);
+        final UpdateProfileController updateProfileController = new UpdateProfileController(updateProfileInteractor, sessionManager);
+        updateProfileView.setProfileController(updateProfileController);
         return this;
     }
 
@@ -235,6 +271,71 @@ public class AppBuilder {
 
         // Connect to dashboard
         dashboardView.setLogMealsView(logMealsView);
+
+        return this;
+    }
+
+    public AppBuilder addRecipeUseCase() {
+        navigation.registerRefresh("Dashboard", () -> {
+            String currentUser = sessionManager.getCurrentUsername();
+            if (currentUser != null && recipeMenuView == null) {
+                try {
+                    RecipeSearchDataAccessInterface searchDAO =
+                            new TheMealDBRecipeDataAccessObject();
+                    RecipeDataAccessInterface recipeDataAccess =
+                            new InMemoryRecipeDataAccessObject();
+
+                    // ViewModels
+                    RecipeSearchViewModel searchVM = new RecipeSearchViewModel();
+                    RecipeSavedViewModel savedVM  = new RecipeSavedViewModel();
+
+                    // Presenters
+                    SearchRecipeOutputBoundary searchPresenter =
+                            new RecipeSearchPresenter(searchVM);
+                    SaveRecipeOutputBoundary savePresenter =
+                            new SaveRecipePresenter(searchVM);
+                    GetSavedRecipesOutputBoundary getSavedPresenter =
+                            new RecipeSavedPresenter(savedVM);
+                    DeleteSavedRecipeOutputBoundary deletePresenter =
+                            new RecipeSavedPresenter(savedVM);
+
+                    // Use cases
+                    SearchRecipeInputBoundary searchInteractor =
+                            new SearchRecipeInteractor(searchDAO, searchPresenter);
+
+                    SaveRecipeInputBoundary saveInteractor =
+                            new SaveRecipeInteractor(userDataAccess, recipeDataAccess, savePresenter);
+
+                    GetSavedRecipesInputBoundary getSavedInteractor =
+                            new GetSavedRecipesInteractor(userDataAccess, searchDAO, getSavedPresenter);
+
+                    DeleteSavedRecipeInputBoundary deleteSavedInteractor =
+                            new DeleteSavedRecipeInteractor(userDataAccess, deletePresenter);
+
+                    // Controllers
+                    RecipeSearchController searchController =
+                            new RecipeSearchController(searchInteractor);
+                    SaveRecipeController saveController =
+                            new SaveRecipeController(saveInteractor);
+                    RecipeSavedController savedController =
+                            new RecipeSavedController(getSavedInteractor, deleteSavedInteractor);
+
+                    recipeMenuView = new RecipeMenuView(
+                            searchController,
+                            saveController,
+                            searchVM,
+                            savedController,
+                            savedVM,
+                            currentUser
+                    );
+
+                    dashboardView.setRecipeMenuView(recipeMenuView);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return this;
     }

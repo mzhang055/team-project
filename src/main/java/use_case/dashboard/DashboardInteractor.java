@@ -46,6 +46,6 @@ public class DashboardInteractor implements DashboardInputBoundary{
             fibers += x.getFiber();
             sugars += x.getSugar();
         }
-        return new DashboardOutputData(calories, remaining, proteins, fats, carbs, fibers, sugars);
+        return new DashboardOutputData(calories, remaining, proteins, carbs, fats, fibers, sugars);
     }
 }

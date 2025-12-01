@@ -1,4 +1,4 @@
-package use_case.recipe_log;
+package use_case.delete_recipe;
 
 import entities.User;
 import data_access.UserDataAccessInterface;
