@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardState {
+    // === Targets for the day ===
+    private int caloriesTarget;
+    private int proteinTarget;
+    private int carbsTarget;
+    private int fatsTarget;
+    private int fiberTarget;
+    private int sugarTarget;
+
     private double calories;
     private double remaining;
     private double protein;
@@ -57,4 +65,53 @@ public class DashboardState {
 
     public List<String> getFriendNames() { return friendNames; }
     public void setFriendNames(List<String> friendNames) { this.friendNames = friendNames; }
+
+    public int getCaloriesTarget() {
+        return caloriesTarget;
+    }
+
+    public void setCaloriesTarget(int caloriesTarget) {
+        this.caloriesTarget = caloriesTarget;
+    }
+
+    public int getProteinTarget() {
+        return proteinTarget;
+    }
+
+    public void setProteinTarget(int proteinTarget) {
+        this.proteinTarget = proteinTarget;
+    }
+
+    public int getCarbsTarget() {
+        return carbsTarget;
+    }
+
+    public void setCarbsTarget(int carbsTarget) {
+        this.carbsTarget = carbsTarget;
+    }
+
+    public int getFatsTarget() {
+        return fatsTarget;
+    }
+
+    public void setFatsTarget(int fatsTarget) {
+        this.fatsTarget = fatsTarget;
+    }
+
+    public int getFiberTarget() {
+        return fiberTarget;
+    }
+
+    public void setFiberTarget(int fiberTarget) {
+        this.fiberTarget = fiberTarget;
+    }
+
+    public int getSugarTarget() {
+        return sugarTarget;
+    }
+
+    public void setSugarTarget(int sugarTarget) {
+        this.sugarTarget = sugarTarget;
+    }
+
 }
