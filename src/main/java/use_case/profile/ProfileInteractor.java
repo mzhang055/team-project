@@ -20,6 +20,9 @@ public class ProfileInteractor implements ProfileInputBoundary {
         double height = user.getHeight();
         double weight = user.getWeight();
         String allergies = user.getAllergies();
+        if (allergies.isEmpty()) {
+            allergies = "None";
+        }
         boolean vegan = user.isVegan();
         ProfileOutputData output = new ProfileOutputData(userId, password, height, weight, allergies, vegan);
         presenter.updateProfile(output);
