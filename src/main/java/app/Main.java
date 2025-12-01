@@ -53,7 +53,7 @@ public class Main {
         AddFriendController addFriendController = new AddFriendController(addFriendInteractor);
 
         // viewManager.showLoginView();
-        }
+
     }
 
     private static LogoutUI setupLogoutForDashboard(LogoutViewModel logoutViewModel) {
