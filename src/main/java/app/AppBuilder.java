@@ -92,8 +92,7 @@ public class AppBuilder {
     final LegacyViewManagerModel legacyVMM = new LegacyViewManagerModel(legacy);
     ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel,legacyVMM);
 
-    private final UserDataAccessInterface userDataAccess;
-    private final MealDataAccessInterface mealDataAccess;
+
     private final UserDataAccessInterface localUserDataAccess =
             new FileUserDataAccessObject("users.json");
     private final RemoteAuthGateway remoteAuthGateway = new RemoteAuthGateway();
@@ -124,7 +123,7 @@ public class AppBuilder {
 
     public AppBuilder(UserDataAccessInterface userDataAccess, MealDataAccessInterface mealDataAccess) {
         this.userDataAccess = userDataAccess;
-        this.mealDataAccess = mealDataAccess;
+        this.mealDataAccess = (InMemoryMealDataAccessObject) mealDataAccess;
         this.sessionManager = new SessionManager();
         this.navigation = new Navigation(viewManagerModel, legacyVMM, sessionManager);
 
@@ -132,8 +131,6 @@ public class AppBuilder {
         cardPanel.add(legacy, "Legacy");
         userDataAccess.save(user);
 
-        RecipeModuleBuilder recipeBuilder = new RecipeModuleBuilder(userDataAccess);
-        this.recipeMenuView = recipeBuilder.buildRecipeMenuView(user.getUsername());
     }
 
     public AppBuilder addLoginView(){
@@ -154,6 +151,13 @@ public class AppBuilder {
         this.addFriendViewModel = new AddFriendViewModel();
         this.addFriendView = new AddFriendView(addFriendViewModel, navigation);
         legacyVMM.addView("Add Friend", addFriendView);
+        navigation.registerRefresh("Add Friend", () -> {
+            String current = navigation.getCurrentUsername();
+            if (current == null) return;
+            User user = userDataAccess.getUser(current);
+            if (user == null) return;
+            addFriendViewModel.setIncomingRequests(user.getIncomingFriendRequests());
+        });
         return this;
     }
 
@@ -179,7 +183,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginPresenter = new LoginPresenter(loginViewModel);
+        final LoginOutputBoundary loginPresenter = new LoginPresenter(loginViewModel, navigation);
         final LoginInputBoundary loginInteractor = new LoginInteractor(userDataAccess, loginPresenter);
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
@@ -233,10 +237,24 @@ public class AppBuilder {
     }
 
     public AppBuilder addAddFriendUseCase() {
+        AddFriendViewModel addFriendViewModel = this.addFriendViewModel;
+        AddFriendView addFriendView = this.addFriendView;
         final AddFriendOutputBoundary addFriendPresenter = new AddFriendPresenter(addFriendViewModel);
         final AddFriendInputBoundary addFriendInteractor = new AddFriendInteractor(userDataAccess, addFriendPresenter);
         final AddFriendController addFriendController = new AddFriendController(addFriendInteractor);
         addFriendView.setAddFriendController(addFriendController);
+        navigation.registerRefresh("Add Friend", () -> {
+            String username = navigation.getCurrentUsername();
+            if (username == null) return;
+
+            User user = userDataAccess.getUser(username);
+            if (user == null) return;
+
+            addFriendViewModel.setIncomingRequests(
+                    user.getIncomingFriendRequests()
+            );
+        });
+        legacyVMM.addView("Add Friend", addFriendView);
         return this;
     }
 
@@ -280,6 +298,71 @@ public class AppBuilder {
 
         // Connect to dashboard
         dashboardView.setLogMealsView(logMealsView);
+
+        return this;
+    }
+
+    public AppBuilder addRecipeUseCase() {
+        navigation.registerRefresh("Dashboard", () -> {
+            String currentUser = sessionManager.getCurrentUsername();
+            if (currentUser != null && recipeMenuView == null) {
+                try {
+                    RecipeSearchDataAccessInterface searchDAO =
+                            new TheMealDBRecipeDataAccessObject();
+                    RecipeDataAccessInterface recipeDataAccess =
+                            new InMemoryRecipeDataAccessObject();
+
+                    // ViewModels
+                    RecipeSearchViewModel searchVM = new RecipeSearchViewModel();
+                    RecipeSavedViewModel savedVM  = new RecipeSavedViewModel();
+
+                    // Presenters
+                    SearchRecipeOutputBoundary searchPresenter =
+                            new RecipeSearchPresenter(searchVM);
+                    SaveRecipeOutputBoundary savePresenter =
+                            new SaveRecipePresenter(searchVM);
+                    GetSavedRecipesOutputBoundary getSavedPresenter =
+                            new RecipeSavedPresenter(savedVM);
+                    DeleteSavedRecipeOutputBoundary deletePresenter =
+                            new RecipeSavedPresenter(savedVM);
+
+                    // Use cases
+                    SearchRecipeInputBoundary searchInteractor =
+                            new SearchRecipeInteractor(searchDAO, searchPresenter);
+
+                    SaveRecipeInputBoundary saveInteractor =
+                            new SaveRecipeInteractor(userDataAccess, recipeDataAccess, savePresenter);
+
+                    GetSavedRecipesInputBoundary getSavedInteractor =
+                            new GetSavedRecipesInteractor(userDataAccess, searchDAO, getSavedPresenter);
+
+                    DeleteSavedRecipeInputBoundary deleteSavedInteractor =
+                            new DeleteSavedRecipeInteractor(userDataAccess, deletePresenter);
+
+                    // Controllers
+                    RecipeSearchController searchController =
+                            new RecipeSearchController(searchInteractor);
+                    SaveRecipeController saveController =
+                            new SaveRecipeController(saveInteractor);
+                    RecipeSavedController savedController =
+                            new RecipeSavedController(getSavedInteractor, deleteSavedInteractor);
+
+                    recipeMenuView = new RecipeMenuView(
+                            searchController,
+                            saveController,
+                            searchVM,
+                            savedController,
+                            savedVM,
+                            currentUser
+                    );
+
+                    dashboardView.setRecipeMenuView(recipeMenuView);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         return this;
     }

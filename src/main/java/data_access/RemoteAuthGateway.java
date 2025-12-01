@@ -24,22 +24,36 @@ public class RemoteAuthGateway {
     private final OkHttpClient client = new OkHttpClient();
 
     public boolean userExists(String username) {
-        try {
-            JSONObject response = getUserJson(username);
-            return response != null && response.optInt(STATUS_CODE_LABEL) == SUCCESS_CODE;
-        } catch (Exception e) {
+        HttpUrl url = HttpUrl.parse(BASE_URL + "/users/" + username);
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                return false;
+            }
+            return true;
+        } catch (IOException e) {
+            System.err.println("userExists failed: " + e.getMessage());
             return false;
         }
     }
 
     public String getPassword(String username) {
-        try {
-            JSONObject response = getUserJson(username);
-            if (response == null || response.optInt(STATUS_CODE_LABEL) != SUCCESS_CODE) return null;
-            JSONObject userJson = response.getJSONObject("user");
-            return userJson.getString(PASSWORD_KEY);
-        } catch (Exception e) {
-            return null;
+        HttpUrl url = HttpUrl.parse(BASE_URL + "/users/" + username + "/password");
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful() || response.body() == null) {
+                throw new RuntimeException("Failed to get password, status = " + response.code());
+            }
+            return response.body().string();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to contact auth server", e);
         }
     }
 
