@@ -60,7 +60,6 @@ import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.log_meals.LogMealsInputBoundary;
 import use_case.log_meals.LogMealsInteractor;
-import use_case.log_meals.LogMealsOutputBoundary;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
@@ -71,6 +70,9 @@ import use_case.delete_recipe.*;
 import use_case.save_recipe.*;
 import use_case.recipe_search.*;
 import use_case.saved_recipe.*;
+import use_case.update_profile.UpdateProfileInputBoundary;
+import use_case.update_profile.UpdateProfileInteractor;
+import use_case.update_profile.UpdateProfileOutputBoundary;
 import view.*;
 import view.DashboardView;
 import view.LogMealsView;
@@ -130,7 +132,6 @@ public class AppBuilder {
         cardPanel.setLayout(cardLayout);
         cardPanel.add(legacy, "Legacy");
         userDataAccess.save(user);
-
     }
 
     public AppBuilder addLoginView(){
