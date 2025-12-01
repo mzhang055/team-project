@@ -54,6 +54,7 @@ public class RecipeMenuView extends JFrame {
     }
 
     private void openSearchWindow() {
+        searchViewModel.resetForNewWindow();
         RecipeSearchView view = new RecipeSearchView(
                 searchController,
                 saveController,

@@ -26,6 +26,14 @@ public class RecipeSearchViewModel {
         }
     }
 
+    public void resetForNewWindow() {
+        recipes.clear();
+        selectedIndex = -1;
+        searchResultText = "";
+        canSave = false;
+        lastSaveMessage = "";
+    }
+
     public int getSelectedIndex() {
         return selectedIndex;
     }

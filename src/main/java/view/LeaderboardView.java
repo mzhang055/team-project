@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.Navigation;
 import interface_adapter.remove_friend.RemoveFriendDialog;
 import use_case.view_leaderboard.LeaderboardInteractor;
 import interface_adapter.remove_friend.RemoveFriendController;
@@ -17,7 +18,9 @@ public class LeaderboardView extends JPanel {
     private final LeaderboardViewmodel viewModel;
     private final JPanel leaderboardPanel;
     private final JButton refreshButton;
+    private final JButton backButton;
     private final LeaderboardInteractor interactor;
+    private Navigation navigation;
 
     private RemoveFriendController removeFriendController;
     private String currentUsername;
@@ -25,20 +28,31 @@ public class LeaderboardView extends JPanel {
     public LeaderboardView(RemoveFriendController removeFriendController, String currentUsername) {
         this.removeFriendController = removeFriendController;
         this.currentUsername = currentUsername;
-
-        use_case.goals.UserManager.initializeTestData();
+        this.navigation = null;
 
         this.viewModel = new LeaderboardViewmodel();
         LeaderboardPresenter presenter = new LeaderboardPresenter(viewModel);
         LeaderboardDataAccess dataAccess = new LeaderboardDataAccess();
-
         this.interactor = new LeaderboardInteractor(presenter, dataAccess);
 
+        this.setLayout(new BorderLayout());
+        JPanel topPanel = new JPanel(new BorderLayout());
+
+        backButton = new JButton("← Back to Dashboard");
+        backButton.addActionListener(e -> goBackToDashboard());
+
+        topPanel.add(backButton, BorderLayout.WEST);
+
+        JLabel titleLabel = new JLabel("Leaderboard", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        topPanel.add(titleLabel, BorderLayout.CENTER);
 
         JLabel instructionLabel = new JLabel("Click on any username to remove as friend");
         instructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         instructionLabel.setForeground(Color.BLACK);
-        add(instructionLabel, BorderLayout.NORTH);
+        add(instructionLabel, BorderLayout.SOUTH);
+
+        this.add(topPanel, BorderLayout.NORTH);
 
         leaderboardPanel = new JPanel();
         leaderboardPanel.setLayout(new BoxLayout(leaderboardPanel, BoxLayout.Y_AXIS));
@@ -52,6 +66,18 @@ public class LeaderboardView extends JPanel {
         add(refreshButton, BorderLayout.SOUTH);
 
         refreshLeaderboard();
+    }
+
+    private void goBackToDashboard() {
+        if (navigation != null) {
+            navigation.goTo("Dashboard");
+        } else {
+            System.out.println("Navigation not set for LeaderboardView");
+        }
+    }
+
+    public void setNavigation(Navigation navigation) {
+        this.navigation = navigation;
     }
 
     private void refreshLeaderboard() {
@@ -142,5 +168,12 @@ public class LeaderboardView extends JPanel {
 
             refreshLeaderboard();
         }
+    }
+    public String getViewname(){
+        return "Leaderboard";
+    }
+
+    public void setRemoveFriendController(RemoveFriendController controller) {
+        this.removeFriendController = controller;
     }
 }
