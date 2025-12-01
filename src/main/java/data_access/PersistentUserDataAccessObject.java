@@ -1,6 +1,7 @@
 package data_access;
 
 import entities.User;
+import java.util.List;
 
 public class PersistentUserDataAccessObject implements UserDataAccessInterface {
     private final UserDataAccessInterface localDAO;
@@ -40,5 +41,9 @@ public class PersistentUserDataAccessObject implements UserDataAccessInterface {
         } catch (Exception e) {
             throw new RuntimeException("Failed to sync", e);
         }
+    }
+
+    public List<User> getAllUsers() {
+        return localDAO.getAllUsers();
     }
 }

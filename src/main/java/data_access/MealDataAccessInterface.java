@@ -2,7 +2,6 @@ package data_access;
 
 import entities.Meal;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Interface for meal persistence operations.
@@ -26,35 +25,7 @@ public interface MealDataAccessInterface {
      */
     List<Meal> getMealsByUserId(String userId);
 
-    /**
-     * Retrieves a specific meal by its ID.
-     *
-     * @param mealId the meal's ID
-     * @return Optional containing the meal if found, empty otherwise
-     */
-    Optional<Meal> getMealById(String mealId);
-
-    /**
-     * Deletes a meal by its ID.
-     *
-     * @param mealId the meal's ID
-     * @return true if deletion was successful, false otherwise
-     */
-    boolean delete(String mealId);
-
-    /**
-     * Checks if any meals exist for a user.
-     *
-     * @param userId the user's ID
-     * @return true if user has logged meals, false otherwise
-     */
-    boolean hasLoggedMeals(String userId);
-
-    /**
-     * Updates an existing meal with new information.
-     *
-     * @param meal the updated meal (must have existing ID)
-     * @return true if update was successful, false otherwise
-     */
     boolean update(Meal meal);
+
+    boolean delete(String mealID);
 }

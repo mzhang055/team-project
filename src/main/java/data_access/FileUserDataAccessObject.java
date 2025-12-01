@@ -7,6 +7,8 @@ import org.json.JSONObject;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class FileUserDataAccessObject implements UserDataAccessInterface {
     private static final String username   = "username";
@@ -175,5 +177,9 @@ public class FileUserDataAccessObject implements UserDataAccessInterface {
         }
 
         return user;
+    }
+
+    public List<User> getAllUsers() {
+        return new ArrayList<>(users.values());
     }
 }

@@ -1,6 +1,7 @@
 package app;
 
 import data_access.*;
+import interface_adapter.SessionManager;
 import interface_adapter.log_meals.*;
 import use_case.log_meals.LogMealsInteractor;
 import view.LogMealsView;
@@ -31,6 +32,10 @@ public class LogMealsApp {
         RemoteAuthGateway remoteAuthGateway = new RemoteAuthGateway();
         UserDataAccessInterface userDataAccess =
                 new PersistentUserDataAccessObject(localUserDataAccess, remoteAuthGateway);
+
+        // Create session manager and set the test user
+        SessionManager sessionManager = new SessionManager();
+        sessionManager.setCurrentUsername(USER_ID);
 
         // Create view model
         LogMealsViewModel viewModel = new LogMealsViewModel();

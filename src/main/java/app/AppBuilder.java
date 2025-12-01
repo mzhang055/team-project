@@ -3,6 +3,8 @@ package app;
 import data_access.*;
 import data_access.InMemoryMealDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
+import data_access.MealDataAccessInterface;
+import data_access.UserDataAccessInterface;
 import entities.User;
 import entities.UserFactory;
 import interface_adapter.LegacyViewManagerModel;
@@ -67,6 +69,8 @@ public class AppBuilder {
     final LegacyViewManagerModel legacyVMM = new LegacyViewManagerModel(legacy);
     ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel,legacyVMM);
 
+    private final UserDataAccessInterface userDataAccess;
+    private final MealDataAccessInterface mealDataAccess;
     private final UserDataAccessInterface localUserDataAccess =
             new FileUserDataAccessObject("users.json");
     private final RemoteAuthGateway remoteAuthGateway = new RemoteAuthGateway();
@@ -75,8 +79,8 @@ public class AppBuilder {
             localUserDataAccess, remoteAuthGateway);
     InMemoryMealDataAccessObject mealDataAccess = new InMemoryMealDataAccessObject();
 
-    SessionManager sessionManager = new SessionManager();
-    Navigation navigation = new Navigation(viewManagerModel,legacyVMM,sessionManager);
+    private final SessionManager sessionManager;
+    private final Navigation navigation;
 
     User user = new User("Cherry", "Red");
 
@@ -93,7 +97,12 @@ public class AppBuilder {
     private RecipeMenuView recipeMenuView;
     private LogMealsView logMealsView;
 
-    public AppBuilder() {
+    public AppBuilder(UserDataAccessInterface userDataAccess, MealDataAccessInterface mealDataAccess) {
+        this.userDataAccess = userDataAccess;
+        this.mealDataAccess = mealDataAccess;
+        this.sessionManager = new SessionManager();
+        this.navigation = new Navigation(viewManagerModel, legacyVMM, sessionManager);
+
         cardPanel.setLayout(cardLayout);
         cardPanel.add(legacy, "Legacy");
         userDataAccess.save(user);

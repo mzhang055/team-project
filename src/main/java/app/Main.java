@@ -29,13 +29,18 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args){
-        SwingUtilities.invokeLater(Main::startApp);
+        SwingUtilities.invokeLater(() -> startApp());
     }
-    private static void startApp(){
+
+    private static void startApp() {
         UserDataAccessInterface localUserDataAccess = new FileUserDataAccessObject("users.json");
         RemoteAuthGateway remoteAuthGateway = new RemoteAuthGateway();
         UserDataAccessInterface userDataAccess =
                 new PersistentUserDataAccessObject(localUserDataAccess, remoteAuthGateway);
+        MealDataAccessInterface mealDataAccess = new InMemoryMealDataAccessObject();
+        AppBuilder appBuilder = new AppBuilder(userDataAccess, mealDataAccess);
+        JFrame application = appBuilder.build();
+        application.setVisible(true);
 
         CreateAccountViewModel createAccountViewModel = new CreateAccountViewModel();
         CreateAccountPresenter createAccountPresenter = new CreateAccountPresenter(createAccountViewModel);
@@ -55,7 +60,7 @@ public class Main {
 
         // viewManager.showLoginView();
         }
-    }
+
 
     private static LogoutUI setupLogoutForDashboard(LogoutViewModel logoutViewModel) {
         LogoutPresenter logoutPresenter = new LogoutPresenter(logoutViewModel);
@@ -73,4 +78,4 @@ public class Main {
         return logoutUI;
 
     }
-
+}

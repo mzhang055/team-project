@@ -1,5 +1,6 @@
 package entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -8,13 +9,14 @@ import java.util.UUID;
  * Entity class representing a logged meal/food item.
  * Follows Java best practices: immutable design, proper encapsulation, and validation.
  */
-public final class Meal {
+public class Meal implements Serializable {
     private final String id;
     private final String foodName;
     private final MealType mealType;
     private final NutritionalInfo nutritionalInfo;
     private final LocalDateTime loggedAt;
     private final String userId;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Private constructor to enforce use of builder pattern.
