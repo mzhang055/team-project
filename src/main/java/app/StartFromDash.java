@@ -11,6 +11,7 @@ public class StartFromDash {
                 .addDashboardView()
                 .addProfileView()
                 .addAddFriendView()
+                .addLeaderboardView()
                 .addLoginUseCase()
                 .addCreateAccountUseCase()
                 .addDashboardUseCase()

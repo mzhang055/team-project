@@ -27,6 +27,9 @@ import interface_adapter.log_meals.LogMealsViewModel;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.view_leaderboard.LeaderboardController;
+import interface_adapter.view_leaderboard.LeaderboardPresenter;
+import interface_adapter.view_leaderboard.LeaderboardViewmodel;
 import use_case.add_friend.AddFriendInputBoundary;
 import use_case.add_friend.AddFriendInteractor;
 import use_case.add_friend.AddFriendOutputBoundary;
@@ -45,6 +48,9 @@ import use_case.log_meals.LogMealsOutputBoundary;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
+import use_case.view_leaderboard.LeaderboardDataAccess;
+import use_case.view_leaderboard.LeaderboardDataAccessInterface;
+import use_case.view_leaderboard.LeaderboardInteractor;
 import view.*;
 import view.DashboardView;
 import view.LogMealsView;
@@ -61,6 +67,9 @@ public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final JPanel legacy = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
+    private LeaderboardView leaderboardView;
+    private LeaderboardViewmodel leaderboardViewModel;
+    private DashboardView dashboardView;
     final UserFactory userFactory = new UserFactory();
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     final LegacyViewManagerModel legacyVMM = new LegacyViewManagerModel(legacy);
@@ -80,7 +89,6 @@ public class AppBuilder {
     private CreateAccountView createAccountView;
     private AddFriendViewModel addFriendViewModel;
     private AddFriendView  addFriendView;
-    private DashboardView dashboardView;
     private DashboardViewModel dashboardViewModel;
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
@@ -225,6 +233,24 @@ public class AppBuilder {
 
         // Connect to dashboard
         dashboardView.setLogMealsView(logMealsView);
+
+        return this;
+    }
+
+    public AppBuilder addLeaderboardView(){
+        this.leaderboardViewModel = new LeaderboardViewmodel();
+
+        LeaderboardPresenter leaderboardPresenter = new LeaderboardPresenter(leaderboardViewModel);
+        LeaderboardDataAccessInterface leaderboardDataAccess = new LeaderboardDataAccess();
+        LeaderboardInteractor leaderboardInteractor = new LeaderboardInteractor(leaderboardPresenter, leaderboardDataAccess);
+        LeaderboardController leaderboardController = new LeaderboardController(leaderboardInteractor);
+
+        String currentUsername = sessionManager.getCurrentUsername();
+        if (currentUsername == null) {
+            currentUsername = "defaultUser";
+        }
+        this.leaderboardView = new LeaderboardView(null, currentUsername);
+        cardPanel.add(leaderboardView, leaderboardView.getViewname());
 
         return this;
     }

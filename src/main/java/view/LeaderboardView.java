@@ -26,8 +26,6 @@ public class LeaderboardView extends JPanel {
         this.removeFriendController = removeFriendController;
         this.currentUsername = currentUsername;
 
-        use_case.goals.UserManager.initializeTestData();
-
         this.viewModel = new LeaderboardViewmodel();
         LeaderboardPresenter presenter = new LeaderboardPresenter(viewModel);
         LeaderboardDataAccess dataAccess = new LeaderboardDataAccess();
@@ -145,5 +143,9 @@ public class LeaderboardView extends JPanel {
     }
     public String getViewname(){
         return "Leaderboard";
+    }
+
+    public void setRemoveFriendController(RemoveFriendController controller) {
+        this.removeFriendController = controller;
     }
 }
