@@ -1,5 +1,6 @@
 package view;
 
+import app.GoalsGuiMain;
 import interface_adapter.Navigation;
 import interface_adapter.dashboard.DashboardController;
 import interface_adapter.dashboard.DashboardState;
@@ -22,7 +23,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private LogMealsView logMealsView = null;
 
     // buttons that will click
-    private final JButton setTargetButton;
+    private final JButton setGoalButton;
     private final JButton logMealsButton;
     private final JButton saveRecipeButton;
     private final JButton profileButton;
@@ -113,7 +114,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
 
         final JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         // initalize the buttons
-        setTargetButton = new JButton("Set Target");
+        setGoalButton = new JButton("Set Target");
         logMealsButton = new JButton("Log Meals");
         saveRecipeButton= new JButton("Recipe");
         addFriendsButton = new JButton("Add Friends");
@@ -121,8 +122,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         leaderboardButton = new JButton("Leaderboard");
         logoutButton = new JButton("Logout");
         // link buttons to the view
-        setTargetButton.setEnabled(false);
-        setTargetButton.addActionListener(e -> goToSetTarget());
+        setGoalButton.addActionListener(e -> goToSetTarget());
         logMealsButton.addActionListener(e -> goToLogMeals() );
         saveRecipeButton.addActionListener(e -> goToSaveRecipe());
         addFriendsButton.addActionListener(e -> goToAddFriends());
@@ -132,7 +132,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         logoutButton.setEnabled(false);
         logoutButton.addActionListener(e -> goToLogout());
         // add the buttons
-        buttons.add(setTargetButton);
+        buttons.add(setGoalButton);
         buttons.add(logMealsButton);
         buttons.add(saveRecipeButton);
         buttons.add(addFriendsButton);
@@ -145,8 +145,19 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         this.add(buttons, BorderLayout.SOUTH);
     }
 
-    // TODO
     private void goToSetTarget(){
+        GoalsGuiMain.open((targetCalories, proteinGrams, carbGrams, fatGrams) -> {
+            int calsInt = (int) Math.round(targetCalories);
+            int protInt = (int) Math.round(proteinGrams);
+            int carbInt = (int) Math.round(carbGrams);
+            int fatInt = (int) Math.round(fatGrams);
+
+            calories.setText("0");
+            remaining.setText(String.valueOf(calsInt));
+            protein.setText(String.valueOf(protInt));
+            carbs.setText(String.valueOf(carbInt));
+            fats.setText(String.valueOf(fatInt));
+        });
     }
     private void goToLogMeals(){
         if (logMealsView != null) {
