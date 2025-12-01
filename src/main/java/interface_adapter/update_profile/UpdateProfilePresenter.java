@@ -5,16 +5,33 @@ import use_case.update_profile.UpdateProfileOutputBoundary;
 
 public class UpdateProfilePresenter implements UpdateProfileOutputBoundary {
     private final UpdateProfileViewModel viewModel;
+
     public  UpdateProfilePresenter(UpdateProfileViewModel viewModel){
         this.viewModel = viewModel;
     }
 
-    public void prepareSuccessView(UpdateProfileOutputData outputData){
-        viewModel.setSuccess(true);
-        viewModel.setMessage(outputData.getMessage());
+    @Override
+    public void prepareSuccessView(UpdateProfileOutputData outputData) {
+        UpdateProfileState state = viewModel.getState();
+
+        state.setUsername(outputData.getUsername());
+        state.setMessage(outputData.getMessage());
+        state.setErrorMessage("");
+        state.setUpdateEnabled(true);
+
+        viewModel.setState(state);
+        viewModel.firePropertyChange();
     }
-    public void prepareFailView(String errorMessage){
-        viewModel.setSuccess(false);
-        viewModel.setMessage(errorMessage);
+
+    @Override
+    public void prepareFailView(String errorMessage) {
+        UpdateProfileState state = viewModel.getState();
+
+        state.setErrorMessage(errorMessage);
+        state.setMessage("");
+        state.setUpdateEnabled(false);
+
+        viewModel.setState(state);
+        viewModel.firePropertyChange();
     }
 }
