@@ -1,7 +1,10 @@
 package app;
 
+import data_access.*;
 import data_access.InMemoryMealDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
+import data_access.MealDataAccessInterface;
+import data_access.UserDataAccessInterface;
 import data_access.InMemoryRecipeDataAccessObject;
 import data_access.MealDataAccessInterface;
 import data_access.UserDataAccessInterface;
@@ -32,6 +35,9 @@ import interface_adapter.log_meals.LogMealsViewModel;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
+import interface_adapter.update_profile.UpdateProfileController;
+import interface_adapter.update_profile.UpdateProfilePresenter;
+import interface_adapter.update_profile.UpdateProfileViewModel;
 import interface_adapter.recipe.RecipeSavedController;
 import interface_adapter.recipe.RecipeSavedPresenter;
 import interface_adapter.recipe.RecipeSavedViewModel;
@@ -63,6 +69,9 @@ import use_case.log_meals.LogMealsInteractor;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
+import use_case.update_profile.UpdateProfileInputBoundary;
+import use_case.update_profile.UpdateProfileInteractor;
+import use_case.update_profile.UpdateProfileOutputBoundary;
 import use_case.delete_recipe.*;
 import use_case.save_recipe.*;
 import use_case.recipe_search.*;
@@ -97,11 +106,17 @@ public class AppBuilder {
     final LegacyViewManagerModel legacyVMM = new LegacyViewManagerModel(legacy);
     ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel,legacyVMM);
 
-    InMemoryUserDataAccessObject userDataAccess = new InMemoryUserDataAccessObject();
+
+    private final UserDataAccessInterface localUserDataAccess =
+            new FileUserDataAccessObject("users.json");
+    private final RemoteAuthGateway remoteAuthGateway = new RemoteAuthGateway();
+
+    UserDataAccessInterface userDataAccess = new PersistentUserDataAccessObject(
+            localUserDataAccess, remoteAuthGateway);
     InMemoryMealDataAccessObject mealDataAccess = new InMemoryMealDataAccessObject();
 
-    SessionManager sessionManager = new SessionManager();
-    Navigation navigation = new Navigation(viewManagerModel,legacyVMM,sessionManager);
+    private final SessionManager sessionManager;
+    private final Navigation navigation;
 
     User user = new User("Cherry", "Red");
 
@@ -119,7 +134,12 @@ public class AppBuilder {
     private RecipeMenuView recipeMenuView;
     private LogMealsView logMealsView;
 
-    public AppBuilder() {
+    public AppBuilder(UserDataAccessInterface userDataAccess, MealDataAccessInterface mealDataAccess) {
+        this.userDataAccess = userDataAccess;
+        this.mealDataAccess = (InMemoryMealDataAccessObject) mealDataAccess;
+        this.sessionManager = new SessionManager();
+        this.navigation = new Navigation(viewManagerModel, legacyVMM, sessionManager);
+
         cardPanel.setLayout(cardLayout);
         cardPanel.add(legacy, "Legacy");
         userDataAccess.save(user);
@@ -143,6 +163,13 @@ public class AppBuilder {
         this.addFriendViewModel = new AddFriendViewModel();
         this.addFriendView = new AddFriendView(addFriendViewModel, navigation);
         legacyVMM.addView("Add Friend", addFriendView);
+        navigation.registerRefresh("Add Friend", () -> {
+            String current = navigation.getCurrentUsername();
+            if (current == null) return;
+            User user = userDataAccess.getUser(current);
+            if (user == null) return;
+            addFriendViewModel.setIncomingRequests(user.getIncomingFriendRequests());
+        });
         return this;
     }
 
@@ -168,7 +195,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginPresenter = new LoginPresenter(loginViewModel);
+        final LoginOutputBoundary loginPresenter = new LoginPresenter(loginViewModel, navigation);
         final LoginInputBoundary loginInteractor = new LoginInteractor(userDataAccess, loginPresenter);
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
@@ -222,10 +249,24 @@ public class AppBuilder {
     }
 
     public AppBuilder addAddFriendUseCase() {
+        AddFriendViewModel addFriendViewModel = this.addFriendViewModel;
+        AddFriendView addFriendView = this.addFriendView;
         final AddFriendOutputBoundary addFriendPresenter = new AddFriendPresenter(addFriendViewModel);
         final AddFriendInputBoundary addFriendInteractor = new AddFriendInteractor(userDataAccess, addFriendPresenter);
         final AddFriendController addFriendController = new AddFriendController(addFriendInteractor);
         addFriendView.setAddFriendController(addFriendController);
+        navigation.registerRefresh("Add Friend", () -> {
+            String username = navigation.getCurrentUsername();
+            if (username == null) return;
+
+            User user = userDataAccess.getUser(username);
+            if (user == null) return;
+
+            addFriendViewModel.setIncomingRequests(
+                    user.getIncomingFriendRequests()
+            );
+        });
+        legacyVMM.addView("Add Friend", addFriendView);
         return this;
     }
 

@@ -51,6 +51,14 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         this.navigation = navigation;
         this.recipeMenuView = recipeMenuView;
 
+        // Listen for when this component becomes visible to refresh dashboard data
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                refreshDashboard();
+            }
+        });
+
         this.setSize(900, 600);
         this.setLayout(new BorderLayout(10, 10));
 
@@ -207,5 +215,18 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
 
     public void setLogMealsView(LogMealsView logMealsView) {
         this.logMealsView = logMealsView;
+    }
+
+    /**
+     * Refreshes the dashboard data by loading the current user's nutritional info.
+     * This is called when the dashboard becomes visible.
+     */
+    private void refreshDashboard() {
+        if (dashboardController != null) {
+            String currentUser = navigation.getCurrentUsername();
+            if (currentUser != null) {
+                dashboardController.loadDashboard(currentUser);
+            }
+        }
     }
 }

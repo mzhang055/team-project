@@ -1,12 +1,8 @@
 package data_access;
 
 import entities.Meal;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.io.*;
 
 /**
  * In-memory implementation of MealDataAccessInterface.
@@ -15,71 +11,75 @@ import java.util.Optional;
 public class InMemoryMealDataAccessObject implements MealDataAccessInterface {
 
     private final Map<String, Meal> meals = new HashMap<>();
-    private final Map<String, List<String>> userMeals = new HashMap<>();
+    private final File storageFile;
+
+    public InMemoryMealDataAccessObject() {
+        this("meals.ser");
+    }
+
+    public InMemoryMealDataAccessObject(String filePath) {
+        this.storageFile = new File(filePath);
+        loadFromFile();
+    }
 
     @Override
-    public boolean save(Meal meal) {
-        if (meal == null || meal.getId() == null) {
-            return false;
-        }
-
+    public synchronized boolean save(Meal meal) {
         meals.put(meal.getId(), meal);
-
-        userMeals.computeIfAbsent(meal.getUserId(), k -> new ArrayList<>()).add(meal.getId());
-
+        saveToFile();
         return true;
     }
 
     @Override
-    public List<Meal> getMealsByUserId(String userId) {
-        List<String> mealIds = userMeals.getOrDefault(userId, new ArrayList<>());
-        List<Meal> userMealsList = new ArrayList<>();
-
-        for (String mealId : mealIds) {
-            Meal meal = meals.get(mealId);
-            if (meal != null) {
-                userMealsList.add(meal);
+    public synchronized List<Meal> getMealsByUserId(String userId) {
+        List<Meal> result = new ArrayList<>();
+        for (Meal meal : meals.values()) {
+            if (meal.getUserId().equals(userId)) {
+                result.add(meal);
             }
         }
-
-        return userMealsList;
+        return result;
     }
 
-    @Override
-    public Optional<Meal> getMealById(String mealId) {
-        return Optional.ofNullable(meals.get(mealId));
+    public boolean update(Meal updatedMeal) {
+        String id = updatedMeal.getId();
+        if (!meals.containsKey(id)) {
+            return false;
+        }
+        meals.put(id, updatedMeal);
+        return true;
     }
 
-    @Override
     public boolean delete(String mealId) {
-        Meal meal = meals.remove(mealId);
-        if (meal != null) {
-            List<String> mealIds = userMeals.get(meal.getUserId());
-            if (mealIds != null) {
-                mealIds.remove(mealId);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean hasLoggedMeals(String userId) {
-        List<String> mealIds = userMeals.get(userId);
-        return mealIds != null && !mealIds.isEmpty();
-    }
-
-    @Override
-    public boolean update(Meal meal) {
-        if (meal == null || meal.getId() == null) {
+        Meal removed = meals.remove(mealId);
+        if (removed == null) {
             return false;
         }
-
-        if (!meals.containsKey(meal.getId())) {
-            return false;
-        }
-
-        meals.put(meal.getId(), meal);
         return true;
+    }
+
+    private void saveToFile() {
+        try (ObjectOutputStream out =
+                     new ObjectOutputStream(new FileOutputStream(storageFile))) {
+            out.writeObject(meals);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadFromFile() {
+        if (!storageFile.exists()) {
+            return;
+        }
+
+        try (ObjectInputStream in =
+                     new ObjectInputStream(new FileInputStream(storageFile))) {
+            Object obj = in.readObject();
+            if (obj instanceof Map) {
+                meals.clear();
+                meals.putAll((Map<String, Meal>) obj);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

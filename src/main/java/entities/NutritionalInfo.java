@@ -1,18 +1,20 @@
 package entities;
 
 import java.util.Objects;
+import java.io.Serializable;
 
 /**
  * Value object representing nutritional information for a meal/food item.
  * Immutable and all measured in grams (except calories)
  */
-public final class NutritionalInfo {
+public class NutritionalInfo implements Serializable {
     private final double calories;
     private final double protein;
     private final double carbohydrates;
     private final double fat;
     private final double fiber;
     private final double sugar;
+    private static final long serialVersionUID = 1L;
 
     private NutritionalInfo(Builder builder) {
         this.calories = builder.calories;

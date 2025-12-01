@@ -1,0 +1,28 @@
+{
+  "123": {
+    "allergies": "",
+    "password": "123",
+    "outgoingRequests": [],
+    "recipeIds": ["52777"],
+    "incomingRequests": [],
+    "weight": 123,
+    "vegan": false,
+    "mealIds": ["72697408-cddc-4aaa-805d-3247e5c77b87"],
+    "friends": [],
+    "username": "123",
+    "height": 123
+  },
+  "Cherry": {
+    "allergies": "",
+    "password": "Red",
+    "outgoingRequests": [],
+    "recipeIds": [],
+    "incomingRequests": [],
+    "weight": 0,
+    "vegan": false,
+    "mealIds": [],
+    "friends": [],
+    "username": "Cherry",
+    "height": 0
+  }
+}
