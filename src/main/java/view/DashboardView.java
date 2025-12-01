@@ -1,6 +1,5 @@
 package view;
 
-import app.GoalsGuiMain;
 import interface_adapter.Navigation;
 import interface_adapter.dashboard.DashboardController;
 import interface_adapter.dashboard.DashboardState;
@@ -11,7 +10,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.function.BiConsumer;
 
 /**
  * The View for when the user is logged into the program.
@@ -35,7 +33,6 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private final JButton logoutButton;
 
     // labels that will update
-    // might be final
     private JLabel calories = new JLabel("--");
     private JLabel remaining = new JLabel("--");
     private JLabel protein = new JLabel("--");
@@ -48,7 +45,10 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private DefaultListModel<String> recipeModel;
     private DefaultListModel<String> friendModel;
 
-    public DashboardView(SetTargetUseCase setTargetUseCase, DashboardViewModel dashboardViewModel, Navigation navigation, RecipeMenuView recipeMenuView) {
+    public DashboardView(SetTargetUseCase setTargetUseCase,
+                         DashboardViewModel dashboardViewModel,
+                         Navigation navigation,
+                         RecipeMenuView recipeMenuView) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
         this.navigation = navigation;
@@ -58,68 +58,77 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         this.setSize(900, 600);
         this.setLayout(new BorderLayout(10, 10));
 
-        JLabel titleLabel = new JLabel("Your Nutrition Dashboard");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
-        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
-        titlePanel.add(titleLabel);
-        this.add(titlePanel, BorderLayout.NORTH);
+        recipeModel = new DefaultListModel<>();
+        JList<String> recipeList = new JList<>(recipeModel);
+        recipeList.setVisibleRowCount(15);
+        JScrollPane recipeScroll = new JScrollPane(recipeList);
+        recipeScroll.setPreferredSize(new Dimension(200, 400));
+        recipeScroll.setMinimumSize(new Dimension(200, 400));
+        this.add(recipeScroll, BorderLayout.WEST);
 
-        // recipeModel = new DefaultListModel<>();
-        // JList<String> recipeList = new JList<>(recipeModel);
-        // recipeList.setVisibleRowCount(15);
-        // JScrollPane recipeScroll = new JScrollPane(recipeList);
-        // recipeScroll.setPreferredSize(new Dimension(200, 400));
-        // recipeScroll.setMinimumSize(new Dimension(200, 400));
-        // this.add(recipeScroll, BorderLayout.WEST);
-
-        // friendModel = new DefaultListModel<>();
-        // JList<String> friendList = new JList<>(friendModel);
-        // friendList.setVisibleRowCount(15);
-        // JScrollPane friendScroll = new JScrollPane(friendList);
-        // friendScroll.setPreferredSize(new Dimension(200, 400));
-        // friendScroll.setMinimumSize(new Dimension(200, 400));
-        // this.add(friendScroll, BorderLayout.EAST);
+        friendModel = new DefaultListModel<>();
+        JList<String> friendList = new JList<>(friendModel);
+        friendList.setVisibleRowCount(15);
+        JScrollPane friendScroll = new JScrollPane(friendList);
+        friendScroll.setPreferredSize(new Dimension(200, 400));
+        friendScroll.setMinimumSize(new Dimension(200, 400));
+        this.add(friendScroll, BorderLayout.EAST);
 
         JPanel nutrition = new JPanel();
-        nutrition.setLayout(new GridLayout(0, 2, 10, 10)); // 2 columns: label + value, with spacing
-        nutrition.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createTitledBorder("Daily Nutrition Info"),
-                BorderFactory.createEmptyBorder(20, 20, 20, 20) // padding inside the box
-        ));
+        nutrition.setLayout(new BoxLayout(nutrition, BoxLayout.Y_AXIS));
+
+        JPanel caloriesRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        caloriesRow.add(new JLabel("Calories:"));
+        caloriesRow.add(this.calories);
+        nutrition.add(caloriesRow);
+
+        JPanel remainingRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        remainingRow.add(new JLabel("Remaining:"));
+        remainingRow.add(this.remaining);
+        nutrition.add(remainingRow);
+
+        JPanel proteinRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        proteinRow.add(new JLabel("Protein:"));
+        proteinRow.add(this.protein);
+        nutrition.add(proteinRow);
+
+        JPanel carbsRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        carbsRow.add(new JLabel("Carbs:"));
+        carbsRow.add(this.carbs);
+        nutrition.add(carbsRow);
+
+        JPanel fatsRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        fatsRow.add(new JLabel("Fats:"));
+        fatsRow.add(this.fats);
+        nutrition.add(fatsRow);
+
+        JPanel fiberRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        fiberRow.add(new JLabel("Fiber:"));
+        fiberRow.add(this.fiber);
+        nutrition.add(fiberRow);
+
+        JPanel sugarRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        sugarRow.add(new JLabel("Sugars:"));
+        sugarRow.add(this.sugars);
+        nutrition.add(sugarRow);
+
         nutrition.setPreferredSize(new Dimension(400, 400));
-
-        BiConsumer<String, JLabel> addRow = (label, value) -> {
-            JLabel lbl = new JLabel(label);
-            lbl.setFont(new Font("Arial", Font.PLAIN, 16));
-            nutrition.add(lbl);
-            value.setFont(new Font("Arial", Font.PLAIN, 16));
-            nutrition.add(value);
-        };
-
-        addRow.accept("Calories:", this.calories);
-        addRow.accept("Remaining:", this.remaining);
-        addRow.accept("Protein:", this.protein);
-        addRow.accept("Carbs:", this.carbs);
-        addRow.accept("Fats:", this.fats);
-        addRow.accept("Fiber:", this.fiber);
-        addRow.accept("Sugars:", this.sugars);
-
-        JPanel centerWrapper = new JPanel(new GridBagLayout()); // to center the panel
-        centerWrapper.add(nutrition);
-        this.add(centerWrapper, BorderLayout.CENTER);
+        nutrition.setMinimumSize(new Dimension(300, 300));
+        this.add(nutrition, BorderLayout.CENTER);
 
         final JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        // initalize the buttons
+        // initialize the buttons
         setGoalButton = new JButton("Set Target");
         logMealsButton = new JButton("Log Meals");
-        saveRecipeButton= new JButton("Recipe");
+        saveRecipeButton = new JButton("Recipe");
         addFriendsButton = new JButton("Add Friends");
         profileButton = new JButton("Profile");
         leaderboardButton = new JButton("Leaderboard");
         logoutButton = new JButton("Logout");
+
         // link buttons to the view
         setGoalButton.addActionListener(e -> goToSetTarget());
-        logMealsButton.addActionListener(e -> goToLogMeals() );
+        logMealsButton.addActionListener(e -> goToLogMeals());
         saveRecipeButton.addActionListener(e -> goToSaveRecipe());
         addFriendsButton.addActionListener(e -> goToAddFriends());
         leaderboardButton.setEnabled(false);
@@ -127,6 +136,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         profileButton.addActionListener(e -> goToProfile());
         logoutButton.setEnabled(false);
         logoutButton.addActionListener(e -> goToLogout());
+
         // add the buttons
         buttons.add(setGoalButton);
         buttons.add(logMealsButton);
@@ -135,55 +145,93 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         buttons.add(leaderboardButton);
         buttons.add(profileButton);
         buttons.add(logoutButton);
-        // add to Dashboard
+
         buttons.setPreferredSize(new Dimension(900, 50));
         buttons.setMinimumSize(new Dimension(800, 50));
         this.add(buttons, BorderLayout.SOUTH);
     }
 
     private void goToSetTarget() {
+        // If "Set Target" is not an actual navigation destination, you can remove this line.
+        navigation.goTo("Set Target");
         setTargetUseCase.openGoalHelper();
     }
-    private void goToLogMeals(){
+
+    private void goToLogMeals() {
         if (logMealsView != null) {
             logMealsView.setVisible(true);
         }
     }
-    private void goToSaveRecipe(){
-        if (recipeMenuView != null) {
-            recipeMenuView.setVisible(true);
-        }
+
+    private void goToSaveRecipe() {
+        recipeMenuView.setVisible(true);
     }
 
-    private void goToAddFriends(){navigation.goTo("Add Friend");}
+    private void goToAddFriends() {
+        navigation.goTo("Add Friend");
+    }
 
-    private void goToProfile(){
+    private void goToProfile() {
         navigation.goTo("Profile");
     }
 
-    // TODO: refer to navigation & how login & addFriends are added
-    private void goToLeaderboard(){}
+    private void goToLeaderboard() {}
 
-    private void goToLogout(){}
+    private void goToLogout() {}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("state")) {
+        if ("state".equals(evt.getPropertyName())) {
             DashboardState state = (DashboardState) evt.getNewValue();
-            calories.setText(String.valueOf(state.getCalories()));
-            remaining.setText(String.valueOf(state.getRemaining()));
-            protein.setText(String.valueOf(state.getProtein()));
-            carbs.setText(String.valueOf(state.getCarbs()));
-            fats.setText(String.valueOf(state.getFats()));
-            fiber.setText(String.valueOf(state.getFibers()));
-            sugars.setText(String.valueOf(state.getSugars()));
 
-            // recipeModel.clear();
-            // recipeModel.addAll(state.getRecipeNames());
+            // eaten / target for all macros
+            calories.setText(formatConsumedTarget(
+                    (int) state.getCalories(),
+                    state.getCaloriesTarget()
+            ));
 
-            // friendModel.clear();
-            // friendModel.addAll(state.getFriendNames());
+            int caloriesTarget = state.getCaloriesTarget();
+            if (caloriesTarget > 0) {
+                int remainingCals = (int) (caloriesTarget - state.getCalories());
+                remaining.setText(String.valueOf(remainingCals));
+            } else {
+                remaining.setText("--");
+            }
+
+            protein.setText(formatConsumedTarget(
+                    (int) state.getProtein(),
+                    state.getProteinTarget()
+            ));
+            carbs.setText(formatConsumedTarget(
+                    (int) state.getCarbs(),
+                    state.getCarbsTarget()
+            ));
+            fats.setText(formatConsumedTarget(
+                    (int) state.getFats(),
+                    state.getFatsTarget()
+            ));
+            fiber.setText(formatConsumedTarget(
+                    (int) state.getFibers(),
+                    state.getFiberTarget()
+            ));
+            sugars.setText(formatConsumedTarget(
+                    (int) state.getSugars(),
+                    state.getSugarTarget()
+            ));
+
+            recipeModel.clear();
+            recipeModel.addAll(state.getRecipeNames());
+
+            friendModel.clear();
+            friendModel.addAll(state.getFriendNames());
         }
+    }
+
+    private String formatConsumedTarget(int consumed, int target) {
+        if (target <= 0) {
+            return String.valueOf(consumed);
+        }
+        return consumed + "/" + target;
     }
 
     public String getViewName() {
