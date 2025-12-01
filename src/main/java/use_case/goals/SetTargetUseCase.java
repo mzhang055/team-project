@@ -1,8 +1,8 @@
 package use_case.goals;
 
 import app.GoalsGuiMain;
-import interface_adapter.dashboard.DashboardViewModel;
 import interface_adapter.dashboard.DashboardState;
+import interface_adapter.dashboard.DashboardViewModel;
 
 public class SetTargetUseCase {
 
@@ -14,22 +14,32 @@ public class SetTargetUseCase {
 
     public void openGoalHelper() {
         GoalsGuiMain.open((targetCalories, proteinGrams, carbGrams, fatGrams) -> {
-            // Get current state or create a new one
             DashboardState state = dashboardViewModel.getState();
             if (state == null) {
                 state = new DashboardState();
             }
 
-            // Set the values on the state
-            state.setCalories(0);                 // start at 0 eaten
-            state.setRemaining(targetCalories);   // or calsInt if you want ints
-            state.setProtein(proteinGrams);
-            state.setCarbs(carbGrams);
-            state.setFats(fatGrams);
+            int calsInt = (int) Math.round(targetCalories);
+            int protInt = (int) Math.round(proteinGrams);
+            int carbInt = (int) Math.round(carbGrams);
+            int fatInt  = (int) Math.round(fatGrams);
+
+            state.setCaloriesTarget(calsInt);
+            state.setProteinTarget(protInt);
+            state.setCarbsTarget(carbInt);
+            state.setFatsTarget(fatInt);
+
+            state.setCalories(0);
+            state.setProtein(0);
+            state.setCarbs(0);
+            state.setFats(0);
+            state.setFibers(0);
+            state.setSugars(0);
+
+            state.setRemaining(calsInt);
 
             dashboardViewModel.setState(state);
-
-            dashboardViewModel.firePropertyChange(); // propertyName="state"
+            dashboardViewModel.firePropertyChange();
         });
     }
 }
