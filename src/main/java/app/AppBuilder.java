@@ -43,6 +43,9 @@ import interface_adapter.recipe.SaveRecipePresenter;
 import interface_adapter.update_profile.UpdateProfileController;
 import interface_adapter.update_profile.UpdateProfilePresenter;
 import interface_adapter.update_profile.UpdateProfileViewModel;
+import interface_adapter.view_leaderboard.LeaderboardController;
+import interface_adapter.view_leaderboard.LeaderboardPresenter;
+import interface_adapter.view_leaderboard.LeaderboardViewmodel;
 import use_case.add_friend.AddFriendInputBoundary;
 import use_case.add_friend.AddFriendInteractor;
 import use_case.add_friend.AddFriendOutputBoundary;
@@ -67,6 +70,9 @@ import use_case.saved_recipe.*;
 import use_case.update_profile.UpdateProfileInputBoundary;
 import use_case.update_profile.UpdateProfileInteractor;
 import use_case.update_profile.UpdateProfileOutputBoundary;
+import use_case.view_leaderboard.LeaderboardDataAccess;
+import use_case.view_leaderboard.LeaderboardDataAccessInterface;
+import use_case.view_leaderboard.LeaderboardInteractor;
 import view.*;
 import view.DashboardView;
 import view.LogMealsView;
@@ -83,6 +89,9 @@ public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final JPanel legacy = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
+    private LeaderboardView leaderboardView;
+    private LeaderboardViewmodel leaderboardViewModel;
+    private DashboardView dashboardView;
     final UserFactory userFactory = new UserFactory();
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     final LegacyViewManagerModel legacyVMM = new LegacyViewManagerModel(legacy);
@@ -102,7 +111,6 @@ public class AppBuilder {
     private CreateAccountView createAccountView;
     private AddFriendViewModel addFriendViewModel;
     private AddFriendView  addFriendView;
-    private DashboardView dashboardView;
     private DashboardViewModel dashboardViewModel;
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
@@ -326,6 +334,25 @@ public class AppBuilder {
                 }
             }
         });
+
+        return this;
+    }
+
+    public AppBuilder addLeaderboardView(){
+        this.leaderboardViewModel = new LeaderboardViewmodel();
+
+        LeaderboardPresenter leaderboardPresenter = new LeaderboardPresenter(leaderboardViewModel);
+        LeaderboardDataAccessInterface leaderboardDataAccess = new LeaderboardDataAccess();
+        LeaderboardInteractor leaderboardInteractor = new LeaderboardInteractor(leaderboardPresenter, leaderboardDataAccess);
+        LeaderboardController leaderboardController = new LeaderboardController(leaderboardInteractor);
+
+        String currentUsername = sessionManager.getCurrentUsername();
+        if (currentUsername == null) {
+            currentUsername = "defaultUser";
+        }
+        this.leaderboardView = new LeaderboardView(null, currentUsername);
+        this.leaderboardView.setNavigation(navigation);
+        cardPanel.add(leaderboardView, leaderboardView.getViewname());
 
         return this;
     }
