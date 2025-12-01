@@ -8,6 +8,20 @@ import java.text.DecimalFormat;
 
 public class GoalsGuiMain {
 
+    public interface GoalListener {
+        void onGoalSet(double calories,
+                       double proteinGrams,
+                       double carbGrams,
+                       double fatGrams);
+    }
+
+    private static GoalListener listener;
+
+    public static void open(GoalListener goalListener) {
+        listener = goalListener;
+        SwingUtilities.invokeLater(GoalsGuiMain::createAndShow);
+    }
+
     private static boolean activeGoalSet = false;
     private static boolean activeGoalDone = false;
 
@@ -376,6 +390,13 @@ public class GoalsGuiMain {
             toggleDoneBtn.setEnabled(true);
             editGoalBtn.setEnabled(true);
             infoLabel.setText("Active goal set. You can edit or mark it as done.");
+            if (listener != null) {
+                listener.onGoalSet(
+                        activeTargetCalories,
+                        activeProteinGrams,
+                        activeCarbGrams,
+                        activeFatGrams
+                );}
         });
 
         editGoalBtn.addActionListener(e -> {
