@@ -1,9 +1,9 @@
 package interface_adapter.recipe;
 
-import use_case.recipe_log.DeleteSavedRecipeOutputBoundary;
-import use_case.recipe_log.DeleteSavedRecipeOutputData;
-import use_case.recipe_log.GetSavedRecipesOutputBoundary;
-import use_case.recipe_log.GetSavedRecipesOutputData;
+import use_case.delete_recipe.DeleteSavedRecipeOutputBoundary;
+import use_case.delete_recipe.DeleteSavedRecipeOutputData;
+import use_case.saved_recipe.GetSavedRecipesOutputBoundary;
+import use_case.saved_recipe.GetSavedRecipesOutputData;
 
 public class RecipeSavedPresenter implements
         GetSavedRecipesOutputBoundary,

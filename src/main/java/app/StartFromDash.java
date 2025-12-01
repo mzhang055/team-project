@@ -10,14 +10,17 @@ public class StartFromDash {
                 .addCreateAccountView()
                 .addDashboardView()
                 .addProfileView()
+                .addUpdateProfileView()
                 .addAddFriendView()
                 .addLeaderboardView()
                 .addLoginUseCase()
                 .addCreateAccountUseCase()
                 .addDashboardUseCase()
                 .addProfileUseCase()
+                .addUpdateProfileUseCase()
                 .addAddFriendUseCase()
                 .addLogMealsUseCase()
+                .addRecipeUseCase()
                 .build();
         application.pack();
         application.setLocationRelativeTo(null);

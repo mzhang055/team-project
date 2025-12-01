@@ -1,9 +1,9 @@
 package interface_adapter.recipe;
 
-import use_case.recipe_log.DeleteSavedRecipeInputBoundary;
-import use_case.recipe_log.DeleteSavedRecipeInputData;
-import use_case.recipe_log.GetSavedRecipesInputBoundary;
-import use_case.recipe_log.GetSavedRecipesInputData;
+import use_case.delete_recipe.DeleteSavedRecipeInputBoundary;
+import use_case.delete_recipe.DeleteSavedRecipeInputData;
+import use_case.saved_recipe.GetSavedRecipesInputBoundary;
+import use_case.saved_recipe.GetSavedRecipesInputData;
 
 public class RecipeSavedController {
 
