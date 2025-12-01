@@ -34,29 +34,37 @@ public class UpdateProfileView extends JPanel implements PropertyChangeListener{
 
         setLayout(new BorderLayout(10, 10));
 
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 10, 5, 10);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        JPanel heightPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        heightPanel.add(new JLabel("Height:"));
-        heightPanel.add(heightField);
-        formPanel.add(heightPanel);
+        gbc.gridx = 0; gbc.gridy = 0;
+        formPanel.add(new JLabel("Height:"), gbc);
+        gbc.gridx = 1;
+        formPanel.add(heightField, gbc);
 
-        JPanel weightPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        weightPanel.add(new JLabel("Weight:"));
-        weightPanel.add(weightField);
-        formPanel.add(weightPanel);
+        gbc.gridx = 0; gbc.gridy++;
+        formPanel.add(new JLabel("Weight:"), gbc);
+        gbc.gridx = 1;
+        formPanel.add(weightField, gbc);
 
-        JPanel allergiesPanel = new JPanel(new BorderLayout());
-        allergiesPanel.add(new JLabel("Allergies:"), BorderLayout.NORTH);
+        gbc.gridx = 0; gbc.gridy++;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        formPanel.add(new JLabel("Allergies:"), gbc);
+        gbc.gridx = 1;
         allergiesArea.setLineWrap(true);
         allergiesArea.setWrapStyleWord(true);
-        allergiesPanel.add(new JScrollPane(allergiesArea), BorderLayout.CENTER);
-        formPanel.add(allergiesPanel);
+        JScrollPane scroll = new JScrollPane(allergiesArea);
+        scroll.setPreferredSize(new Dimension(150, 80));
+        formPanel.add(scroll, gbc);
+        gbc.anchor = GridBagConstraints.WEST;
 
-        JPanel veganPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        veganPanel.add(veganCheck);
-        formPanel.add(veganPanel);
+        gbc.gridx = 0; gbc.gridy++;
+        gbc.gridwidth = 2;
+        veganCheck.setHorizontalTextPosition(SwingConstants.LEFT);
+        formPanel.add(veganCheck, gbc);
 
         add(formPanel, BorderLayout.CENTER);
 
@@ -96,9 +104,6 @@ public class UpdateProfileView extends JPanel implements PropertyChangeListener{
     public void propertyChange(PropertyChangeEvent evt){
         if (!"state".equals(evt.getPropertyName())) return;
         UpdateProfileState state = (UpdateProfileState) evt.getNewValue();
-        if (!state.getErrorMessage().isEmpty()) {
-            JOptionPane.showMessageDialog(this, state.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
         if (!state.getMessage().isEmpty()) {
             JOptionPane.showMessageDialog(this, state.getMessage(), "Success", JOptionPane.INFORMATION_MESSAGE);
         }

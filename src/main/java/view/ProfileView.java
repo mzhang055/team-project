@@ -35,40 +35,41 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
         setLayout(new BorderLayout(10, 10));
 
-        JPanel labelsPanel = new JPanel();
-        labelsPanel.setLayout(new BoxLayout(labelsPanel, BoxLayout.Y_AXIS));
+        JLabel titleLabel = new JLabel("Your Profile");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
+        titlePanel.add(titleLabel);
+        this.add(titlePanel, BorderLayout.NORTH);
 
-        JPanel usernameRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        usernameRow.add(new JLabel("Username:"));
-        usernameRow.add(this.username);
-        labelsPanel.add(usernameRow);
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new GridLayout(0, 2, 10, 10)); // 2 columns: label + value
+        infoPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder("Profile Info"),
+                BorderFactory.createEmptyBorder(20, 20, 20, 20) // padding inside the box
+        ));
+        infoPanel.setPreferredSize(new Dimension(400, 400));
 
-        JPanel passwordRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        passwordRow.add(new JLabel("Password:"));
-        passwordRow.add(this.password);
-        labelsPanel.add(passwordRow);
+        infoPanel.add(new JLabel("Username:"));
+        infoPanel.add(this.username);
 
-        JPanel heightRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        heightRow.add(new JLabel("Height:"));
-        heightRow.add(this.height);
-        labelsPanel.add(heightRow);
+        infoPanel.add(new JLabel("Password:"));
+        infoPanel.add(this.password);
 
-        JPanel weightRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        weightRow.add(new JLabel("Weight:"));
-        weightRow.add(this.weight);
-        labelsPanel.add(weightRow);
+        infoPanel.add(new JLabel("Height:"));
+        infoPanel.add(this.height);
 
-        JPanel allergiesRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        allergiesRow.add(new JLabel("Allergies:"));
-        allergiesRow.add(this.allergies);
-        labelsPanel.add(allergiesRow);
+        infoPanel.add(new JLabel("Weight:"));
+        infoPanel.add(this.weight);
 
-        JPanel veganRow = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        veganRow.add(new JLabel("Vegan:"));
-        veganRow.add(this.vegan);
-        labelsPanel.add(veganRow);
+        infoPanel.add(new JLabel("Allergies:"));
+        infoPanel.add(this.allergies);
 
-        add(labelsPanel, BorderLayout.CENTER);
+        infoPanel.add(new JLabel("Vegan:"));
+        infoPanel.add(this.vegan);
+
+        JPanel centerWrapper = new JPanel(new GridBagLayout());
+        centerWrapper.add(infoPanel);
+        add(centerWrapper, BorderLayout.CENTER);
 
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
 
