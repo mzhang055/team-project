@@ -483,4 +483,83 @@ public class LogMealsTest {
         LogMealsInteractor interactor = new LogMealsInteractor(mealDataAccess, null, null, outputBoundary);
         interactor.saveMeal(meal, "user789");
     }
+
+    @Test
+    void testInteractor_SaveMeal_UserNotFound() {
+        Meal meal = Meal.builder("Pasta").id("meal-456").mealType(MealType.DINNER).userId("user999").build();
+
+        MealDataAccessInterface mealDataAccess = new MealDataAccessInterface() {
+            @Override
+            public boolean save(Meal meal) {
+                return true;
+            }
+
+            @Override
+            public Optional<Meal> getMealById(String mealId) {
+                return Optional.empty();
+            }
+
+            @Override
+            public java.util.List<Meal> getMealsByUserId(String userId) {
+                return null;
+            }
+
+            @Override
+            public boolean delete(String mealId) {
+                return false;
+            }
+
+            @Override
+            public boolean hasLoggedMeals(String userId) {
+                return false;
+            }
+
+            @Override
+            public boolean update(Meal meal) {
+                return false;
+            }
+        };
+
+        UserDataAccessInterface userDataAccess = new UserDataAccessInterface() {
+            @Override
+            public User getUser(String username) {
+                return null; // User not found
+            }
+
+            @Override
+            public void save(User user) {
+                fail("Should not save user since user is null");
+            }
+
+            @Override
+            public boolean existsByUsername(String username) {
+                return false;
+            }
+
+            @Override
+            public java.util.List<User> getAllUsers() {
+                return null;
+            }
+        };
+
+        LogMealsOutputBoundary outputBoundary = new LogMealsOutputBoundary() {
+            @Override
+            public void prepareSuccessView(LogMealsOutputData outputData) {
+                fail("Should not call prepareSuccessView");
+            }
+
+            @Override
+            public void prepareSaveSuccessView(LogMealsOutputData outputData) {
+                assertTrue(outputData.isSuccess());
+            }
+
+            @Override
+            public void prepareFailView(String error) {
+                fail("Should not fail");
+            }
+        };
+
+        LogMealsInteractor interactor = new LogMealsInteractor(mealDataAccess, null, userDataAccess, outputBoundary);
+        interactor.saveMeal(meal, "user999");
+    }
 }
