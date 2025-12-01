@@ -5,6 +5,7 @@ import interface_adapter.Navigation;
 import interface_adapter.dashboard.DashboardController;
 import interface_adapter.dashboard.DashboardState;
 import interface_adapter.dashboard.DashboardViewModel;
+import use_case.goals.SetTargetUseCase;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +22,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private DashboardController dashboardController = null;
     private final RecipeMenuView recipeMenuView;
     private LogMealsView logMealsView = null;
+    private final SetTargetUseCase setTargetUseCase;
 
     // buttons that will click
     private final JButton setGoalButton;
@@ -45,11 +47,12 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private DefaultListModel<String> recipeModel;
     private DefaultListModel<String> friendModel;
 
-    public DashboardView(DashboardViewModel dashboardViewModel, Navigation navigation, RecipeMenuView recipeMenuView) {
+    public DashboardView(SetTargetUseCase setTargetUseCase, DashboardViewModel dashboardViewModel, Navigation navigation, RecipeMenuView recipeMenuView) {
         this.dashboardViewModel = dashboardViewModel;
         this.dashboardViewModel.addPropertyChangeListener(this);
         this.navigation = navigation;
         this.recipeMenuView = recipeMenuView;
+        this.setTargetUseCase = setTargetUseCase;
 
         this.setSize(900, 600);
         this.setLayout(new BorderLayout(10, 10));
@@ -145,19 +148,8 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         this.add(buttons, BorderLayout.SOUTH);
     }
 
-    private void goToSetTarget(){
-        GoalsGuiMain.open((targetCalories, proteinGrams, carbGrams, fatGrams) -> {
-            int calsInt = (int) Math.round(targetCalories);
-            int protInt = (int) Math.round(proteinGrams);
-            int carbInt = (int) Math.round(carbGrams);
-            int fatInt = (int) Math.round(fatGrams);
-
-            calories.setText("0");
-            remaining.setText(String.valueOf(calsInt));
-            protein.setText(String.valueOf(protInt));
-            carbs.setText(String.valueOf(carbInt));
-            fats.setText(String.valueOf(fatInt));
-        });
+    private void goToSetTarget() {
+        setTargetUseCase.openGoalHelper();
     }
     private void goToLogMeals(){
         if (logMealsView != null) {
