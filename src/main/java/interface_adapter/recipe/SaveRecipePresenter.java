@@ -1,7 +1,7 @@
 package interface_adapter.recipe;
 
-import use_case.recipe_log.SaveRecipeOutputBoundary;
-import use_case.recipe_log.SaveRecipeOutputData;
+import use_case.save_recipe.SaveRecipeOutputBoundary;
+import use_case.save_recipe.SaveRecipeOutputData;
 
 public class SaveRecipePresenter implements SaveRecipeOutputBoundary {
 

@@ -1,4 +1,4 @@
-package use_case.recipe_log;
+package use_case.saved_recipe;
 
 import entities.Recipe;
 

@@ -19,6 +19,7 @@ public class StartFromDash {
                 .addUpdateProfileUseCase()
                 .addAddFriendUseCase()
                 .addLogMealsUseCase()
+                .addRecipeUseCase()
                 .build();
         application.pack();
         application.setLocationRelativeTo(null);
