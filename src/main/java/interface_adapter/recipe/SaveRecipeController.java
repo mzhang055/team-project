@@ -1,8 +1,8 @@
 package interface_adapter.recipe;
 
 import entities.Recipe;
-import use_case.recipe_log.SaveRecipeInputBoundary;
-import use_case.recipe_log.SaveRecipeInputData;
+import use_case.save_recipe.SaveRecipeInputBoundary;
+import use_case.save_recipe.SaveRecipeInputData;
 
 public class SaveRecipeController {
 
