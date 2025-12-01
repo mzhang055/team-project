@@ -500,12 +500,9 @@ public class GoalsGuiMain {
     private static double adjustForGoal(double maintenance, GoalType goal) {
         double target = maintenance;
         switch (goal) {
-            case LOSE:
-                target = maintenance - 350;
-            case MAINTAIN:
-                target = maintenance;
-            case GAIN:
-                target = maintenance + 300;
+            case LOSE -> target = maintenance - 350;
+            case MAINTAIN -> target = maintenance;
+            case GAIN -> target = maintenance + 300;
         }
 
         if (target < 1200) target = 1200;
