@@ -43,7 +43,7 @@ public class LeaderboardView extends JPanel {
 
         topPanel.add(backButton, BorderLayout.WEST);
 
-        JLabel titleLabel = new JLabel("Leaderboard", SwingConstants.NORTH);
+        JLabel titleLabel = new JLabel("Leaderboard", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         topPanel.add(titleLabel, BorderLayout.CENTER);
 
