@@ -1,12 +1,10 @@
 package interface_adapter.update_profile;
 
-public class UpdateProfileViewModel {
-    private String message;
-    private boolean success;
+import interface_adapter.ViewModel;
 
-    public String getMessage(){return message; }
-    public boolean isSuccess(){return success; }
-
-    public void setMessage(String message){this.message = message; }
-    public void setSuccess(boolean success){this.success = success; }
+public class UpdateProfileViewModel extends ViewModel<UpdateProfileState>{
+    public UpdateProfileViewModel() {
+        super("Update Profile");
+        setState(new UpdateProfileState());
+    }
 }
