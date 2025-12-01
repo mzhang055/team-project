@@ -104,9 +104,6 @@ public class UpdateProfileView extends JPanel implements PropertyChangeListener{
     public void propertyChange(PropertyChangeEvent evt){
         if (!"state".equals(evt.getPropertyName())) return;
         UpdateProfileState state = (UpdateProfileState) evt.getNewValue();
-        if (!state.getErrorMessage().isEmpty()) {
-            JOptionPane.showMessageDialog(this, state.getErrorMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
         if (!state.getMessage().isEmpty()) {
             JOptionPane.showMessageDialog(this, state.getMessage(), "Success", JOptionPane.INFORMATION_MESSAGE);
         }

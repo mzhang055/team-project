@@ -13,10 +13,7 @@ public class UpdateProfileInteractor implements UpdateProfileInputBoundary {
     }
     public void execute(UpdateProfileInputData inputData){
         String username = inputData.getUsername();
-        if (!userDataAccess.existsByUsername(username)){
-            presenter.prepareFailView("User not found");
-            return;
-        }
+
         User user = userDataAccess.getUser(username);
 
         user.setHeight(inputData.getHeight());
@@ -26,7 +23,8 @@ public class UpdateProfileInteractor implements UpdateProfileInputBoundary {
 
         userDataAccess.save(user);
         UpdateProfileOutputData outputData =
-                new UpdateProfileOutputData(username, "Profile updated");
+                new UpdateProfileOutputData(username, "Profile Updated");
+
         presenter.prepareSuccessView(outputData);
     }
 }
