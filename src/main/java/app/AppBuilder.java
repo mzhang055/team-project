@@ -1,10 +1,7 @@
 package app;
 
-import data_access.*;
 import data_access.InMemoryMealDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
-import data_access.MealDataAccessInterface;
-import data_access.UserDataAccessInterface;
 import data_access.InMemoryRecipeDataAccessObject;
 import data_access.MealDataAccessInterface;
 import data_access.UserDataAccessInterface;
@@ -35,9 +32,6 @@ import interface_adapter.log_meals.LogMealsViewModel;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
-import interface_adapter.update_profile.UpdateProfileController;
-import interface_adapter.update_profile.UpdateProfilePresenter;
-import interface_adapter.update_profile.UpdateProfileViewModel;
 import interface_adapter.recipe.RecipeSavedController;
 import interface_adapter.recipe.RecipeSavedPresenter;
 import interface_adapter.recipe.RecipeSavedViewModel;
@@ -49,9 +43,6 @@ import interface_adapter.recipe.SaveRecipePresenter;
 import interface_adapter.update_profile.UpdateProfileController;
 import interface_adapter.update_profile.UpdateProfilePresenter;
 import interface_adapter.update_profile.UpdateProfileViewModel;
-import interface_adapter.view_leaderboard.LeaderboardController;
-import interface_adapter.view_leaderboard.LeaderboardPresenter;
-import interface_adapter.view_leaderboard.LeaderboardViewmodel;
 import use_case.add_friend.AddFriendInputBoundary;
 import use_case.add_friend.AddFriendInteractor;
 import use_case.add_friend.AddFriendOutputBoundary;
@@ -69,9 +60,6 @@ import use_case.log_meals.LogMealsInteractor;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
-import use_case.update_profile.UpdateProfileInputBoundary;
-import use_case.update_profile.UpdateProfileInteractor;
-import use_case.update_profile.UpdateProfileOutputBoundary;
 import use_case.delete_recipe.*;
 import use_case.save_recipe.*;
 import use_case.recipe_search.*;
@@ -79,9 +67,6 @@ import use_case.saved_recipe.*;
 import use_case.update_profile.UpdateProfileInputBoundary;
 import use_case.update_profile.UpdateProfileInteractor;
 import use_case.update_profile.UpdateProfileOutputBoundary;
-import use_case.view_leaderboard.LeaderboardDataAccess;
-import use_case.view_leaderboard.LeaderboardDataAccessInterface;
-import use_case.view_leaderboard.LeaderboardInteractor;
 import view.*;
 import view.DashboardView;
 import view.LogMealsView;
@@ -98,25 +83,16 @@ public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final JPanel legacy = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
-    private LeaderboardView leaderboardView;
-    private LeaderboardViewmodel leaderboardViewModel;
-    private DashboardView dashboardView;
     final UserFactory userFactory = new UserFactory();
     final ViewManagerModel viewManagerModel = new ViewManagerModel();
     final LegacyViewManagerModel legacyVMM = new LegacyViewManagerModel(legacy);
     ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel,legacyVMM);
 
-
-    private final UserDataAccessInterface localUserDataAccess =
-            new FileUserDataAccessObject("users.json");
-    private final RemoteAuthGateway remoteAuthGateway = new RemoteAuthGateway();
-
-    UserDataAccessInterface userDataAccess = new PersistentUserDataAccessObject(
-            localUserDataAccess, remoteAuthGateway);
+    InMemoryUserDataAccessObject userDataAccess = new InMemoryUserDataAccessObject();
     InMemoryMealDataAccessObject mealDataAccess = new InMemoryMealDataAccessObject();
 
-    private final SessionManager sessionManager;
-    private final Navigation navigation;
+    SessionManager sessionManager = new SessionManager();
+    Navigation navigation = new Navigation(viewManagerModel,legacyVMM,sessionManager);
 
     User user = new User("Cherry", "Red");
 
@@ -126,6 +102,7 @@ public class AppBuilder {
     private CreateAccountView createAccountView;
     private AddFriendViewModel addFriendViewModel;
     private AddFriendView  addFriendView;
+    private DashboardView dashboardView;
     private DashboardViewModel dashboardViewModel;
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
@@ -134,12 +111,7 @@ public class AppBuilder {
     private RecipeMenuView recipeMenuView;
     private LogMealsView logMealsView;
 
-    public AppBuilder(UserDataAccessInterface userDataAccess, MealDataAccessInterface mealDataAccess) {
-        this.userDataAccess = userDataAccess;
-        this.mealDataAccess = (InMemoryMealDataAccessObject) mealDataAccess;
-        this.sessionManager = new SessionManager();
-        this.navigation = new Navigation(viewManagerModel, legacyVMM, sessionManager);
-
+    public AppBuilder() {
         cardPanel.setLayout(cardLayout);
         cardPanel.add(legacy, "Legacy");
         userDataAccess.save(user);
@@ -163,13 +135,6 @@ public class AppBuilder {
         this.addFriendViewModel = new AddFriendViewModel();
         this.addFriendView = new AddFriendView(addFriendViewModel, navigation);
         legacyVMM.addView("Add Friend", addFriendView);
-        navigation.registerRefresh("Add Friend", () -> {
-            String current = navigation.getCurrentUsername();
-            if (current == null) return;
-            User user = userDataAccess.getUser(current);
-            if (user == null) return;
-            addFriendViewModel.setIncomingRequests(user.getIncomingFriendRequests());
-        });
         return this;
     }
 
@@ -177,6 +142,20 @@ public class AppBuilder {
         this.dashboardViewModel = new DashboardViewModel();
         this.dashboardView = new DashboardView(dashboardViewModel, navigation, recipeMenuView);
         cardPanel.add(dashboardView, dashboardView.getViewName());
+
+        // Wire the Dashboard "Set Target" button to GoalsGuiMain without modifying DashboardView.java
+        try {
+            java.lang.reflect.Field field = DashboardView.class.getDeclaredField("setTargetButton");
+            field.setAccessible(true);
+            JButton setTargetButton = (JButton) field.get(dashboardView);
+            if (setTargetButton != null) {
+                setTargetButton.setEnabled(true);
+                setTargetButton.addActionListener(e -> GoalsGuiMain.main(new String[]{}));
+            }
+        } catch (NoSuchFieldException | IllegalAccessException ex) {
+            ex.printStackTrace();
+        }
+
         return this;
     }
 
@@ -195,7 +174,7 @@ public class AppBuilder {
     }
 
     public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginPresenter = new LoginPresenter(loginViewModel, navigation);
+        final LoginOutputBoundary loginPresenter = new LoginPresenter(loginViewModel);
         final LoginInputBoundary loginInteractor = new LoginInteractor(userDataAccess, loginPresenter);
         final LoginController loginController = new LoginController(loginInteractor);
         loginView.setLoginController(loginController);
@@ -217,6 +196,14 @@ public class AppBuilder {
        final DashboardInputBoundary dashboardInteractor = new DashboardInteractor(userDataAccess,mealDataAccess, dashboardPresenter);
        this.dashboardController = new DashboardController(dashboardInteractor);
        dashboardView.setDashboardController(dashboardController);
+
+       GoalsGuiMain.setOnGoalUpdated(() -> {
+           String currentUser = sessionManager.getCurrentUsername();
+           if (currentUser != null) {
+               dashboardController.loadDashboard(currentUser);
+           }
+       });
+
        navigation.registerRefresh("Dashboard", () -> {
            String currentUser = sessionManager.getCurrentUsername();
            if (currentUser != null) {
@@ -249,24 +236,10 @@ public class AppBuilder {
     }
 
     public AppBuilder addAddFriendUseCase() {
-        AddFriendViewModel addFriendViewModel = this.addFriendViewModel;
-        AddFriendView addFriendView = this.addFriendView;
         final AddFriendOutputBoundary addFriendPresenter = new AddFriendPresenter(addFriendViewModel);
         final AddFriendInputBoundary addFriendInteractor = new AddFriendInteractor(userDataAccess, addFriendPresenter);
         final AddFriendController addFriendController = new AddFriendController(addFriendInteractor);
         addFriendView.setAddFriendController(addFriendController);
-        navigation.registerRefresh("Add Friend", () -> {
-            String username = navigation.getCurrentUsername();
-            if (username == null) return;
-
-            User user = userDataAccess.getUser(username);
-            if (user == null) return;
-
-            addFriendViewModel.setIncomingRequests(
-                    user.getIncomingFriendRequests()
-            );
-        });
-        legacyVMM.addView("Add Friend", addFriendView);
         return this;
     }
 
@@ -375,25 +348,6 @@ public class AppBuilder {
                 }
             }
         });
-
-        return this;
-    }
-
-    public AppBuilder addLeaderboardView(){
-        this.leaderboardViewModel = new LeaderboardViewmodel();
-
-        LeaderboardPresenter leaderboardPresenter = new LeaderboardPresenter(leaderboardViewModel);
-        LeaderboardDataAccessInterface leaderboardDataAccess = new LeaderboardDataAccess();
-        LeaderboardInteractor leaderboardInteractor = new LeaderboardInteractor(leaderboardPresenter, leaderboardDataAccess);
-        LeaderboardController leaderboardController = new LeaderboardController(leaderboardInteractor);
-
-        String currentUsername = sessionManager.getCurrentUsername();
-        if (currentUsername == null) {
-            currentUsername = "defaultUser";
-        }
-        this.leaderboardView = new LeaderboardView(null, currentUsername);
-        this.leaderboardView.setNavigation(navigation);
-        cardPanel.add(leaderboardView, leaderboardView.getViewname());
 
         return this;
     }
