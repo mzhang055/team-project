@@ -2,6 +2,9 @@ package entities;
 
 import java.io.Serializable;
 
+/**
+ * Represents an ingredient in a recipe.
+ */
 public class Ingredient implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -9,7 +12,7 @@ public class Ingredient implements Serializable {
     private final String name;
     private final String measure;
 
-    public Ingredient(String name, String measure) {
+    public Ingredient(final String name, final String measure) {
         this.name = name;
         this.measure = measure;
     }

@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a recipe with ingredients and instructions.
+ */
 public class Recipe implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -16,13 +19,13 @@ public class Recipe implements Serializable {
     private final String imageUrl;
     private final List<Ingredient> ingredients;
 
-    public Recipe(String id,
-                  String name,
-                  String category,
-                  String area,
-                  String instructions,
-                  String imageUrl,
-                  List<Ingredient> ingredients) {
+    public Recipe(final String id,
+                  final String name,
+                  final String category,
+                  final String area,
+                  final String instructions,
+                  final String imageUrl,
+                  final List<Ingredient> ingredients) {
         this.id = id;
         this.name = name;
         this.category = category;
