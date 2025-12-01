@@ -145,7 +145,6 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         this.add(buttons, BorderLayout.SOUTH);
     }
 
-    // TODO
     private void goToSetTarget(){
     }
     private void goToLogMeals(){

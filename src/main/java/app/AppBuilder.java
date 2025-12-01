@@ -40,6 +40,9 @@ import interface_adapter.recipe.RecipeSearchPresenter;
 import interface_adapter.recipe.RecipeSearchViewModel;
 import interface_adapter.recipe.SaveRecipeController;
 import interface_adapter.recipe.SaveRecipePresenter;
+import interface_adapter.update_profile.UpdateProfileController;
+import interface_adapter.update_profile.UpdateProfilePresenter;
+import interface_adapter.update_profile.UpdateProfileViewModel;
 import use_case.add_friend.AddFriendInputBoundary;
 import use_case.add_friend.AddFriendInteractor;
 import use_case.add_friend.AddFriendOutputBoundary;
@@ -54,7 +57,6 @@ import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
 import use_case.log_meals.LogMealsInputBoundary;
 import use_case.log_meals.LogMealsInteractor;
-import use_case.log_meals.LogMealsOutputBoundary;
 import use_case.profile.ProfileInputBoundary;
 import use_case.profile.ProfileInteractor;
 import use_case.profile.ProfileOutputBoundary;
@@ -62,6 +64,9 @@ import use_case.delete_recipe.*;
 import use_case.save_recipe.*;
 import use_case.recipe_search.*;
 import use_case.saved_recipe.*;
+import use_case.update_profile.UpdateProfileInputBoundary;
+import use_case.update_profile.UpdateProfileInteractor;
+import use_case.update_profile.UpdateProfileOutputBoundary;
 import view.*;
 import view.DashboardView;
 import view.LogMealsView;
@@ -101,6 +106,8 @@ public class AppBuilder {
     private DashboardViewModel dashboardViewModel;
     private ProfileView profileView;
     private ProfileViewModel profileViewModel;
+    private UpdateProfileView updateProfileView;
+    private UpdateProfileViewModel updateProfileViewModel;
     private RecipeMenuView recipeMenuView;
     private LogMealsView logMealsView;
 
@@ -142,6 +149,13 @@ public class AppBuilder {
         this.profileViewModel = new ProfileViewModel();
         this.profileView =new ProfileView(profileViewModel, navigation);
         cardPanel.add(profileView, profileView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addUpdateProfileView(){
+        this.updateProfileViewModel = new UpdateProfileViewModel();
+        this.updateProfileView = new UpdateProfileView(updateProfileViewModel, navigation);
+        cardPanel.add(updateProfileView, updateProfileView.getViewName());
         return this;
     }
 
@@ -188,6 +202,14 @@ public class AppBuilder {
                 profileController.loadProfile(currentUser);
             }
         });
+        return this;
+    }
+
+    public AppBuilder addUpdateProfileUseCase(){
+        final UpdateProfileOutputBoundary updateProfilePresenter = new UpdateProfilePresenter(updateProfileViewModel);
+        final UpdateProfileInputBoundary updateProfileInteractor = new UpdateProfileInteractor(userDataAccess, updateProfilePresenter);
+        final UpdateProfileController updateProfileController = new UpdateProfileController(updateProfileInteractor, sessionManager);
+        updateProfileView.setProfileController(updateProfileController);
         return this;
     }
 

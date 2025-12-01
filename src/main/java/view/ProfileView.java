@@ -72,7 +72,6 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
 
         JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
 
-        updateProfileButton.setEnabled(false);
         updateProfileButton.addActionListener(e -> goToUpdateProfile());
         backButton.addActionListener(e -> returnToDashboard());
 
@@ -82,13 +81,11 @@ public class ProfileView extends JPanel implements PropertyChangeListener {
         add(buttonsPanel, BorderLayout.SOUTH);
     }
 
-    // TODO:
     private void returnToDashboard(){
         navigation.goTo("Dashboard");
     }
 
-    private void goToUpdateProfile(){
-    }
+    private void goToUpdateProfile(){navigation.goTo("Update Profile");}
 
     @Override
     public void propertyChange(PropertyChangeEvent evt){
