@@ -6,7 +6,7 @@ import interface_adapter.Navigation;
 
 public class LoginPresenter implements LoginOutputBoundary {
     private final LoginViewModel viewModel;
-    private Navigation navigation;
+    private final Navigation navigation;
 
     public LoginPresenter(LoginViewModel viewModel, Navigation navigation){
         this.viewModel = viewModel;

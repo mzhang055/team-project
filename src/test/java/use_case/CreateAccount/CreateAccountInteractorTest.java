@@ -72,4 +72,19 @@ class CreateAccountInteractorTest {
         User saved = userDataAccess.getUser("Elira");
         assertEquals("nice", saved.getPassword());
     }
+
+    @Test
+    void failWhenMissingInput() {
+        CreateAccountInputData inputData = new CreateAccountInputData(
+                "Enna", "", 160.0, 50.0, "milk", false);
+
+        interactor.execute(inputData);
+
+        assertFalse(presenter.successCalled);
+        assertTrue(presenter.failCalled);
+        assertEquals("Missing input", presenter.failMessage);
+
+        assertFalse(userDataAccess.existsByUsername("Enna"));
+    }
+
 }

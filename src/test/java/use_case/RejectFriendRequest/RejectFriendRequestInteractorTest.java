@@ -84,4 +84,15 @@ class RejectFriendRequestInteractorTest {
         assertTrue(presenter.failCalled);
         assertNotNull(presenter.failMessage);
     }
+
+    @Test
+    void failWhenUserNotFound() {
+        RejectFriendRequestInputData inputData =
+                new RejectFriendRequestInputData("NonExist", "Enna");
+        interactor.execute(inputData);
+
+        assertFalse(presenter.successCalled);
+        assertTrue(presenter.failCalled);
+        assertEquals("User not found", presenter.failMessage);
+    }
 }

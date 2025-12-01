@@ -84,4 +84,34 @@ class AcceptFriendRequestInteractorTest {
         assertTrue(presenter.failCalled);
         assertNotNull(presenter.failMessage);
     }
+
+    @Test
+    void failWhenUserNotFound() {
+        AcceptFriendRequestInputData inputData = new AcceptFriendRequestInputData(
+                "DoesNotExist", "Enna");
+        interactor.execute(inputData);
+
+        assertFalse(presenter.successCalled);
+        assertTrue(presenter.failCalled);
+        assertEquals("User not found", presenter.failMessage);
+    }
+
+    @Test
+    void failWhenAlreadyFriends() {
+        User Enna = userDataAccess.getUser("Enna");
+        User Elira = userDataAccess.getUser("Elira");
+        Enna.getFriendsUsernames().add("Elira");
+        Elira.getFriendsUsernames().add("Enna");
+        userDataAccess.save(Enna);
+        userDataAccess.save(Elira);
+
+        AcceptFriendRequestInputData inputData = new AcceptFriendRequestInputData(
+                "Elira", "Enna");
+        interactor.execute(inputData);
+
+        assertFalse(presenter.successCalled);
+        assertTrue(presenter.failCalled);
+        assertEquals("You are already friends", presenter.failMessage);
+    }
+
 }

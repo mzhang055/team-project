@@ -74,4 +74,55 @@ class AddFriendInteractorTest {
         assertTrue(presenter.failCalled);
         assertNotNull(presenter.failMessage);
     }
+
+    @Test
+    void failWhenAddingSelf() {
+        AddFriendInputData inputData =
+                new AddFriendInputData("Enna", "Enna");
+
+        interactor.execute(inputData);
+
+        assertFalse(presenter.successCalled);
+        assertTrue(presenter.failCalled);
+        assertEquals("You cannot add yourself", presenter.failMessage);
+    }
+
+    @Test
+    void failWhenAlreadyFriends() {
+        // make them already friends
+        User enna = userDataAccess.getUser("Enna");
+        User elira = userDataAccess.getUser("Elira");
+        enna.addFriend("Elira");
+        elira.addFriend("Enna");
+        userDataAccess.save(enna);
+        userDataAccess.save(elira);
+
+        AddFriendInputData inputData =
+                new AddFriendInputData("Enna", "Elira");
+        interactor.execute(inputData);
+
+        assertFalse(presenter.successCalled);
+        assertTrue(presenter.failCalled);
+        assertEquals("You are already friends", presenter.failMessage);
+    }
+
+    @Test
+    void failWhenRequestAlreadySent() {
+        // simulate an existing pending request
+        User enna = userDataAccess.getUser("Enna");
+        User elira = userDataAccess.getUser("Elira");
+        enna.getOutgoingFriendRequests().add("Elira");
+        elira.getIncomingFriendRequests().add("Enna");
+        userDataAccess.save(enna);
+        userDataAccess.save(elira);
+
+        AddFriendInputData inputData =
+                new AddFriendInputData("Enna", "Elira");
+        interactor.execute(inputData);
+
+        assertFalse(presenter.successCalled);
+        assertTrue(presenter.failCalled);
+        assertEquals("Friend request already sent", presenter.failMessage);
+    }
+
 }
