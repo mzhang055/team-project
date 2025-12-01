@@ -53,10 +53,79 @@ public class LogMealsTest {
     }
 
     @Test
-    void testNutritionalInfo_Equals() {
-        NutritionalInfo info1 = NutritionalInfo.builder().calories(200).protein(10).build();
-        NutritionalInfo info2 = NutritionalInfo.builder().calories(200).protein(10).build();
+    void testNutritionalInfo_EqualsAndHashCode() {
+        NutritionalInfo info1 = NutritionalInfo.builder()
+                .calories(200)
+                .protein(10)
+                .carbohydrates(25)
+                .fat(8)
+                .fiber(5)
+                .sugar(3)
+                .build();
+
+        NutritionalInfo info2 = NutritionalInfo.builder()
+                .calories(200)
+                .protein(10)
+                .carbohydrates(25)
+                .fat(8)
+                .fiber(5)
+                .sugar(3)
+                .build();
+
+        // Test equals - same object
+        assertEquals(info1, info1);
+
+        // Test equals - same values
         assertEquals(info1, info2);
+
+        // Test equals - null check
+        assertNotEquals(info1, null);
+
+        // Test equals - different class
+        assertNotEquals(info1, "not a NutritionalInfo");
+
+        // Test each field comparison individually to cover all branches
+        NutritionalInfo diffCalories = NutritionalInfo.builder().calories(999).protein(10).carbohydrates(25).fat(8).fiber(5).sugar(3).build();
+        assertNotEquals(info1, diffCalories);
+
+        NutritionalInfo diffProtein = NutritionalInfo.builder().calories(200).protein(999).carbohydrates(25).fat(8).fiber(5).sugar(3).build();
+        assertNotEquals(info1, diffProtein);
+
+        NutritionalInfo diffCarbs = NutritionalInfo.builder().calories(200).protein(10).carbohydrates(999).fat(8).fiber(5).sugar(3).build();
+        assertNotEquals(info1, diffCarbs);
+
+        NutritionalInfo diffFat = NutritionalInfo.builder().calories(200).protein(10).carbohydrates(25).fat(999).fiber(5).sugar(3).build();
+        assertNotEquals(info1, diffFat);
+
+        NutritionalInfo diffFiber = NutritionalInfo.builder().calories(200).protein(10).carbohydrates(25).fat(8).fiber(999).sugar(3).build();
+        assertNotEquals(info1, diffFiber);
+
+        NutritionalInfo diffSugar = NutritionalInfo.builder().calories(200).protein(10).carbohydrates(25).fat(8).fiber(5).sugar(999).build();
+        assertNotEquals(info1, diffSugar);
+
+        // Test hashCode
+        assertEquals(info1.hashCode(), info2.hashCode());
+    }
+
+    @Test
+    void testNutritionalInfo_ToString() {
+        NutritionalInfo nutritionInfo = NutritionalInfo.builder()
+                .calories(250.5)
+                .protein(15.2)
+                .carbohydrates(30.0)
+                .fat(10.5)
+                .fiber(5.0)
+                .sugar(8.0)
+                .build();
+
+        String result = nutritionInfo.toString();
+
+        assertTrue(result.contains("250.5"));
+        assertTrue(result.contains("15.2"));
+        assertTrue(result.contains("30.0"));
+        assertTrue(result.contains("10.5"));
+        assertTrue(result.contains("5.0"));
+        assertTrue(result.contains("8.0"));
     }
 
     // ---------- MealType Tests ----------
@@ -126,18 +195,49 @@ public class LogMealsTest {
         assertThrows(IllegalArgumentException.class, () -> Meal.builder("   "));
         assertThrows(IllegalArgumentException.class, () -> Meal.builder("Toast").mealType(null));
         assertThrows(IllegalArgumentException.class, () -> Meal.builder("Eggs").userId(null));
+        assertThrows(IllegalArgumentException.class, () -> Meal.builder("Eggs").userId(""));
+        assertThrows(IllegalArgumentException.class, () -> Meal.builder("Eggs").userId("   "));
+        assertThrows(IllegalArgumentException.class, () -> Meal.builder("Eggs").mealType(MealType.LUNCH).userId("user1").id(null));
+        assertThrows(IllegalArgumentException.class, () -> Meal.builder("Eggs").mealType(MealType.LUNCH).userId("user1").id(""));
+        assertThrows(IllegalArgumentException.class, () -> Meal.builder("Eggs").mealType(MealType.LUNCH).userId("user1").id("   "));
+        assertThrows(IllegalArgumentException.class, () -> Meal.builder("Eggs").mealType(MealType.LUNCH).userId("user1").loggedAt(null));
         assertThrows(IllegalStateException.class, () -> Meal.builder("Cereal").userId("user123").build());
         assertThrows(IllegalStateException.class, () -> Meal.builder("Yogurt").mealType(MealType.BREAKFAST).build());
     }
 
     @Test
-    void testMeal_Equals() {
+    void testMeal_EqualsAndHashCode() {
         Meal meal1 = Meal.builder("Pizza").id("same-id").mealType(MealType.DINNER).userId("user123").build();
         Meal meal2 = Meal.builder("Burger").id("same-id").mealType(MealType.LUNCH).userId("user456").build();
         Meal meal3 = Meal.builder("Pizza").id("diff-id").mealType(MealType.DINNER).userId("user123").build();
 
+        // Test equals
         assertEquals(meal1, meal2); // Same ID
+        assertEquals(meal1, meal1); // Same object
         assertNotEquals(meal1, meal3); // Different ID
+        assertNotEquals(meal1, null); // Null check
+        assertNotEquals(meal1, "not a Meal"); // Different class
+
+        // Test hashCode
+        assertEquals(meal1.hashCode(), meal2.hashCode()); // Same ID = same hashCode
+    }
+
+    @Test
+    void testMeal_ToString() {
+        NutritionalInfo nutritionInfo = NutritionalInfo.builder().calories(500).build();
+        Meal meal = Meal.builder("Sandwich")
+                .id("meal-123")
+                .mealType(MealType.LUNCH)
+                .userId("user789")
+                .nutritionalInfo(nutritionInfo)
+                .build();
+
+        String result = meal.toString();
+
+        assertTrue(result.contains("meal-123"));
+        assertTrue(result.contains("Sandwich"));
+        assertTrue(result.contains("Lunch"));
+        assertTrue(result.contains("user789"));
     }
 
     // ==================== USE CASE TESTS ====================
