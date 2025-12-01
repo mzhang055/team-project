@@ -250,6 +250,7 @@ public class AppBuilder {
             currentUsername = "defaultUser";
         }
         this.leaderboardView = new LeaderboardView(null, currentUsername);
+        this.leaderboardView.setNavigation(navigation);
         cardPanel.add(leaderboardView, leaderboardView.getViewname());
 
         return this;
