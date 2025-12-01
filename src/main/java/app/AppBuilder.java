@@ -27,6 +27,7 @@ import interface_adapter.log_meals.LogMealsViewModel;
 import interface_adapter.profile.ProfileController;
 import interface_adapter.profile.ProfilePresenter;
 import interface_adapter.profile.ProfileViewModel;
+import use_case.goals.SetTargetUseCase;
 import use_case.add_friend.AddFriendInputBoundary;
 import use_case.add_friend.AddFriendInteractor;
 import use_case.add_friend.AddFriendOutputBoundary;
@@ -119,7 +120,16 @@ public class AppBuilder {
 
     public AppBuilder addDashboardView() {
         this.dashboardViewModel = new DashboardViewModel();
-        this.dashboardView = new DashboardView(dashboardViewModel, navigation, recipeMenuView);
+
+        SetTargetUseCase setTargetUseCase = new SetTargetUseCase(dashboardViewModel);
+
+        this.dashboardView = new DashboardView(
+                setTargetUseCase,
+                dashboardViewModel,
+                navigation,
+                recipeMenuView
+        );
+
         cardPanel.add(dashboardView, dashboardView.getViewName());
         return this;
     }
