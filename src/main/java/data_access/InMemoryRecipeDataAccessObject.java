@@ -4,12 +4,6 @@ import entities.Recipe;
 
 import java.util.*;
 
-/**
- * In-memory implementation of RecipeDataAccessInterface.
- * 仿照 InMemoryMealDataAccessObject，用 HashMap 在内存中保存：
- *  - 所有 recipe：id -> Recipe
- *  - 每个用户收藏了哪些 recipe：username -> [recipeId...]
- */
 public class InMemoryRecipeDataAccessObject implements RecipeDataAccessInterface {
 
     private final Map<String, Recipe> recipes = new HashMap<>();
