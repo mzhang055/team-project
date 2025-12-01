@@ -1,5 +1,6 @@
 package app;
 
+import data_access.CalorieNinjasApiClient;
 import data_access.InMemoryMealDataAccessObject;
 import data_access.InMemoryUserDataAccessObject;
 import interface_adapter.SessionManager;
