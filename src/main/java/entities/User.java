@@ -3,6 +3,9 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a user in the system.
+ */
 public class User {
     private final String username;
     private String password;
@@ -32,28 +35,61 @@ public class User {
         this.vegan = vegan;
     }
 
-    public String getUsername() { return username; }
+    public String getUsername() {
+        return username;
+    }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public String getPassword() {
+        return password;
+    }
 
-    public double getHeight(){return height; }
-    public void setHeight(double height){this.height = height; }
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-    public double getWeight(){return weight; }
-    public void setWeight(double weight){this.weight = weight; }
+    public double getHeight() {
+        return height;
+    }
 
-    public String getAllergies(){return allergies; }
-    public void setAllergies(String allergies){this.allergies = allergies; }
+    public void setHeight(double height) {
+        this.height = height;
+    }
 
-    public boolean isVegan(){return vegan; }
-    public void setVegan(boolean vegan){this.vegan = vegan; }
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public String getAllergies() {
+        return allergies;
+    }
+
+    public void setAllergies(String allergies) {
+        this.allergies = allergies;
+    }
+
+    public boolean isVegan() {
+        return vegan;
+    }
+
+    public void setVegan(boolean vegan) {
+        this.vegan = vegan;
+    }
 
     public List<String> getFriendsUsernames() {
         return friendsUsernames;
     }
-    public List<String> getIncomingFriendRequests(){return incomingFriendRequests; }
-    public List<String> getOutgoingFriendRequests(){return outgoingFriendRequests; }
+
+    public List<String> getIncomingFriendRequests() {
+        return incomingFriendRequests;
+    }
+
+    public List<String> getOutgoingFriendRequests() {
+        return outgoingFriendRequests;
+    }
 
     public void addFriend(String friendUsername) {
         if (!friendsUsernames.contains(friendUsername)) {
@@ -61,23 +97,23 @@ public class User {
         }
     }
 
-    public void addIncomingRequest(String fromUsername){
-        if (!incomingFriendRequests.contains(fromUsername)){
+    public void addIncomingRequest(String fromUsername) {
+        if (!incomingFriendRequests.contains(fromUsername)) {
             incomingFriendRequests.add(fromUsername);
         }
     }
 
-    public void removeIncomingRequest(String fromUsername){
+    public void removeIncomingRequest(String fromUsername) {
         incomingFriendRequests.remove(fromUsername);
     }
 
-    public void addOutgoingRequest(String toUsername){
-        if (!outgoingFriendRequests.contains(toUsername)){
+    public void addOutgoingRequest(String toUsername) {
+        if (!outgoingFriendRequests.contains(toUsername)) {
             outgoingFriendRequests.add(toUsername);
         }
     }
 
-    public void removeOutgoingRequest(String toUsername){
+    public void removeOutgoingRequest(String toUsername) {
         outgoingFriendRequests.remove(toUsername);
     }
 
@@ -109,11 +145,11 @@ public class User {
         recipeIds.remove(recipeId);
     }
 
-    public void removeFriend(String friendUsername){
+    public void removeFriend(String friendUsername) {
         friendsUsernames.remove(friendUsername);
     }
 
-    public boolean isFriendWith(String username){
+    public boolean isFriendWith(String username) {
         return friendsUsernames.contains(username);
     }
 
