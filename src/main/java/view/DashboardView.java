@@ -18,7 +18,7 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
     private final DashboardViewModel dashboardViewModel;
     private final Navigation navigation;
     private DashboardController dashboardController = null;
-    private final RecipeMenuView recipeMenuView;
+    private RecipeMenuView recipeMenuView;
     private LogMealsView logMealsView = null;
 
     // buttons that will click
@@ -145,7 +145,6 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         this.add(buttons, BorderLayout.SOUTH);
     }
 
-    // TODO
     private void goToSetTarget(){
     }
     private void goToLogMeals(){
@@ -154,7 +153,9 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
         }
     }
     private void goToSaveRecipe(){
-        recipeMenuView.setVisible(true);
+        if (recipeMenuView != null) {
+            recipeMenuView.setVisible(true);
+        }
     }
 
     private void goToAddFriends(){navigation.goTo("Add Friend");}
@@ -205,6 +206,10 @@ public class DashboardView extends JPanel implements PropertyChangeListener{
 
     public void setDashboardController(DashboardController dashboardController) {
         this.dashboardController = dashboardController;
+    }
+
+    public void setRecipeMenuView(RecipeMenuView recipeMenuView) {
+        this.recipeMenuView = recipeMenuView;
     }
 
     public void setLogMealsView(LogMealsView logMealsView) {
