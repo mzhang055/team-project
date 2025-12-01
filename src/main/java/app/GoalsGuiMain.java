@@ -526,14 +526,10 @@ public class GoalsGuiMain {
                                              GoalType goal) {
         double proteinPerKg;
         switch (goal) {
-            case LOSE:
-                proteinPerKg = 2.0;
-            case MAINTAIN:
-                proteinPerKg = 1.8;
-            case GAIN:
-                proteinPerKg = 1.8;
-            default:
-                proteinPerKg = 1.8;
+            case LOSE -> proteinPerKg = 2.0;
+            case MAINTAIN -> proteinPerKg = 1.8;
+            case GAIN -> proteinPerKg = 1.8;
+            default -> proteinPerKg = 1.8;
         }
         double proteinGrams = proteinPerKg * weightKg;
 
