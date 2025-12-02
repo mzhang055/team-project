@@ -19,6 +19,16 @@ public class GoalsGuiMain {
         return activeGoalDone;
     }
 
+    private static Runnable onGoalUpdated;
+
+    public static void setOnGoalUpdated(Runnable onGoalUpdated) {
+        GoalsGuiMain.onGoalUpdated = onGoalUpdated;
+    }
+
+    public static double getActiveTargetCalories() {
+        return activeTargetCalories;
+    }
+
     private enum ActivityLevel {
         SEDENTARY("Sedentary (little/no exercise)", 1.2),
         LIGHT("Lightly active (1–3 days/week)", 1.375),
@@ -124,37 +134,43 @@ public class GoalsGuiMain {
 
         int row = 0;
 
-        c.gridx = 0; c.gridy = row;
+        c.gridx = 0;
+        c.gridy = row;
         inputPanel.add(new JLabel("Weight (kg):"), c);
         c.gridx = 1;
         inputPanel.add(weightField, c);
         row++;
 
-        c.gridx = 0; c.gridy = row;
+        c.gridx = 0;
+        c.gridy = row;
         inputPanel.add(new JLabel("Height (cm):"), c);
         c.gridx = 1;
         inputPanel.add(heightField, c);
         row++;
 
-        c.gridx = 0; c.gridy = row;
+        c.gridx = 0;
+        c.gridy = row;
         inputPanel.add(new JLabel("Age (years):"), c);
         c.gridx = 1;
         inputPanel.add(ageField, c);
         row++;
 
-        c.gridx = 0; c.gridy = row;
+        c.gridx = 0;
+        c.gridy = row;
         inputPanel.add(new JLabel("Sex:"), c);
         c.gridx = 1;
         inputPanel.add(sexBox, c);
         row++;
 
-        c.gridx = 0; c.gridy = row;
+        c.gridx = 0;
+        c.gridy = row;
         inputPanel.add(new JLabel("Daily activity:"), c);
         c.gridx = 1;
         inputPanel.add(activityBox, c);
         row++;
 
-        c.gridx = 0; c.gridy = row;
+        c.gridx = 0;
+        c.gridy = row;
         inputPanel.add(new JLabel("Goal:"), c);
         c.gridx = 1;
         inputPanel.add(goalBox, c);
@@ -194,7 +210,9 @@ public class GoalsGuiMain {
 
         JLabel activeStatusLabel = new JLabel("No active goal set.");
 
-        ac.gridx = 0; ac.gridy = 0; ac.gridwidth = 2;
+        ac.gridx = 0;
+        ac.gridy = 0;
+        ac.gridwidth = 2;
         activePanel.add(activeStatusLabel, ac);
         ac.gridwidth = 1;
 
@@ -328,8 +346,7 @@ public class GoalsGuiMain {
                         frame,
                         "Please enter valid numeric values for weight, height, and age.",
                         "Invalid input",
-                        JOptionPane.ERROR_MESSAGE
-                );
+                        JOptionPane.ERROR_MESSAGE);
             }
         });
 
@@ -339,8 +356,7 @@ public class GoalsGuiMain {
                         frame,
                         "Please calculate a plan first.",
                         "No plan",
-                        JOptionPane.WARNING_MESSAGE
-                );
+                        JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -366,6 +382,10 @@ public class GoalsGuiMain {
             activeSex = lastSex[0];
             activeActivityLevel = lastActivity[0];
 
+            if (onGoalUpdated != null) {
+                onGoalUpdated.run();
+            }
+
             activeCaloriesField.setEditable(false);
             activeProteinField.setEditable(false);
             activeCarbsField.setEditable(false);
@@ -384,8 +404,7 @@ public class GoalsGuiMain {
                         frame,
                         "No active goal to edit. Set a goal first.",
                         "No active goal",
-                        JOptionPane.WARNING_MESSAGE
-                );
+                        JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -413,6 +432,10 @@ public class GoalsGuiMain {
                     activeCarbGrams = newCarb;
                     activeFatGrams = newFat;
 
+                    if (onGoalUpdated != null) {
+                        onGoalUpdated.run();
+                    }
+
                     activeCaloriesField.setEditable(false);
                     activeProteinField.setEditable(false);
                     activeCarbsField.setEditable(false);
@@ -425,8 +448,7 @@ public class GoalsGuiMain {
                             frame,
                             "Please enter valid numeric values for calories and macros.",
                             "Invalid input",
-                            JOptionPane.ERROR_MESSAGE
-                    );
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -437,8 +459,7 @@ public class GoalsGuiMain {
                         frame,
                         "No active goal to monitor. Set a goal first.",
                         "No active goal",
-                        JOptionPane.WARNING_MESSAGE
-                );
+                        JOptionPane.WARNING_MESSAGE);
                 return;
             }
 
@@ -467,10 +488,10 @@ public class GoalsGuiMain {
     }
 
     private static double estimateMaintenanceCalories(double weightKg,
-                                                      double heightCm,
-                                                      int ageYears,
-                                                      Sex sex,
-                                                      ActivityLevel level) {
+            double heightCm,
+            int ageYears,
+            Sex sex,
+            ActivityLevel level) {
         double sexConst = (sex == Sex.MALE) ? 5 : -161;
         double bmr = 10 * weightKg + 6.25 * heightCm - 5 * ageYears + sexConst;
         return bmr * level.getMultiplier();
@@ -481,13 +502,14 @@ public class GoalsGuiMain {
         switch (goal) {
             case LOSE:
                 target = maintenance - 350;
+                break;
             case MAINTAIN:
                 target = maintenance;
+                break;
             case GAIN:
                 target = maintenance + 300;
+                break;
         }
-
-        if (target < 1200) target = 1200;
         return target;
     }
 
@@ -504,18 +526,22 @@ public class GoalsGuiMain {
     }
 
     private static MacroPlan calculateMacros(double weightKg,
-                                             double targetCalories,
-                                             GoalType goal) {
+            double targetCalories,
+            GoalType goal) {
         double proteinPerKg;
         switch (goal) {
             case LOSE:
                 proteinPerKg = 2.0;
+                break;
             case MAINTAIN:
                 proteinPerKg = 1.8;
+                break;
             case GAIN:
                 proteinPerKg = 1.8;
+                break;
             default:
                 proteinPerKg = 1.8;
+                break;
         }
         double proteinGrams = proteinPerKg * weightKg;
 
@@ -524,7 +550,8 @@ public class GoalsGuiMain {
 
         double proteinCalories = proteinGrams * 4;
         double carbCalories = targetCalories - proteinCalories - fatCalories;
-        if (carbCalories < 0) carbCalories = 0;
+        if (carbCalories < 0)
+            carbCalories = 0;
         double carbGrams = carbCalories / 4.0;
 
         return new MacroPlan(proteinGrams, carbGrams, fatGrams);

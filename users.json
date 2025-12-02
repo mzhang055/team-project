@@ -24,5 +24,18 @@
     "friends": [],
     "username": "Cherry",
     "height": 0
+  },
+  "test": {
+    "allergies": "",
+    "password": "123",
+    "outgoingRequests": [],
+    "recipeIds": ["52777"],
+    "incomingRequests": [],
+    "weight": 150,
+    "vegan": false,
+    "mealIds": ["67dc9f4b-bce3-4930-b980-3d95726efb8c"],
+    "friends": [],
+    "username": "test",
+    "height": 500
   }
 }

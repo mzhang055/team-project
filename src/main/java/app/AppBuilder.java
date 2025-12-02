@@ -177,8 +177,23 @@ public class AppBuilder {
         this.dashboardViewModel = new DashboardViewModel();
         this.dashboardView = new DashboardView(dashboardViewModel, navigation, recipeMenuView);
         cardPanel.add(dashboardView, dashboardView.getViewName());
+
+        // Wire the Dashboard "Set Target" button to GoalsGuiMain without modifying DashboardView.java
+        try {
+            java.lang.reflect.Field field = DashboardView.class.getDeclaredField("setTargetButton");
+            field.setAccessible(true);
+            JButton setTargetButton = (JButton) field.get(dashboardView);
+            if (setTargetButton != null) {
+                setTargetButton.setEnabled(true);
+                setTargetButton.addActionListener(e -> GoalsGuiMain.main(new String[]{}));
+            }
+        } catch (NoSuchFieldException | IllegalAccessException ex) {
+            ex.printStackTrace();
+        }
+
         return this;
     }
+
 
     public AppBuilder addProfileView() {
         this.profileViewModel = new ProfileViewModel();
@@ -214,9 +229,17 @@ public class AppBuilder {
 
     public AppBuilder addDashboardUseCase() {
        final DashboardOutputBoundary dashboardPresenter = new DashboardPresenter(dashboardViewModel, viewManagerModel);
-       final DashboardInputBoundary dashboardInteractor = new DashboardInteractor(userDataAccess,mealDataAccess, dashboardPresenter);
+       final DashboardInputBoundary dashboardInteractor = new DashboardInteractor(userDataAccess, mealDataAccess, dashboardPresenter);
        this.dashboardController = new DashboardController(dashboardInteractor);
        dashboardView.setDashboardController(dashboardController);
+
+       GoalsGuiMain.setOnGoalUpdated(() -> {
+           String currentUser = sessionManager.getCurrentUsername();
+           if (currentUser != null) {
+               dashboardController.loadDashboard(currentUser);
+           }
+       });
+
        navigation.registerRefresh("Dashboard", () -> {
            String currentUser = sessionManager.getCurrentUsername();
            if (currentUser != null) {
@@ -225,6 +248,7 @@ public class AppBuilder {
        });
        return this;
     }
+
 
     public AppBuilder addProfileUseCase() {
         final ProfileOutputBoundary profilePresenter = new ProfilePresenter(profileViewModel, viewManagerModel);
