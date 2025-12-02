@@ -28,7 +28,7 @@ import interface_adapter.dashboard.DashboardViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
-import interface_adapter.log_meals.CalorieNinjasApiClient;
+import data_access.CalorieNinjasApiClient;
 import interface_adapter.log_meals.LogMealsController;
 import interface_adapter.log_meals.LogMealsPresenter;
 import interface_adapter.log_meals.LogMealsViewModel;

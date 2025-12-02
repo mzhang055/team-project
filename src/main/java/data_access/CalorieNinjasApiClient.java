@@ -1,4 +1,4 @@
-package interface_adapter.log_meals;
+package data_access;
 
 import entities.NutritionalInfo;
 import okhttp3.OkHttpClient;
