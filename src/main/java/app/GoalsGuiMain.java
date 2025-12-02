@@ -15,6 +15,7 @@ public class GoalsGuiMain {
         return activeGoalSet;
     }
 
+
     public static boolean isActiveGoalDone() {
         return activeGoalDone;
     }
@@ -28,6 +29,7 @@ public class GoalsGuiMain {
     public static double getActiveTargetCalories() {
         return activeTargetCalories;
     }
+
 
     private enum ActivityLevel {
         SEDENTARY("Sedentary (little/no exercise)", 1.2),
@@ -497,9 +499,12 @@ public class GoalsGuiMain {
     private static double adjustForGoal(double maintenance, GoalType goal) {
         double target = maintenance;
         switch (goal) {
-            case LOSE -> target = maintenance - 350;
-            case MAINTAIN -> target = maintenance;
-            case GAIN -> target = maintenance + 300;
+            case LOSE:
+                target = maintenance - 350;
+            case MAINTAIN:
+                target = maintenance;
+            case GAIN:
+                target = maintenance + 300;
         }
 
         if (target < 1200) target = 1200;
@@ -523,10 +528,14 @@ public class GoalsGuiMain {
                                              GoalType goal) {
         double proteinPerKg;
         switch (goal) {
-            case LOSE -> proteinPerKg = 2.0;
-            case MAINTAIN -> proteinPerKg = 1.8;
-            case GAIN -> proteinPerKg = 1.8;
-            default -> proteinPerKg = 1.8;
+            case LOSE:
+                proteinPerKg = 2.0;
+            case MAINTAIN:
+                proteinPerKg = 1.8;
+            case GAIN:
+                proteinPerKg = 1.8;
+            default:
+                proteinPerKg = 1.8;
         }
         double proteinGrams = proteinPerKg * weightKg;
 
