@@ -35,7 +35,7 @@ A Java-based nutrition and wellness tracking application that helps users manage
 - **Edit Logs** - Edit the nutrition information of logged meals
 - **Dashboard** - View daily nutrition totals and progress
 
-### Goals & Competition
+### Goals & Competition (incomplete)
 - **Set Nutritional Goals** - Create personalized calorie and macro targets
 - **Track Goals** - Monitor goal completion
 
